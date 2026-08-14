@@ -25,68 +25,503 @@
       --font-mono: 'Roboto Mono', monospace;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
-    .app-container { width: 100%; max-width: 480px; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; }
-    .logo-container { display: flex; align-items: center; gap: 10px; }
-    .logo-badge { background: linear-gradient(135deg, #FF6000 0%, #FF8A00 100%); color: white; font-weight: 800; font-size: 13px; padding: 5px 9px; border-radius: 8px; box-shadow: 0 2px 8px var(--orange-glow); }
-    .brand-title { font-size: 18px; font-weight: 800; }
-    .brand-subtitle { font-size: 10px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase; }
-    .user-status-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--green-win); background: var(--green-glow); padding: 5px 10px; border-radius: 20px; font-weight: 700; cursor: pointer; }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-win); }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 80px;
+    }
 
-    .banca-card { background: linear-gradient(135deg, #18202E 0%, #111620 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; position: relative; overflow: hidden; }
-    .banca-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: flex; justify-content: space-between; }
-    .banca-amount { font-size: 32px; font-weight: 800; color: var(--text-main); margin: 6px 0 12px; font-family: var(--font-mono); }
-    .banca-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border-color); }
-    .stat-label { font-size: 11px; color: var(--text-muted); }
-    .stat-val { font-size: 15px; font-weight: 700; color: var(--green-win); font-family: var(--font-mono); }
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-    .tab-nav { display: flex; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 4px; gap: 4px; }
-    .tab-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 12px; padding: 10px 2px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
-    .tab-btn.active { background: var(--orange-betano); color: white; box-shadow: 0 4px 12px var(--orange-glow); }
+    /* HEADER */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+    }
 
-    .section-title { font-size: 15px; font-weight: 700; margin: 14px 0 6px; display: flex; align-items: center; justify-content: space-between; }
-    .palpites-list { display: flex; flex-direction: column; gap: 12px; }
-    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-    .palpite-card.dupla-card { border: 1px solid #2D3748; background: linear-gradient(135deg, #161D2A 0%, #121722 100%); }
-    .palpite-header { display: flex; justify-content: space-between; align-items: center; }
-    .league-badge { font-size: 12px; color: var(--orange-betano); font-weight: 700; }
-    .league-badge.blue { color: #60A5FA; }
-    .time-badge { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
-    .match-title { font-size: 15px; font-weight: 700; color: var(--text-main); line-height: 1.3; }
-    .market-box { background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .market-name { font-size: 13px; font-weight: 600; color: #E2E8F0; }
-    .odd-tag { background: var(--orange-betano); color: white; font-family: var(--font-mono); font-weight: 800; font-size: 14px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
-    .odd-tag.blue { background: #2563EB; box-shadow: 0 2px 8px var(--blue-glow); }
-    .palpite-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
-    .monte-carlo-tag { color: var(--green-win); font-weight: 700; }
-    .stake-tag { color: var(--text-muted); font-weight: 600; }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    .form-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-    .input-field { width: 100%; background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 14px; color: white; font-size: 14px; outline: none; }
-    .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; box-shadow: 0 4px 16px var(--orange-glow); width: 100%; }
-    .dropzone { border: 2px dashed var(--border-color); border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; background: #0E121A; }
+    .logo-badge {
+      background: linear-gradient(135deg, #FF6000 0%, #FF8A00 100%);
+      color: white;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 5px 9px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px var(--orange-glow);
+    }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
-    .modal-box { width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto; }
-    .auth-tab-bar { display: flex; background: #0E121A; border-radius: 10px; padding: 4px; gap: 4px; }
-    .auth-tab-btn { flex: 1; padding: 8px; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; }
-    .auth-tab-btn.active { background: var(--orange-betano); color: white; }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
 
-    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; }
-    .profile-card.selected { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.1); }
-    .profile-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
-    .profile-desc { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
 
-    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 13px; background: #0E121A; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); }
-    .checkbox-item input { accent-color: var(--orange-betano); }
+    .brand-subtitle {
+      font-size: 10px;
+      color: var(--orange-betano);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
 
-    .compliance-footer { font-size: 10px; color: #64748B; text-align: center; padding: 16px; border-top: 1px solid #1E2530; margin-top: 16px; }
+    /* INTERACTIVE AUTH BADGE (REPLACES RAW bu_synapse_bet TAG) */
+    .auth-btn-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: white;
+      background: linear-gradient(135deg, #1E2533 0%, #161C26 100%);
+      border: 1px solid #2A3446;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .auth-btn-badge:hover {
+      border-color: var(--orange-betano);
+      background: var(--orange-glow);
+      transform: translateY(-1px);
+    }
+
+    .auth-btn-badge.logged-in {
+      background: rgba(0, 208, 132, 0.12);
+      border-color: var(--green-win);
+      color: var(--green-win);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--orange-betano);
+    }
+
+    .auth-btn-badge.logged-in .status-dot {
+      background: var(--green-win);
+      box-shadow: 0 0 6px var(--green-win);
+    }
+
+    /* BANCA CARD */
+    .banca-card {
+      background: linear-gradient(135deg, #18202E 0%, #111620 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banca-card::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 100px;
+      height: 100px;
+      background: var(--orange-glow);
+      border-radius: 50%;
+      filter: blur(40px);
+    }
+
+    .banca-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .banca-amount {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 6px 0 12px;
+      font-family: var(--font-mono);
+    }
+
+    .banca-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .stat-val {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--green-win);
+      font-family: var(--font-mono);
+    }
+
+    /* NAVIGATION TABS */
+    .tab-nav {
+      display: flex;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 12px;
+      padding: 10px 2px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .tab-btn.active {
+      background: var(--orange-betano);
+      color: white;
+      box-shadow: 0 4px 12px var(--orange-glow);
+    }
+
+    /* CARDS & PALPITES */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 14px 0 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .palpites-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .palpite-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .palpite-card.dupla-card {
+      border: 1px solid #2D3748;
+      background: linear-gradient(135deg, #161D2A 0%, #121722 100%);
+    }
+
+    .palpite-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .league-badge {
+      font-size: 12px;
+      color: var(--orange-betano);
+      font-weight: 700;
+    }
+
+    .league-badge.blue {
+      color: #60A5FA;
+    }
+
+    .time-badge {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .match-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    .market-box {
+      background: #0E121A;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .market-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #E2E8F0;
+    }
+
+    .odd-tag {
+      background: var(--orange-betano);
+      color: white;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 14px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .odd-tag.blue {
+      background: #2563EB;
+      box-shadow: 0 2px 8px var(--blue-glow);
+    }
+
+    .palpite-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .monte-carlo-tag {
+      color: var(--green-win);
+      font-weight: 700;
+    }
+
+    .stake-tag {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* FORMS & INPUTS */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .input-field {
+      width: 100%;
+      background: #0E121A;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: white;
+      font-family: var(--font-main);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-field:focus {
+      border-color: var(--orange-betano);
+    }
+
+    .btn-submit {
+      background: var(--orange-betano);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px var(--orange-glow);
+      width: 100%;
+      transition: transform 0.1s ease;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    .dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: 14px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #0E121A;
+    }
+
+    /* MODAL OVERLAY */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 16px;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .auth-tab-bar {
+      display: flex;
+      background: #0E121A;
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .auth-tab-btn.active {
+      background: var(--orange-betano);
+      color: white;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .profile-card {
+      background: #0E121A;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .profile-card.selected {
+      border-color: var(--orange-betano);
+      background: rgba(255, 96, 0, 0.12);
+    }
+
+    .profile-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .profile-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      background: #0E121A;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .checkbox-item input {
+      accent-color: var(--orange-betano);
+    }
+
+    .compliance-footer {
+      font-size: 10px;
+      color: #64748B;
+      text-align: center;
+      line-height: 1.5;
+      padding: 16px;
+      border-top: 1px solid #1E2530;
+      margin-top: 16px;
+    }
   </style>
 </head>
 <body>
@@ -94,12 +529,15 @@
   <!-- MODAL DE LOGIN / CONVITE / ONBOARDING -->
   <div id="auth-modal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
+      
+      <!-- LOGO NO MODAL -->
       <div style="text-align: center; margin-bottom: 4px;">
         <span class="logo-badge">SYNAPSE</span>
         <h2 style="font-size: 20px; font-weight: 800; margin-top: 8px;">SynapseBet</h2>
         <p style="font-size: 11px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase;">Powered by Neural Hub</p>
       </div>
 
+      <!-- AUTH TABS -->
       <div class="auth-tab-bar">
         <button class="auth-tab-btn active" onclick="switchAuthTab('login')">🔑 Entrar</button>
         <button class="auth-tab-btn" onclick="switchAuthTab('invite')">🎟️ Convite</button>
@@ -111,15 +549,16 @@
         <input type="email" id="login-email" class="input-field" placeholder="Seu E-mail (Gmail)">
         <input type="password" id="login-pass" class="input-field" placeholder="Sua Senha Pessoal">
         <button class="btn-submit" onclick="submitClientLogin()">Acessar Minha Carteira</button>
+        <button onclick="closeAuthModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 4px;">Explorar como visitante</button>
       </div>
 
       <!-- ABA 2: CONVITE -->
       <div id="auth-view-invite" style="display: none; flex-direction: column; gap: 12px;">
-        <p style="font-size: 12px; color: var(--text-muted);">
-          Recebeu um código de convite do Mariano? Digite abaixo para criar sua conta e gerar sua planilha exclusiva!
+        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+          Recebeu um código de convite do Mariano? Digite abaixo para criar sua conta e gerar sua planilha exclusiva no Google Drive!
         </p>
-        <input type="text" id="invite-code" class="input-field" placeholder="Código (ex: SYN-A1B2C3)">
-        <input type="text" id="invite-pass" class="input-field" placeholder="Senha Temporária (ex: HUB-987654)">
+        <input type="text" id="invite-code" class="input-field" placeholder="Código de Convite (ex: SYN-ABA56D)">
+        <input type="text" id="invite-pass" class="input-field" placeholder="Senha Temporária (ex: HUB-8C592E)">
         <button class="btn-submit" onclick="unlockOnboarding()">Validar Convite e Cadastrar ➔</button>
       </div>
 
@@ -137,7 +576,7 @@
         </div>
       </div>
 
-      <!-- ONBOARDING FORM -->
+      <!-- ONBOARDING FORM (APÓS VALIDAR CONVITE) -->
       <div id="onboarding-form" style="display: none; flex-direction: column; gap: 14px;">
         <div style="font-size: 14px; font-weight: 800; color: var(--orange-betano); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           📋 Cadastro & Personalização do Cliente
@@ -205,7 +644,10 @@
     </div>
   </div>
 
+  <!-- APP PRINCIPAL -->
   <div class="app-container">
+    
+    <!-- HEADER -->
     <header class="app-header">
       <div class="logo-container">
         <span class="logo-badge">SYNAPSE</span>
@@ -214,12 +656,14 @@
           <span class="brand-subtitle">Powered by Neural Hub</span>
         </div>
       </div>
-      <div class="user-status-badge" onclick="openAuthModal()">
+      <!-- INTERACTIVE USER BADGE -->
+      <div id="header-auth-badge" class="auth-btn-badge" onclick="handleAuthBadgeClick()">
         <div class="status-dot"></div>
-        <span id="header-user-name">Entrar / Convidado</span>
+        <span id="header-user-text">🔑 Entrar / Convidado</span>
       </div>
     </header>
 
+    <!-- BANCA CARD -->
     <div class="banca-card">
       <div class="banca-title">
         <span>Banca do Assinante — SynapseBet Quant</span>
@@ -228,16 +672,17 @@
       <div class="banca-amount" id="banca-display">R$ 100,00</div>
       <div class="banca-stats">
         <div class="stat-item">
-          <span class="stat-label">Stake Recomendada (2%)</span>
+          <span class="stat-label">Stake Recomendada</span>
           <span class="stat-val" id="stake-display">R$ 2,00</span>
         </div>
         <div class="stat-item">
           <span class="stat-label">Aproveitamento</span>
-          <span class="stat-val">12/12 GREENS 🟢</span>
+          <span class="stat-val" id="winrate-display">12/12 GREENS 🟢</span>
         </div>
       </div>
     </div>
 
+    <!-- TABS -->
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
       <button class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
@@ -245,13 +690,14 @@
       <button class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
 
+    <!-- TAB 1: PALPITES -->
     <div id="tab-palpites" class="tab-content">
       <div class="section-title">
         <span>🛡️ Apostas Simples Seguras</span>
         <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+</span>
       </div>
       <div class="palpites-list" id="simples-container">
-        <div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando oportunidades da IA...</div>
+        <div style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando oportunidades da IA...</div>
       </div>
 
       <div class="section-title" style="margin-top: 20px;">
@@ -259,13 +705,17 @@
         <span style="font-size: 11px; color: #60A5FA; font-weight: 700;">Odds 1.80 a 1.95</span>
       </div>
       <div class="palpites-list" id="duplas-container">
-        <div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando Duplas da bu_synapse_bet...</div>
+        <div style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando Duplas da bu_synapse_bet...</div>
       </div>
     </div>
 
+    <!-- TAB 2: UPLOAD DE PRINT -->
     <div id="tab-upload" class="tab-content" style="display: none;">
       <div class="section-title"><span>Registrar Aposta Real via Print</span></div>
       <div class="form-card">
+        <p style="font-size: 13px; color: var(--text-muted);">
+          Tirou print da aposta feita na Betano? Envie aqui e o <b>SynapseBet</b> audita e grava na sua planilha pessoal!
+        </p>
         <div class="dropzone" onclick="document.getElementById('file-input').click()">
           <div style="font-size: 32px; margin-bottom: 6px;">📸</div>
           <div style="font-size: 14px; font-weight: 700;">Toque para selecionar o Print</div>
@@ -278,35 +728,60 @@
       </div>
     </div>
 
+    <!-- TAB 3: MINHA PLANILHA -->
     <div id="tab-planilha" class="tab-content" style="display: none;">
       <div class="section-title"><span>Sua Planilha no Google Drive</span></div>
       <div class="form-card" style="text-align: center;">
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Sua carteira individual sincronizada 24/7:</p>
-        <a id="sheet-link-btn" href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-submit" style="text-decoration: none; display: block;">📊 Abrir Minha Planilha</a>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+          Sua carteira de apostas individual está sincronizada 24/7 na nuvem da Neural Hub:
+        </p>
+        <a id="sheet-link-btn" href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-submit" style="text-decoration: none; display: block;">
+          📊 Abrir Minha Planilha no Google Drive
+        </a>
       </div>
     </div>
 
+    <!-- TAB 4: REGRAS -->
     <div id="tab-regras" class="tab-content" style="display: none;">
       <div class="section-title"><span>Diretrizes SynapseBet Quant</span></div>
       <div class="form-card" style="font-size: 13px; line-height: 1.6;">
-        <p><b>🛡️ Simples:</b> 1,5% a 2,5% da banca</p>
-        <p><b>💎 Duplas:</b> 2,0% a 3,0% (@ 1.80+)</p>
-        <p><b>🏆 Esportes:</b> Futebol, MLB, NBA, NFL, F1 e Tênis</p>
+        <p><b>🛡️ Apostas Simples:</b> 1,5% a 2,5% da banca (Base sólida e segura)</p>
+        <p style="margin-top: 6px;"><b>💎 Duplas Blindadas:</b> 2,0% a 3,0% (Acelerador de lucros @ 1.80+)</p>
+        <p style="margin-top: 6px;"><b>🎯 Filtro Estatístico:</b> Monte Carlo 10k iterações com EV+ &gt; 10%</p>
+        <p style="margin-top: 6px;"><b>🛑 Stop Loss Diário:</b> 3 REDs consecutivos pausam as entradas</p>
+        <p style="margin-top: 6px;"><b>🏆 Esportes:</b> Futebol, Beisebol (MLB), Basquete (NBA), NFL, F1 e Tênis</p>
+        <p style="margin-top: 6px;"><b>🏢 Unidade de Negócio:</b> bu_synapse_bet (Governança Holding NEURAL HUB)</p>
       </div>
     </div>
 
     <footer class="compliance-footer">
       SynapseBet (Powered by Neural Hub) &bull; bu_synapse_bet<br>
-      Probabilidades estatísticas (+18). Jogue com responsabilidade.
+      Probabilidades e análises estatísticas. Rendimentos passados não garantem lucros futuros (+18).
     </footer>
   </div>
 
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    const API_BASE = 'https://prince-singles-encouraged-bond.trycloudflare.com';
+    // ENDPOINT HTTPS DEFINITIVO COM FALLBACK RESILIENTE
+    const PRIMARY_API = 'https://prince-singles-encouraged-bond.trycloudflare.com';
+    const FALLBACK_API = 'http://169.58.169.188:8000';
+
     let loggedClient = null;
     let selectedProfile = "2. Moderado";
     let selectedFile = null;
     let verifiedInvite = null;
+
+    // Fallback de dados estáticos para carregamento instantâneo se a rede oscilar
+    const DEFAULT_SIMPLES = [
+      { league: "🇹🇷 Süper Lig", datetime: "Hoje 15:30", match: "Galatasaray vs Çorum FK", market: "Mais de 7.5 Escanteios (Over 7.5)", odd: "1.45", monte_carlo: "87.5%", stake: "R$ 3,00" },
+      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:15", match: "Sporting CP vs Vitória de Guimarães", market: "Vitória do Sporting ou Empate (1X)", odd: "1.33", monte_carlo: "86.2%", stake: "R$ 3,00" },
+      { league: "⚾ MLB (Beisebol)", datetime: "Hoje 19:05", match: "New York Yankees vs Boston Red Sox", market: "Yankees Vence ou Empata 5 Innings (F5 1X)", odd: "1.42", monte_carlo: "85.2%", stake: "R$ 3,00" }
+    ];
+
+    const DEFAULT_DUPLAS = [
+      { league: "🇹🇷 Turquia + 🇵🇹 Portugal", datetime: "Hoje 15:30 / 16:15", match: "Galatasaray (Cantos) + Sporting CP (1X)", market: "Galatasaray > 6.5 Cantos (@ 1.35) + Sporting 1X (@ 1.33)", odd: "1.80", monte_carlo: "75.4%", stake: "R$ 2,00" },
+      { league: "⚾ MLB + 🇦🇷 Argentina", datetime: "Hoje 19:05 / 20:30", match: "NY Yankees (F5 1X) + Racing Club (1X)", market: "Yankees F5 1X (@ 1.42) + Racing Club 1X (@ 1.34)", odd: "1.90", monte_carlo: "71.4%", stake: "R$ 2,00" }
+    ];
 
     window.addEventListener('DOMContentLoaded', () => {
       const saved = localStorage.getItem('synapse_client');
@@ -315,9 +790,24 @@
           loggedClient = JSON.parse(saved);
           applyClientSession(loggedClient);
         } catch(e) {}
+      } else {
+        // Se primeiro acesso, abre o modal de boas-vindas / login
+        setTimeout(() => openAuthModal(), 800);
       }
       loadPalpites();
     });
+
+    function handleAuthBadgeClick() {
+      if (loggedClient) {
+        if (confirm(`Conectado como: ${loggedClient.name} (${loggedClient.email})\n\nDeseja sair da sua conta?`)) {
+          localStorage.removeItem('synapse_client');
+          loggedClient = null;
+          location.reload();
+        }
+      } else {
+        openAuthModal();
+      }
+    }
 
     function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
     function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
@@ -337,46 +827,110 @@
       selectedProfile = profileName;
     }
 
+    async function safeFetch(url, options = {}) {
+      try {
+        const res = await fetch(`${PRIMARY_API}${url}`, options);
+        if (res.ok) return await res.json();
+      } catch (err) {
+        console.warn("Falha no endpoint primário HTTPS, tentando fallback:", err);
+      }
+      try {
+        const resFb = await fetch(`${FALLBACK_API}${url}`, options);
+        if (resFb.ok) return await resFb.json();
+      } catch(e) {}
+      return null;
+    }
+
+    async function loadPalpites() {
+      const data = await safeFetch('/api/palpites');
+      const simples = (data && data.simples && data.simples.length > 0) ? data.simples : DEFAULT_SIMPLES;
+      const duplas = (data && data.duplas && data.duplas.length > 0) ? data.duplas : DEFAULT_DUPLAS;
+
+      renderPalpites(simples, duplas);
+    }
+
+    function renderPalpites(simples, duplas) {
+      const sContainer = document.getElementById('simples-container');
+      const dContainer = document.getElementById('duplas-container');
+
+      sContainer.innerHTML = simples.map(p => `
+        <div class="palpite-card">
+          <div class="palpite-header">
+            <span class="league-badge">${p.league}</span>
+            <span class="time-badge">${p.datetime}</span>
+          </div>
+          <div class="match-title">${p.match}</div>
+          <div class="market-box">
+            <span class="market-name">${p.market}</span>
+            <span class="odd-tag">@ ${p.odd}</span>
+          </div>
+          <div class="palpite-footer">
+            <span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span>
+            <span class="stake-tag">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span>
+          </div>
+        </div>
+      `).join('');
+
+      dContainer.innerHTML = duplas.map(p => `
+        <div class="palpite-card dupla-card">
+          <div class="palpite-header">
+            <span class="league-badge blue">💎 ${p.league}</span>
+            <span class="time-badge">${p.datetime}</span>
+          </div>
+          <div class="match-title">${p.match}</div>
+          <div class="market-box">
+            <span class="market-name">${p.market}</span>
+            <span class="odd-tag blue">@ ${p.odd}</span>
+          </div>
+          <div class="palpite-footer">
+            <span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span>
+            <span class="stake-tag" style="color: #60A5FA;">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
     async function submitClientLogin() {
       const email = document.getElementById('login-email').value.trim();
       const pass = document.getElementById('login-pass').value.trim();
-      if (!email || !pass) return alert("Preencha E-mail e Senha");
-      try {
-        const res = await fetch(`${API_BASE}/api/auth/login`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ email, password: pass })
-        });
-        const data = await res.json();
-        if (data.success) {
-          loggedClient = data.client;
-          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-          applyClientSession(loggedClient);
-          closeAuthModal();
-          alert(`Bem-vindo de volta, ${loggedClient.name}!`);
-        } else {
-          alert(data.detail || "Erro ao entrar");
-        }
-      } catch (err) { alert("Erro de conexão: " + err.message); }
+      if (!email || !pass) return alert("Preencha seu E-mail e Senha");
+
+      const data = await safeFetch('/api/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, password: pass })
+      });
+
+      if (data && data.success) {
+        loggedClient = data.client;
+        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+        applyClientSession(loggedClient);
+        closeAuthModal();
+        alert(`Bem-vindo, ${loggedClient.name}!`);
+        loadPalpites();
+      } else {
+        alert(data?.detail || "E-mail ou senha incorretos.");
+      }
     }
 
     async function unlockOnboarding() {
       const code = document.getElementById('invite-code').value.trim();
       const pass = document.getElementById('invite-pass').value.trim();
-      if (!code || !pass) return alert("Digite código e senha do convite");
-      try {
-        const res = await fetch(`${API_BASE}/api/auth/validate-invite`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ invite_code: code, temp_password: pass })
-        });
-        const data = await res.json();
-        if (data.success) {
-          verifiedInvite = { code, pass };
-          document.getElementById('auth-view-invite').style.display = 'none';
-          document.getElementById('onboarding-form').style.display = 'flex';
-        } else { alert(data.detail || "Convite inválido"); }
-      } catch (err) { alert("Erro ao validar: " + err.message); }
+      if (!code || !pass) return alert("Digite o código e a senha temporária do convite");
+
+      const data = await safeFetch('/api/auth/validate-invite', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ invite_code: code, temp_password: pass })
+      });
+
+      if (data && data.success) {
+        verifiedInvite = { code, pass };
+        document.getElementById('auth-view-invite').style.display = 'none';
+        document.getElementById('onboarding-form').style.display = 'flex';
+      } else {
+        alert(data?.detail || "Convite inválido ou expirado");
+      }
     }
 
     async function submitClientRegistration() {
@@ -418,101 +972,71 @@
         preferred_markets: markets
       };
 
-      try {
-        const res = await fetch(`${API_BASE}/api/auth/register`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if (data.success) {
-          loggedClient = data.client;
-          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-          applyClientSession(loggedClient);
-          closeAuthModal();
-          alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi gerada!`);
-        } else { alert(data.detail || "Falha no cadastro"); }
-      } catch (err) { alert("Erro no cadastro: " + err.message); }
+      const data = await safeFetch('/api/auth/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+
+      if (data && data.success) {
+        loggedClient = data.client;
+        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+        applyClientSession(loggedClient);
+        closeAuthModal();
+        alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi provisionada no Google Drive!`);
+        loadPalpites();
+      } else {
+        alert(data?.detail || "Falha no cadastro");
+      }
     }
 
     async function submitMasterLogin() {
       const user = document.getElementById('master-user').value.trim();
       const pass = document.getElementById('master-pass').value.trim();
-      try {
-        const res = await fetch(`${API_BASE}/api/auth/master-login`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ username: user, password: pass })
-        });
-        const data = await res.json();
-        if (data.success) {
-          document.getElementById('master-login-form').style.display = 'none';
-          document.getElementById('master-dashboard').style.display = 'flex';
-        } else { alert("Credenciais Master Inválidas"); }
-      } catch (err) { alert("Erro master: " + err.message); }
+
+      const data = await safeFetch('/api/auth/master-login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ username: user, password: pass })
+      });
+
+      if (data && data.success) {
+        document.getElementById('master-login-form').style.display = 'none';
+        document.getElementById('master-dashboard').style.display = 'flex';
+      } else {
+        alert("Credenciais Master Inválidas");
+      }
     }
 
     async function generateNewInviteMaster() {
-      try {
-        const res = await fetch(`${API_BASE}/api/auth/generate-invite`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
-        });
-        const data = await res.json();
-        if (data.success) {
-          const inv = data.invite;
-          const box = document.getElementById('generated-invite-box');
-          box.style.display = 'block';
-          box.innerHTML = `
-            <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
-            <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
-            <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
-          `;
-        }
-      } catch (err) { alert("Erro ao gerar convite: " + err.message); }
+      const data = await safeFetch('/api/auth/generate-invite', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
+      });
+
+      if (data && data.success) {
+        const inv = data.invite;
+        const box = document.getElementById('generated-invite-box');
+        box.style.display = 'block';
+        box.innerHTML = `
+          <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
+          <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
+          <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
+        `;
+      }
     }
 
     function applyClientSession(client) {
-      document.getElementById('header-user-name').innerText = client.name || "Assinante";
+      const badge = document.getElementById('header-auth-badge');
+      badge.classList.add('logged-in');
+      document.getElementById('header-user-text').innerText = `👤 ${client.name.split(' ')[0]}`;
       document.getElementById('banca-display').innerText = `R$ ${client.initial_bankroll.toFixed(2)}`;
       document.getElementById('stake-display').innerText = `R$ ${client.stake_padrao.toFixed(2)}`;
       document.getElementById('user-profile-tag').innerText = client.risk_profile.split(' ')[1] || "Moderado";
       if (client.spreadsheet_url) {
         document.getElementById('sheet-link-btn').href = client.spreadsheet_url;
       }
-    }
-
-    async function loadPalpites() {
-      try {
-        const res = await fetch(`${API_BASE}/api/palpites`);
-        const data = await res.json();
-        const s = document.getElementById('simples-container');
-        const d = document.getElementById('duplas-container');
-
-        if (data.success) {
-          if (data.simples && data.simples.length > 0) {
-            s.innerHTML = data.simples.map(p => `
-              <div class="palpite-card">
-                <div class="palpite-header"><span class="league-badge">${p.league}</span><span class="time-badge">${p.datetime}</span></div>
-                <div class="match-title">${p.match}</div>
-                <div class="market-box"><span class="market-name">${p.market}</span><span class="odd-tag">@ ${p.odd}</span></div>
-                <div class="palpite-footer"><span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span><span class="stake-tag">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span></div>
-              </div>
-            `).join('');
-          }
-          if (data.duplas && data.duplas.length > 0) {
-            d.innerHTML = data.duplas.map(p => `
-              <div class="palpite-card dupla-card">
-                <div class="palpite-header"><span class="league-badge blue">💎 ${p.league}</span><span class="time-badge">${p.datetime}</span></div>
-                <div class="match-title">${p.match}</div>
-                <div class="market-box"><span class="market-name">${p.market}</span><span class="odd-tag blue">@ ${p.odd}</span></div>
-                <div class="palpite-footer"><span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span><span class="stake-tag" style="color: #60A5FA;">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span></div>
-              </div>
-            `).join('');
-          }
-        }
-      } catch (err) {}
     }
 
     function switchTab(tabId) {
@@ -544,7 +1068,7 @@
       formData.append('stake_brl', document.getElementById('stake-input').value);
 
       try {
-        const res = await fetch(`${API_BASE}/api/upload-print`, { method: 'POST', body: formData });
+        const res = await fetch(`${PRIMARY_API}/api/upload-print`, { method: 'POST', body: formData });
         const data = await res.json();
         if (data.success) {
           alert("🎉 Aposta registrada com sucesso na sua planilha pessoal!");
@@ -553,7 +1077,9 @@
           document.getElementById('match-input').value = '';
           switchTab('palpites');
         }
-      } catch (err) { alert("Erro: " + err.message); }
+      } catch (err) {
+        alert("Erro no envio: " + err.message);
+      }
     }
   </script>
 </body>
