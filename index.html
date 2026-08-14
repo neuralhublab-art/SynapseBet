@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SynapseBet (Powered by Neural Hub)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0B0E14;
+      --bg-card: #151A23;
+      --orange-betano: #FF6000;
+      --orange-glow: rgba(255, 96, 0, 0.25);
+      --green-win: #00D084;
+      --green-glow: rgba(0, 208, 132, 0.2);
+      --border-color: #242B38;
+      --text-main: #FFFFFF;
+      --text-muted: #8E9BAE;
+      --font-main: 'Outfit', sans-serif;
+      --font-mono: 'Roboto Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg-dark); color: var(--text-main); font-family: var(--font-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
+    .app-container { width: 100%; max-width: 480px; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; }
+    .logo-badge { background: linear-gradient(135deg, #FF6000 0%, #FF8A00 100%); color: white; font-weight: 800; font-size: 13px; padding: 5px 9px; border-radius: 8px; }
+    .banca-card { background: linear-gradient(135deg, #18202E 0%, #111620 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; }
+    .banca-amount { font-size: 32px; font-weight: 800; color: var(--text-main); margin: 6px 0 12px; font-family: var(--font-mono); }
+    .tab-nav { display: flex; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 4px; gap: 4px; }
+    .tab-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 12px; padding: 10px 2px; border-radius: 10px; cursor: pointer; }
+    .tab-btn.active { background: var(--orange-betano); color: white; }
+    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; width: 100%; }
+    .input-field { width: 100%; background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 14px; color: white; font-size: 14px; outline: none; margin-bottom: 8px; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
+    .modal-box { width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; max-height: 90vh; overflow-y: auto; }
+    .compliance-footer { font-size: 10px; color: #64748B; text-align: center; padding: 16px; border-top: 1px solid #1E2530; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span class="logo-badge">SYNAPSE</span>
+        <div>
+          <div style="font-size: 18px; font-weight: 800;">SynapseBet</div>
+          <div style="font-size: 10px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase;">Powered by Neural Hub</div>
+        </div>
+      </div>
+      <div style="font-size: 11px; color: var(--green-win); background: var(--green-glow); padding: 5px 10px; border-radius: 20px; font-weight: 700;">
+        bu_synapse_bet
+      </div>
+    </header>
+
+    <div class="banca-card">
+      <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Banca do Assinante — SynapseBet Quant</div>
+      <div class="banca-amount" id="banca-display">R$ 100,00</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+        <div><span style="font-size: 11px; color: var(--text-muted);">Stake Recomendada</span><div style="font-size: 15px; font-weight: 700; color: var(--green-win);" id="stake-display">R$ 2,00</div></div>
+        <div><span style="font-size: 11px; color: var(--text-muted);">Aproveitamento</span><div style="font-size: 15px; font-weight: 700; color: var(--green-win);">12/12 GREENS 🟢</div></div>
+      </div>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
+      <button class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
+      <button class="tab-btn" onclick="switchTab('planilha')">📊 Planilha</button>
+      <button class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
+    </div>
+
+    <div id="tab-palpites">
+      <div style="font-size: 15px; font-weight: 700; margin: 14px 0 6px;">🛡️ Apostas Simples Seguras</div>
+      <div id="simples-container"><div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando palpites...</div></div>
+      <div style="font-size: 15px; font-weight: 700; margin: 18px 0 6px;">💎 Duplas Blindadas (Acelerador 2x)</div>
+      <div id="duplas-container"><div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando duplas...</div></div>
+    </div>
+
+    <div id="tab-upload" style="display: none;">
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+        <input type="file" id="file-input" accept="image/*" class="input-field">
+        <input type="text" id="match-input" class="input-field" placeholder="Nome do Jogo">
+        <input type="number" id="stake-input" class="input-field" value="2.00">
+        <button class="btn-submit" onclick="sendScreenshot()">🚀 Enviar Print para Minha Planilha</button>
+      </div>
+    </div>
+
+    <div id="tab-planilha" style="display: none;">
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center;">
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Sua carteira de apostas pessoal no Google Drive:</p>
+        <a href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-submit" style="display: block; text-decoration: none;">📊 Abrir no Google Drive</a>
+      </div>
+    </div>
+
+    <div id="tab-regras" style="display: none;">
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; font-size: 13px; line-height: 1.6;">
+        <p><b>🛡️ Simples:</b> R$ 2,00 (Base segura)</p>
+        <p><b>💎 Duplas:</b> R$ 2,00 (@ 1.80+)</p>
+        <p><b>🏆 Esportes:</b> Futebol, MLB, NBA, NFL, F1 e Tênis</p>
+      </div>
+    </div>
+
+    <footer class="compliance-footer">
+      SynapseBet (Powered by Neural Hub) &bull; bu_synapse_bet<br>
+      Probabilidades estatísticas. Rendimentos passados não garantem lucros futuros (+18).
+    </footer>
+  </div>
+
+  <script>
+    const API_BASE = 'http://169.58.169.188:8000';
+    async function loadPalpites() {
+      try {
+        const res = await fetch(`${API_BASE}/api/palpites`);
+        const data = await res.json();
+        if (data.success) {
+          const s = document.getElementById('simples-container');
+          const d = document.getElementById('duplas-container');
+          s.innerHTML = data.simples.map(p => `<div class="palpite-card"><b>${p.match}</b><div>${p.market} <span style="background: var(--orange-betano); padding: 2px 6px; border-radius: 4px; font-weight: bold;">@ ${p.odd}</span></div><div style="font-size: 11px; color: var(--green-win);">Monte Carlo: ${p.monte_carlo} | Stake: ${p.stake}</div></div>`).join('');
+          d.innerHTML = data.duplas.map(p => `<div class="palpite-card" style="background: #18202E;"><b>💎 ${p.match}</b><div>${p.market} <span style="background: #2563EB; padding: 2px 6px; border-radius: 4px; font-weight: bold;">@ ${p.odd}</span></div><div style="font-size: 11px; color: #60A5FA;">Monte Carlo: ${p.monte_carlo} | Stake: ${p.stake}</div></div>`).join('');
+        }
+      } catch(e) {}
+    }
+    function switchTab(t) {
+      ['palpites','upload','planilha','regras'].forEach(id => document.getElementById(`tab-${id}`).style.display = id === t ? 'block' : 'none');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+    }
+    loadPalpites();
+  </script>
+</body>
+</html>
