@@ -11,122 +11,550 @@
     :root {
       --bg-dark: #0B0E14;
       --bg-card: #151A23;
+      --bg-card-hover: #1C2330;
       --orange-betano: #FF6000;
       --orange-glow: rgba(255, 96, 0, 0.25);
       --green-win: #00D084;
       --green-glow: rgba(0, 208, 132, 0.2);
+      --blue-accent: #3B82F6;
+      --blue-glow: rgba(59, 130, 246, 0.2);
       --border-color: #242B38;
       --text-main: #FFFFFF;
       --text-muted: #8E9BAE;
-      --font-main: 'Outfit', sans-serif;
+      --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'Roboto Mono', monospace;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg-dark); color: var(--text-main); font-family: var(--font-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
     .app-container { width: 100%; max-width: 480px; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
     .app-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; }
-    .logo-badge { background: linear-gradient(135deg, #FF6000 0%, #FF8A00 100%); color: white; font-weight: 800; font-size: 13px; padding: 5px 9px; border-radius: 8px; }
-    .banca-card { background: linear-gradient(135deg, #18202E 0%, #111620 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; }
+    .logo-container { display: flex; align-items: center; gap: 10px; }
+    .logo-badge { background: linear-gradient(135deg, #FF6000 0%, #FF8A00 100%); color: white; font-weight: 800; font-size: 13px; padding: 5px 9px; border-radius: 8px; box-shadow: 0 2px 8px var(--orange-glow); }
+    .brand-title { font-size: 18px; font-weight: 800; }
+    .brand-subtitle { font-size: 10px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase; }
+    .user-status-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--green-win); background: var(--green-glow); padding: 5px 10px; border-radius: 20px; font-weight: 700; cursor: pointer; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-win); }
+
+    .banca-card { background: linear-gradient(135deg, #18202E 0%, #111620 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; position: relative; overflow: hidden; }
+    .banca-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: flex; justify-content: space-between; }
     .banca-amount { font-size: 32px; font-weight: 800; color: var(--text-main); margin: 6px 0 12px; font-family: var(--font-mono); }
+    .banca-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border-color); }
+    .stat-label { font-size: 11px; color: var(--text-muted); }
+    .stat-val { font-size: 15px; font-weight: 700; color: var(--green-win); font-family: var(--font-mono); }
+
     .tab-nav { display: flex; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 4px; gap: 4px; }
-    .tab-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 12px; padding: 10px 2px; border-radius: 10px; cursor: pointer; }
-    .tab-btn.active { background: var(--orange-betano); color: white; }
-    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-    .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; width: 100%; }
-    .input-field { width: 100%; background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 14px; color: white; font-size: 14px; outline: none; margin-bottom: 8px; }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
-    .modal-box { width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; max-height: 90vh; overflow-y: auto; }
+    .tab-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 12px; padding: 10px 2px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+    .tab-btn.active { background: var(--orange-betano); color: white; box-shadow: 0 4px 12px var(--orange-glow); }
+
+    .section-title { font-size: 15px; font-weight: 700; margin: 14px 0 6px; display: flex; align-items: center; justify-content: space-between; }
+    .palpites-list { display: flex; flex-direction: column; gap: 12px; }
+    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .palpite-card.dupla-card { border: 1px solid #2D3748; background: linear-gradient(135deg, #161D2A 0%, #121722 100%); }
+    .palpite-header { display: flex; justify-content: space-between; align-items: center; }
+    .league-badge { font-size: 12px; color: var(--orange-betano); font-weight: 700; }
+    .league-badge.blue { color: #60A5FA; }
+    .time-badge { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+    .match-title { font-size: 15px; font-weight: 700; color: var(--text-main); line-height: 1.3; }
+    .market-box { background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .market-name { font-size: 13px; font-weight: 600; color: #E2E8F0; }
+    .odd-tag { background: var(--orange-betano); color: white; font-family: var(--font-mono); font-weight: 800; font-size: 14px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+    .odd-tag.blue { background: #2563EB; box-shadow: 0 2px 8px var(--blue-glow); }
+    .palpite-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
+    .monte-carlo-tag { color: var(--green-win); font-weight: 700; }
+    .stake-tag { color: var(--text-muted); font-weight: 600; }
+
+    .form-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .input-field { width: 100%; background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 14px; color: white; font-size: 14px; outline: none; }
+    .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; box-shadow: 0 4px 16px var(--orange-glow); width: 100%; }
+    .dropzone { border: 2px dashed var(--border-color); border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; background: #0E121A; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
+    .modal-box { width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto; }
+    .auth-tab-bar { display: flex; background: #0E121A; border-radius: 10px; padding: 4px; gap: 4px; }
+    .auth-tab-btn { flex: 1; padding: 8px; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; }
+    .auth-tab-btn.active { background: var(--orange-betano); color: white; }
+
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; }
+    .profile-card.selected { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.1); }
+    .profile-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
+    .profile-desc { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 13px; background: #0E121A; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); }
+    .checkbox-item input { accent-color: var(--orange-betano); }
+
     .compliance-footer { font-size: 10px; color: #64748B; text-align: center; padding: 16px; border-top: 1px solid #1E2530; margin-top: 16px; }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <header class="app-header">
-      <div style="display: flex; align-items: center; gap: 10px;">
+
+  <!-- MODAL DE LOGIN / CONVITE / ONBOARDING -->
+  <div id="auth-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div style="text-align: center; margin-bottom: 4px;">
         <span class="logo-badge">SYNAPSE</span>
-        <div>
-          <div style="font-size: 18px; font-weight: 800;">SynapseBet</div>
-          <div style="font-size: 10px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase;">Powered by Neural Hub</div>
+        <h2 style="font-size: 20px; font-weight: 800; margin-top: 8px;">SynapseBet</h2>
+        <p style="font-size: 11px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase;">Powered by Neural Hub</p>
+      </div>
+
+      <div class="auth-tab-bar">
+        <button class="auth-tab-btn active" onclick="switchAuthTab('login')">🔑 Entrar</button>
+        <button class="auth-tab-btn" onclick="switchAuthTab('invite')">🎟️ Convite</button>
+        <button class="auth-tab-btn" onclick="switchAuthTab('master')">👑 Master</button>
+      </div>
+
+      <!-- ABA 1: LOGIN -->
+      <div id="auth-view-login" style="display: flex; flex-direction: column; gap: 12px;">
+        <input type="email" id="login-email" class="input-field" placeholder="Seu E-mail (Gmail)">
+        <input type="password" id="login-pass" class="input-field" placeholder="Sua Senha Pessoal">
+        <button class="btn-submit" onclick="submitClientLogin()">Acessar Minha Carteira</button>
+      </div>
+
+      <!-- ABA 2: CONVITE -->
+      <div id="auth-view-invite" style="display: none; flex-direction: column; gap: 12px;">
+        <p style="font-size: 12px; color: var(--text-muted);">
+          Recebeu um código de convite do Mariano? Digite abaixo para criar sua conta e gerar sua planilha exclusiva!
+        </p>
+        <input type="text" id="invite-code" class="input-field" placeholder="Código (ex: SYN-A1B2C3)">
+        <input type="text" id="invite-pass" class="input-field" placeholder="Senha Temporária (ex: HUB-987654)">
+        <button class="btn-submit" onclick="unlockOnboarding()">Validar Convite e Cadastrar ➔</button>
+      </div>
+
+      <!-- ABA 3: MASTER -->
+      <div id="auth-view-master" style="display: none; flex-direction: column; gap: 12px;">
+        <div id="master-login-form">
+          <input type="text" id="master-user" class="input-field" placeholder="Usuário Master (Mariano)">
+          <input type="password" id="master-pass" class="input-field" placeholder="Senha Master">
+          <button class="btn-submit" onclick="submitMasterLogin()">Acessar Painel Master</button>
+        </div>
+        <div id="master-dashboard" style="display: none; flex-direction: column; gap: 10px;">
+          <p style="font-size: 13px; color: var(--green-win); font-weight: 700;">🟢 Painel do Administrador (Mariano)</p>
+          <button class="btn-submit" onclick="generateNewInviteMaster()">⚡ Gerar Novo Convite Dinâmico</button>
+          <div id="generated-invite-box" style="display: none; padding: 10px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 8px; font-size: 12px;"></div>
         </div>
       </div>
-      <div style="font-size: 11px; color: var(--green-win); background: var(--green-glow); padding: 5px 10px; border-radius: 20px; font-weight: 700;">
-        bu_synapse_bet
+
+      <!-- ONBOARDING FORM -->
+      <div id="onboarding-form" style="display: none; flex-direction: column; gap: 14px;">
+        <div style="font-size: 14px; font-weight: 800; color: var(--orange-betano); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          📋 Cadastro & Personalização do Cliente
+        </div>
+        <input type="text" id="reg-name" class="input-field" placeholder="Nome Completo">
+        <input type="email" id="reg-email" class="input-field" placeholder="E-mail (Gmail para o Google Drive)">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <input type="number" id="reg-bankroll" class="input-field" placeholder="Banca Inicial (R$)" value="200.00">
+          <input type="number" id="reg-deposit" class="input-field" placeholder="Aporte Mensal (R$)" value="100.00">
+        </div>
+
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Selecione seu Perfil de Risco:</label>
+        <div class="profile-grid">
+          <div class="profile-card" onclick="selectProfile(this, '1. Conservador')">
+            <div class="profile-title">🛡️ 1. Conservador</div>
+            <div class="profile-desc">Monte Carlo 85%+ | 1.5% a 2%</div>
+          </div>
+          <div class="profile-card selected" onclick="selectProfile(this, '2. Moderado')">
+            <div class="profile-title">⚖️ 2. Moderado</div>
+            <div class="profile-desc">70% Simples + 30% Duplas | 2% a 2.5%</div>
+          </div>
+          <div class="profile-card" onclick="selectProfile(this, '3. Arrojado')">
+            <div class="profile-title">🚀 3. Arrojado</div>
+            <div class="profile-desc">Duplas @ 1.80+ | 2.5% a 3%</div>
+          </div>
+          <div class="profile-card" onclick="selectProfile(this, '4. Ultra-Quant')">
+            <div class="profile-title">⚡ 4. Ultra-Quant</div>
+            <div class="profile-desc">Futebol + MLB + NBA + NFL + F1</div>
+          </div>
+        </div>
+
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Esportes Desejados:</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item"><input type="checkbox" id="sport-futebol" checked> ⚽ Futebol</label>
+          <label class="checkbox-item"><input type="checkbox" id="sport-mlb" checked> ⚾ MLB (Beisebol)</label>
+          <label class="checkbox-item"><input type="checkbox" id="sport-nba" checked> 🏀 NBA (Basquete)</label>
+          <label class="checkbox-item"><input type="checkbox" id="sport-nfl" checked> 🏈 NFL (Futebol Am.)</label>
+          <label class="checkbox-item"><input type="checkbox" id="sport-f1" checked> 🏎️ F1 (Fórmula 1)</label>
+          <label class="checkbox-item"><input type="checkbox" id="sport-tenis"> 🎾 Tênis (ATP/WTA)</label>
+        </div>
+
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Mercados de Interesse:</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item"><input type="checkbox" id="mkt-dupla" checked> Dupla Chance (1X/X2)</label>
+          <label class="checkbox-item"><input type="checkbox" id="mkt-cantos" checked> Escanteios</label>
+          <label class="checkbox-item"><input type="checkbox" id="mkt-f5" checked> MLB 5 Innings (F5)</label>
+          <label class="checkbox-item"><input type="checkbox" id="mkt-spreads" checked> Spreads & Pontos</label>
+          <label class="checkbox-item"><input type="checkbox" id="mkt-tds" checked> Touchdowns NFL</label>
+          <label class="checkbox-item"><input type="checkbox" id="mkt-f1" checked> H2H F1</label>
+        </div>
+
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Quantas apostas quer fazer por dia?</label>
+        <select id="reg-daily-bets" class="input-field">
+          <option value="2">2 Apostas por dia (Cirúrgico)</option>
+          <option value="3">3 Apostas por dia (Recomendado)</option>
+          <option value="4" selected>4 Apostas por dia (3 Simples + 1 Dupla)</option>
+          <option value="5">5 Apostas por dia (3 Simples + 2 Duplas)</option>
+          <option value="6">6 Apostas por dia (Multi-Esportes)</option>
+        </select>
+
+        <input type="password" id="reg-password" class="input-field" placeholder="Crie sua Senha Pessoal Definitiva">
+        <button class="btn-submit" onclick="submitClientRegistration()">⚡ Concluir Cadastro & Gerar Planilha</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo-container">
+        <span class="logo-badge">SYNAPSE</span>
+        <div class="logo-text">
+          <span class="brand-title">SynapseBet</span>
+          <span class="brand-subtitle">Powered by Neural Hub</span>
+        </div>
+      </div>
+      <div class="user-status-badge" onclick="openAuthModal()">
+        <div class="status-dot"></div>
+        <span id="header-user-name">Entrar / Convidado</span>
       </div>
     </header>
 
     <div class="banca-card">
-      <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Banca do Assinante — SynapseBet Quant</div>
+      <div class="banca-title">
+        <span>Banca do Assinante — SynapseBet Quant</span>
+        <span id="user-profile-tag" style="color: var(--orange-betano); font-weight: 700;">Moderado (70/30)</span>
+      </div>
       <div class="banca-amount" id="banca-display">R$ 100,00</div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border-color);">
-        <div><span style="font-size: 11px; color: var(--text-muted);">Stake Recomendada</span><div style="font-size: 15px; font-weight: 700; color: var(--green-win);" id="stake-display">R$ 2,00</div></div>
-        <div><span style="font-size: 11px; color: var(--text-muted);">Aproveitamento</span><div style="font-size: 15px; font-weight: 700; color: var(--green-win);">12/12 GREENS 🟢</div></div>
+      <div class="banca-stats">
+        <div class="stat-item">
+          <span class="stat-label">Stake Recomendada (2%)</span>
+          <span class="stat-val" id="stake-display">R$ 2,00</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Aproveitamento</span>
+          <span class="stat-val">12/12 GREENS 🟢</span>
+        </div>
       </div>
     </div>
 
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
       <button class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
-      <button class="tab-btn" onclick="switchTab('planilha')">📊 Planilha</button>
+      <button class="tab-btn" onclick="switchTab('planilha')">📊 Minha Planilha</button>
       <button class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
 
-    <div id="tab-palpites">
-      <div style="font-size: 15px; font-weight: 700; margin: 14px 0 6px;">🛡️ Apostas Simples Seguras</div>
-      <div id="simples-container"><div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando palpites...</div></div>
-      <div style="font-size: 15px; font-weight: 700; margin: 18px 0 6px;">💎 Duplas Blindadas (Acelerador 2x)</div>
-      <div id="duplas-container"><div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando duplas...</div></div>
+    <div id="tab-palpites" class="tab-content">
+      <div class="section-title">
+        <span>🛡️ Apostas Simples Seguras</span>
+        <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+</span>
+      </div>
+      <div class="palpites-list" id="simples-container">
+        <div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando oportunidades da IA...</div>
+      </div>
+
+      <div class="section-title" style="margin-top: 20px;">
+        <span>💎 Duplas Blindadas (Acelerador 2x)</span>
+        <span style="font-size: 11px; color: #60A5FA; font-weight: 700;">Odds 1.80 a 1.95</span>
+      </div>
+      <div class="palpites-list" id="duplas-container">
+        <div style="text-align: center; color: var(--text-muted); padding: 16px;">Carregando Duplas da bu_synapse_bet...</div>
+      </div>
     </div>
 
-    <div id="tab-upload" style="display: none;">
-      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <input type="file" id="file-input" accept="image/*" class="input-field">
+    <div id="tab-upload" class="tab-content" style="display: none;">
+      <div class="section-title"><span>Registrar Aposta Real via Print</span></div>
+      <div class="form-card">
+        <div class="dropzone" onclick="document.getElementById('file-input').click()">
+          <div style="font-size: 32px; margin-bottom: 6px;">📸</div>
+          <div style="font-size: 14px; font-weight: 700;">Toque para selecionar o Print</div>
+          <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+        </div>
+        <div id="preview-box" style="display: none; width: 100%; border-radius: 10px; overflow: hidden;"><img id="preview-img" src="" style="width: 100%;"></div>
         <input type="text" id="match-input" class="input-field" placeholder="Nome do Jogo">
         <input type="number" id="stake-input" class="input-field" value="2.00">
-        <button class="btn-submit" onclick="sendScreenshot()">🚀 Enviar Print para Minha Planilha</button>
+        <button class="btn-submit" onclick="submitBetScreenshot()">🚀 Gravar na Minha Planilha</button>
       </div>
     </div>
 
-    <div id="tab-planilha" style="display: none;">
-      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center;">
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Sua carteira de apostas pessoal no Google Drive:</p>
-        <a href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-submit" style="display: block; text-decoration: none;">📊 Abrir no Google Drive</a>
+    <div id="tab-planilha" class="tab-content" style="display: none;">
+      <div class="section-title"><span>Sua Planilha no Google Drive</span></div>
+      <div class="form-card" style="text-align: center;">
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Sua carteira individual sincronizada 24/7:</p>
+        <a id="sheet-link-btn" href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-submit" style="text-decoration: none; display: block;">📊 Abrir Minha Planilha</a>
       </div>
     </div>
 
-    <div id="tab-regras" style="display: none;">
-      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; font-size: 13px; line-height: 1.6;">
-        <p><b>🛡️ Simples:</b> R$ 2,00 (Base segura)</p>
-        <p><b>💎 Duplas:</b> R$ 2,00 (@ 1.80+)</p>
+    <div id="tab-regras" class="tab-content" style="display: none;">
+      <div class="section-title"><span>Diretrizes SynapseBet Quant</span></div>
+      <div class="form-card" style="font-size: 13px; line-height: 1.6;">
+        <p><b>🛡️ Simples:</b> 1,5% a 2,5% da banca</p>
+        <p><b>💎 Duplas:</b> 2,0% a 3,0% (@ 1.80+)</p>
         <p><b>🏆 Esportes:</b> Futebol, MLB, NBA, NFL, F1 e Tênis</p>
       </div>
     </div>
 
     <footer class="compliance-footer">
       SynapseBet (Powered by Neural Hub) &bull; bu_synapse_bet<br>
-      Probabilidades estatísticas. Rendimentos passados não garantem lucros futuros (+18).
+      Probabilidades estatísticas (+18). Jogue com responsabilidade.
     </footer>
   </div>
 
   <script>
-    const API_BASE = 'http://169.58.169.188:8000';
+    const API_BASE = 'https://prince-singles-encouraged-bond.trycloudflare.com';
+    let loggedClient = null;
+    let selectedProfile = "2. Moderado";
+    let selectedFile = null;
+    let verifiedInvite = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('synapse_client');
+      if (saved) {
+        try {
+          loggedClient = JSON.parse(saved);
+          applyClientSession(loggedClient);
+        } catch(e) {}
+      }
+      loadPalpites();
+    });
+
+    function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
+    function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+
+    function switchAuthTab(tab) {
+      document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('auth-view-login').style.display = tab === 'login' ? 'flex' : 'none';
+      document.getElementById('auth-view-invite').style.display = tab === 'invite' ? 'flex' : 'none';
+      document.getElementById('auth-view-master').style.display = tab === 'master' ? 'flex' : 'none';
+      document.getElementById('onboarding-form').style.display = 'none';
+      event.currentTarget.classList.add('active');
+    }
+
+    function selectProfile(el, profileName) {
+      document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedProfile = profileName;
+    }
+
+    async function submitClientLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-pass').value.trim();
+      if (!email || !pass) return alert("Preencha E-mail e Senha");
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/login`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email, password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          loggedClient = data.client;
+          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+          applyClientSession(loggedClient);
+          closeAuthModal();
+          alert(`Bem-vindo de volta, ${loggedClient.name}!`);
+        } else {
+          alert(data.detail || "Erro ao entrar");
+        }
+      } catch (err) { alert("Erro de conexão: " + err.message); }
+    }
+
+    async function unlockOnboarding() {
+      const code = document.getElementById('invite-code').value.trim();
+      const pass = document.getElementById('invite-pass').value.trim();
+      if (!code || !pass) return alert("Digite código e senha do convite");
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/validate-invite`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ invite_code: code, temp_password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          verifiedInvite = { code, pass };
+          document.getElementById('auth-view-invite').style.display = 'none';
+          document.getElementById('onboarding-form').style.display = 'flex';
+        } else { alert(data.detail || "Convite inválido"); }
+      } catch (err) { alert("Erro ao validar: " + err.message); }
+    }
+
+    async function submitClientRegistration() {
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const bankroll = parseFloat(document.getElementById('reg-bankroll').value) || 100;
+      const deposit = parseFloat(document.getElementById('reg-deposit').value) || 0;
+      const dailyBets = parseInt(document.getElementById('reg-daily-bets').value) || 4;
+      const password = document.getElementById('reg-password').value.trim();
+
+      if (!name || !email || !password) return alert("Preencha Nome, E-mail e Senha");
+
+      const sports = [];
+      if (document.getElementById('sport-futebol').checked) sports.push("Futebol");
+      if (document.getElementById('sport-mlb').checked) sports.push("MLB");
+      if (document.getElementById('sport-nba').checked) sports.push("NBA");
+      if (document.getElementById('sport-nfl').checked) sports.push("NFL");
+      if (document.getElementById('sport-f1').checked) sports.push("F1");
+      if (document.getElementById('sport-tenis').checked) sports.push("Tênis");
+
+      const markets = [];
+      if (document.getElementById('mkt-dupla').checked) markets.push("Dupla Chance");
+      if (document.getElementById('mkt-cantos').checked) markets.push("Escanteios");
+      if (document.getElementById('mkt-f5').checked) markets.push("5 Innings MLB");
+      if (document.getElementById('mkt-spreads').checked) markets.push("Spreads NBA");
+      if (document.getElementById('mkt-tds').checked) markets.push("Touchdowns NFL");
+      if (document.getElementById('mkt-f1').checked) markets.push("H2H F1");
+
+      const payload = {
+        invite_code: verifiedInvite.code,
+        temp_password: verifiedInvite.pass,
+        name, email, password,
+        initial_bankroll: bankroll,
+        monthly_deposit: deposit,
+        risk_profile: selectedProfile,
+        daily_bets_count: dailyBets,
+        preferred_sports: sports,
+        preferred_leagues: "Grandes Ligas (Tier 1)",
+        preferred_markets: markets
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/register`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          loggedClient = data.client;
+          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+          applyClientSession(loggedClient);
+          closeAuthModal();
+          alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi gerada!`);
+        } else { alert(data.detail || "Falha no cadastro"); }
+      } catch (err) { alert("Erro no cadastro: " + err.message); }
+    }
+
+    async function submitMasterLogin() {
+      const user = document.getElementById('master-user').value.trim();
+      const pass = document.getElementById('master-pass').value.trim();
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/master-login`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('master-login-form').style.display = 'none';
+          document.getElementById('master-dashboard').style.display = 'flex';
+        } else { alert("Credenciais Master Inválidas"); }
+      } catch (err) { alert("Erro master: " + err.message); }
+    }
+
+    async function generateNewInviteMaster() {
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/generate-invite`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
+        });
+        const data = await res.json();
+        if (data.success) {
+          const inv = data.invite;
+          const box = document.getElementById('generated-invite-box');
+          box.style.display = 'block';
+          box.innerHTML = `
+            <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
+            <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
+            <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
+          `;
+        }
+      } catch (err) { alert("Erro ao gerar convite: " + err.message); }
+    }
+
+    function applyClientSession(client) {
+      document.getElementById('header-user-name').innerText = client.name || "Assinante";
+      document.getElementById('banca-display').innerText = `R$ ${client.initial_bankroll.toFixed(2)}`;
+      document.getElementById('stake-display').innerText = `R$ ${client.stake_padrao.toFixed(2)}`;
+      document.getElementById('user-profile-tag').innerText = client.risk_profile.split(' ')[1] || "Moderado";
+      if (client.spreadsheet_url) {
+        document.getElementById('sheet-link-btn').href = client.spreadsheet_url;
+      }
+    }
+
     async function loadPalpites() {
       try {
         const res = await fetch(`${API_BASE}/api/palpites`);
         const data = await res.json();
+        const s = document.getElementById('simples-container');
+        const d = document.getElementById('duplas-container');
+
         if (data.success) {
-          const s = document.getElementById('simples-container');
-          const d = document.getElementById('duplas-container');
-          s.innerHTML = data.simples.map(p => `<div class="palpite-card"><b>${p.match}</b><div>${p.market} <span style="background: var(--orange-betano); padding: 2px 6px; border-radius: 4px; font-weight: bold;">@ ${p.odd}</span></div><div style="font-size: 11px; color: var(--green-win);">Monte Carlo: ${p.monte_carlo} | Stake: ${p.stake}</div></div>`).join('');
-          d.innerHTML = data.duplas.map(p => `<div class="palpite-card" style="background: #18202E;"><b>💎 ${p.match}</b><div>${p.market} <span style="background: #2563EB; padding: 2px 6px; border-radius: 4px; font-weight: bold;">@ ${p.odd}</span></div><div style="font-size: 11px; color: #60A5FA;">Monte Carlo: ${p.monte_carlo} | Stake: ${p.stake}</div></div>`).join('');
+          if (data.simples && data.simples.length > 0) {
+            s.innerHTML = data.simples.map(p => `
+              <div class="palpite-card">
+                <div class="palpite-header"><span class="league-badge">${p.league}</span><span class="time-badge">${p.datetime}</span></div>
+                <div class="match-title">${p.match}</div>
+                <div class="market-box"><span class="market-name">${p.market}</span><span class="odd-tag">@ ${p.odd}</span></div>
+                <div class="palpite-footer"><span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span><span class="stake-tag">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span></div>
+              </div>
+            `).join('');
+          }
+          if (data.duplas && data.duplas.length > 0) {
+            d.innerHTML = data.duplas.map(p => `
+              <div class="palpite-card dupla-card">
+                <div class="palpite-header"><span class="league-badge blue">💎 ${p.league}</span><span class="time-badge">${p.datetime}</span></div>
+                <div class="match-title">${p.match}</div>
+                <div class="market-box"><span class="market-name">${p.market}</span><span class="odd-tag blue">@ ${p.odd}</span></div>
+                <div class="palpite-footer"><span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span><span class="stake-tag" style="color: #60A5FA;">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span></div>
+              </div>
+            `).join('');
+          }
         }
-      } catch(e) {}
+      } catch (err) {}
     }
-    function switchTab(t) {
-      ['palpites','upload','planilha','regras'].forEach(id => document.getElementById(`tab-${id}`).style.display = id === t ? 'block' : 'none');
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab-${tabId}`).style.display = 'block';
       event.currentTarget.classList.add('active');
     }
-    loadPalpites();
+
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) {
+        selectedFile = file;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          document.getElementById('preview-img').src = event.target.result;
+          document.getElementById('preview-box').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    async function submitBetScreenshot() {
+      if (!selectedFile) return alert("Selecione um print!");
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('client_email', loggedClient ? loggedClient.email : 'operator@neuralhub.ai');
+      formData.append('match_name', document.getElementById('match-input').value);
+      formData.append('stake_brl', document.getElementById('stake-input').value);
+
+      try {
+        const res = await fetch(`${API_BASE}/api/upload-print`, { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          alert("🎉 Aposta registrada com sucesso na sua planilha pessoal!");
+          selectedFile = null;
+          document.getElementById('preview-box').style.display = 'none';
+          document.getElementById('match-input').value = '';
+          switchTab('palpites');
+        }
+      } catch (err) { alert("Erro: " + err.message); }
+    }
   </script>
 </body>
 </html>
