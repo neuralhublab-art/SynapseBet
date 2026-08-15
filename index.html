@@ -25,519 +25,96 @@
       --font-mono: 'Roboto Mono', monospace;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
+    .app-container { width: 100%; max-width: 480px; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: var(--font-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-bottom: 80px;
-    }
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; }
+    .logo-container { display: flex; align-items: center; gap: 10px; }
+    .logo-badge { background: linear-gradient(135deg, #FF6000 0%, #FF8A00 100%); color: white; font-weight: 800; font-size: 13px; padding: 5px 9px; border-radius: 8px; letter-spacing: 0.5px; box-shadow: 0 2px 8px var(--orange-glow); }
+    .logo-text { display: flex; flex-direction: column; }
+    .brand-title { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+    .brand-subtitle { font-size: 10px; color: var(--orange-betano); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
 
-    .app-container {
-      width: 100%;
-      max-width: 480px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .auth-btn-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; color: white; background: linear-gradient(135deg, #1E2533 0%, #161C26 100%); border: 1px solid #2A3446; padding: 6px 12px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+    .auth-btn-badge:hover { border-color: var(--orange-betano); background: var(--orange-glow); transform: translateY(-1px); }
+    .auth-btn-badge.logged-in { background: rgba(0, 208, 132, 0.12); border-color: var(--green-win); color: var(--green-win); }
+    .auth-btn-badge.is-master { background: rgba(255, 96, 0, 0.15); border-color: var(--orange-betano); color: #FFA366; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--orange-betano); }
+    .auth-btn-badge.logged-in .status-dot { background: var(--green-win); box-shadow: 0 0 6px var(--green-win); }
+    .auth-btn-badge.is-master .status-dot { background: #FF6000; box-shadow: 0 0 6px #FF6000; }
 
-    /* HEADER */
-    .app-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-    }
+    /* MASTER BAR */
+    .master-admin-bar { background: linear-gradient(135deg, #2A170A 0%, #17100B 100%); border: 1px solid var(--orange-betano); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+    .master-admin-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; color: #FFA366; }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .banca-card { background: linear-gradient(135deg, #18202E 0%, #111620 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; position: relative; overflow: hidden; }
+    .banca-card::before { content: ""; position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: var(--orange-glow); border-radius: 50%; filter: blur(40px); }
+    .banca-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: flex; justify-content: space-between; }
+    .banca-amount { font-size: 32px; font-weight: 800; color: var(--text-main); margin: 6px 0 12px; font-family: var(--font-mono); }
+    .banca-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border-color); }
+    .stat-label { font-size: 11px; color: var(--text-muted); }
+    .stat-val { font-size: 15px; font-weight: 700; color: var(--green-win); font-family: var(--font-mono); }
 
-    .logo-badge {
-      background: linear-gradient(135deg, #FF6000 0%, #FF8A00 100%);
-      color: white;
-      font-weight: 800;
-      font-size: 13px;
-      padding: 5px 9px;
-      border-radius: 8px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 8px var(--orange-glow);
-    }
+    .tab-nav { display: flex; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 4px; gap: 4px; }
+    .tab-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 12px; padding: 10px 2px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 4px; }
+    .tab-btn.active { background: var(--orange-betano); color: white; box-shadow: 0 4px 12px var(--orange-glow); }
 
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-    }
+    .section-title { font-size: 15px; font-weight: 700; margin: 14px 0 6px; display: flex; align-items: center; justify-content: space-between; }
+    .palpites-list { display: flex; flex-direction: column; gap: 12px; }
+    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .palpite-card.dupla-card { border: 1px solid #2D3748; background: linear-gradient(135deg, #161D2A 0%, #121722 100%); }
+    .palpite-header { display: flex; justify-content: space-between; align-items: center; }
+    .league-badge { font-size: 12px; color: var(--orange-betano); font-weight: 700; }
+    .league-badge.blue { color: #60A5FA; }
+    .time-badge { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+    .match-title { font-size: 15px; font-weight: 700; color: var(--text-main); line-height: 1.3; }
+    .market-box { background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .market-name { font-size: 13px; font-weight: 600; color: #E2E8F0; }
+    .odd-tag { background: var(--orange-betano); color: white; font-family: var(--font-mono); font-weight: 800; font-size: 14px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+    .odd-tag.blue { background: #2563EB; box-shadow: 0 2px 8px var(--blue-glow); }
+    .palpite-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
+    .monte-carlo-tag { color: var(--green-win); font-weight: 700; }
+    .stake-tag { color: var(--text-muted); font-weight: 600; }
 
-    .brand-title {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-    }
+    .form-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .input-field { width: 100%; background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 14px; color: white; font-family: var(--font-main); font-size: 14px; outline: none; }
+    .input-field:focus { border-color: var(--orange-betano); }
+    .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; box-shadow: 0 4px 16px var(--orange-glow); width: 100%; transition: transform 0.1s ease; }
+    .btn-submit:active { transform: scale(0.98); }
+    .dropzone { border: 2px dashed var(--border-color); border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; background: #0E121A; }
 
-    .brand-subtitle {
-      font-size: 10px;
-      color: var(--orange-betano);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
+    .modal-box { width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .auth-tab-bar { display: flex; background: #0E121A; border-radius: 10px; padding: 4px; gap: 4px; }
+    .auth-tab-btn { flex: 1; padding: 8px; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; }
+    .auth-tab-btn.active { background: var(--orange-betano); color: white; }
 
-    /* INTERACTIVE AUTH BADGE (REPLACES RAW bu_synapse_bet TAG) */
-    .auth-btn-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: white;
-      background: linear-gradient(135deg, #1E2533 0%, #161C26 100%);
-      border: 1px solid #2A3446;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; transition: all 0.2s; }
+    .profile-card.selected { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.12); }
+    .profile-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
+    .profile-desc { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
-    .auth-btn-badge:hover {
-      border-color: var(--orange-betano);
-      background: var(--orange-glow);
-      transform: translateY(-1px);
-    }
+    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 13px; background: #0E121A; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); }
+    .checkbox-item input { accent-color: var(--orange-betano); }
 
-    .auth-btn-badge.logged-in {
-      background: rgba(0, 208, 132, 0.12);
-      border-color: var(--green-win);
-      color: var(--green-win);
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--orange-betano);
-    }
-
-    .auth-btn-badge.logged-in .status-dot {
-      background: var(--green-win);
-      box-shadow: 0 0 6px var(--green-win);
-    }
-
-    /* BANCA CARD */
-    .banca-card {
-      background: linear-gradient(135deg, #18202E 0%, #111620 100%);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .banca-card::before {
-      content: "";
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 100px;
-      height: 100px;
-      background: var(--orange-glow);
-      border-radius: 50%;
-      filter: blur(40px);
-    }
-
-    .banca-title {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .banca-amount {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--text-main);
-      margin: 6px 0 12px;
-      font-family: var(--font-mono);
-    }
-
-    .banca-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-color);
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .stat-val {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--green-win);
-      font-family: var(--font-mono);
-    }
-
-    /* NAVIGATION TABS */
-    .tab-nav {
-      display: flex;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 4px;
-      gap: 4px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 12px;
-      padding: 10px 2px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .tab-btn.active {
-      background: var(--orange-betano);
-      color: white;
-      box-shadow: 0 4px 12px var(--orange-glow);
-    }
-
-    /* CARDS & PALPITES */
-    .section-title {
-      font-size: 15px;
-      font-weight: 700;
-      margin: 14px 0 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .palpites-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .palpite-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: transform 0.2s ease;
-    }
-
-    .palpite-card.dupla-card {
-      border: 1px solid #2D3748;
-      background: linear-gradient(135deg, #161D2A 0%, #121722 100%);
-    }
-
-    .palpite-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .league-badge {
-      font-size: 12px;
-      color: var(--orange-betano);
-      font-weight: 700;
-    }
-
-    .league-badge.blue {
-      color: #60A5FA;
-    }
-
-    .time-badge {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-
-    .match-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-      line-height: 1.3;
-    }
-
-    .market-box {
-      background: #0E121A;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 10px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .market-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: #E2E8F0;
-    }
-
-    .odd-tag {
-      background: var(--orange-betano);
-      color: white;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 14px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-
-    .odd-tag.blue {
-      background: #2563EB;
-      box-shadow: 0 2px 8px var(--blue-glow);
-    }
-
-    .palpite-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      padding-top: 8px;
-      border-top: 1px dashed var(--border-color);
-    }
-
-    .monte-carlo-tag {
-      color: var(--green-win);
-      font-weight: 700;
-    }
-
-    .stake-tag {
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    /* FORMS & INPUTS */
-    .form-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .input-field {
-      width: 100%;
-      background: #0E121A;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 12px 14px;
-      color: white;
-      font-family: var(--font-main);
-      font-size: 14px;
-      outline: none;
-    }
-
-    .input-field:focus {
-      border-color: var(--orange-betano);
-    }
-
-    .btn-submit {
-      background: var(--orange-betano);
-      color: white;
-      font-weight: 700;
-      font-size: 15px;
-      border: none;
-      border-radius: 12px;
-      padding: 14px;
-      cursor: pointer;
-      box-shadow: 0 4px 16px var(--orange-glow);
-      width: 100%;
-      transition: transform 0.1s ease;
-    }
-
-    .btn-submit:active {
-      transform: scale(0.98);
-    }
-
-    .dropzone {
-      border: 2px dashed var(--border-color);
-      border-radius: 14px;
-      padding: 24px 16px;
-      text-align: center;
-      cursor: pointer;
-      background: #0E121A;
-    }
-
-    /* MODAL OVERLAY */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      padding: 16px;
-    }
-
-    .modal-box {
-      width: 100%;
-      max-width: 440px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-
-    .auth-tab-bar {
-      display: flex;
-      background: #0E121A;
-      border-radius: 10px;
-      padding: 4px;
-      gap: 4px;
-    }
-
-    .auth-tab-btn {
-      flex: 1;
-      padding: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .auth-tab-btn.active {
-      background: var(--orange-betano);
-      color: white;
-    }
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .profile-card {
-      background: #0E121A;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .profile-card.selected {
-      border-color: var(--orange-betano);
-      background: rgba(255, 96, 0, 0.12);
-    }
-
-    .profile-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .profile-desc {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .checkbox-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .checkbox-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      background: #0E121A;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-    }
-
-    .checkbox-item input {
-      accent-color: var(--orange-betano);
-    }
-
-    .compliance-footer {
-      font-size: 10px;
-      color: #64748B;
-      text-align: center;
-      line-height: 1.5;
-      padding: 16px;
-      border-top: 1px solid #1E2530;
-      margin-top: 16px;
-    }
+    .compliance-footer { font-size: 10px; color: #64748B; text-align: center; line-height: 1.5; padding: 16px; border-top: 1px solid #1E2530; margin-top: 16px; }
   </style>
 </head>
 <body>
 
-  <!-- MODAL DE LOGIN / CONVITE / ONBOARDING -->
+  <!-- MODAL DE LOGIN / CONVITE / MASTER -->
   <div id="auth-modal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
       
-      <!-- LOGO NO MODAL -->
       <div style="text-align: center; margin-bottom: 4px;">
         <span class="logo-badge">SYNAPSE</span>
         <h2 style="font-size: 20px; font-weight: 800; margin-top: 8px;">SynapseBet</h2>
         <p style="font-size: 11px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase;">Powered by Neural Hub</p>
       </div>
 
-      <!-- AUTH TABS -->
       <div class="auth-tab-bar">
         <button class="auth-tab-btn active" onclick="switchAuthTab('login')">🔑 Entrar</button>
         <button class="auth-tab-btn" onclick="switchAuthTab('invite')">🎟️ Convite</button>
@@ -564,19 +141,13 @@
 
       <!-- ABA 3: MASTER -->
       <div id="auth-view-master" style="display: none; flex-direction: column; gap: 12px;">
-        <div id="master-login-form">
-          <input type="text" id="master-user" class="input-field" placeholder="Usuário Master (Mariano)">
-          <input type="password" id="master-pass" class="input-field" placeholder="Senha Master">
-          <button class="btn-submit" onclick="submitMasterLogin()">Acessar Painel Master</button>
-        </div>
-        <div id="master-dashboard" style="display: none; flex-direction: column; gap: 10px;">
-          <p style="font-size: 13px; color: var(--green-win); font-weight: 700;">🟢 Painel do Administrador (Mariano)</p>
-          <button class="btn-submit" onclick="generateNewInviteMaster()">⚡ Gerar Novo Convite Dinâmico</button>
-          <div id="generated-invite-box" style="display: none; padding: 10px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 8px; font-size: 12px;"></div>
-        </div>
+        <p style="font-size: 12px; color: var(--text-muted);">Acesso exclusivo do Administrador Master (Mariano):</p>
+        <input type="text" id="master-user" class="input-field" placeholder="Usuário Master (Mariano)">
+        <input type="password" id="master-pass" class="input-field" placeholder="Senha Master">
+        <button class="btn-submit" onclick="submitMasterLogin()">Entrar como Administrador Master</button>
       </div>
 
-      <!-- ONBOARDING FORM (APÓS VALIDAR CONVITE) -->
+      <!-- ONBOARDING FORM -->
       <div id="onboarding-form" style="display: none; flex-direction: column; gap: 14px;">
         <div style="font-size: 14px; font-weight: 800; color: var(--orange-betano); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           📋 Cadastro & Personalização do Cliente
@@ -656,24 +227,33 @@
           <span class="brand-subtitle">Powered by Neural Hub</span>
         </div>
       </div>
-      <!-- INTERACTIVE USER BADGE -->
       <div id="header-auth-badge" class="auth-btn-badge" onclick="handleAuthBadgeClick()">
         <div class="status-dot"></div>
         <span id="header-user-text">🔑 Entrar / Convidado</span>
       </div>
     </header>
 
+    <!-- PAINEL MASTER (VISÍVEL APENAS PARA MARIANO) -->
+    <div id="master-control-bar" class="master-admin-bar" style="display: none;">
+      <div class="master-admin-header">
+        <span>👑 PAINEL DO ADMINISTRADOR (MARIANO)</span>
+        <span style="font-size: 10px; background: rgba(255,96,0,0.3); padding: 2px 6px; border-radius: 4px;">ACESSO TOTAL</span>
+      </div>
+      <button class="btn-submit" style="padding: 10px; font-size: 13px;" onclick="generateNewInviteMaster()">⚡ Gerar Novo Convite para Cliente</button>
+      <div id="master-invite-result" style="display: none; padding: 10px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 8px; font-size: 12px;"></div>
+    </div>
+
     <!-- BANCA CARD -->
     <div class="banca-card">
       <div class="banca-title">
-        <span>Banca do Assinante — SynapseBet Quant</span>
+        <span id="banca-card-title">Banca do Assinante — SynapseBet Quant</span>
         <span id="user-profile-tag" style="color: var(--orange-betano); font-weight: 700;">Moderado (70/30)</span>
       </div>
       <div class="banca-amount" id="banca-display">R$ 100,00</div>
       <div class="banca-stats">
         <div class="stat-item">
           <span class="stat-label">Stake Recomendada</span>
-          <span class="stat-val" id="stake-display">R$ 2,00</span>
+          <span class="stat-val" id="stake-display">R$ 3,00</span>
         </div>
         <div class="stat-item">
           <span class="stat-label">Aproveitamento</span>
@@ -714,7 +294,7 @@
       <div class="section-title"><span>Registrar Aposta Real via Print</span></div>
       <div class="form-card">
         <p style="font-size: 13px; color: var(--text-muted);">
-          Tirou print da aposta feita na Betano? Envie aqui e o <b>SynapseBet</b> audita e grava na sua planilha pessoal!
+          Tirou print da aposta feita na Betano? Envie aqui e o <b>Betano OCR Vision Parser</b> extrai times, odds, stake e grava na planilha!
         </p>
         <div class="dropzone" onclick="document.getElementById('file-input').click()">
           <div style="font-size: 32px; margin-bottom: 6px;">📸</div>
@@ -722,7 +302,7 @@
           <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
         </div>
         <div id="preview-box" style="display: none; width: 100%; border-radius: 10px; overflow: hidden;"><img id="preview-img" src="" style="width: 100%;"></div>
-        <input type="text" id="match-input" class="input-field" placeholder="Nome do Jogo">
+        <input type="text" id="match-input" class="input-field" placeholder="Nome do Jogo (opcional se legível no print)">
         <input type="number" id="stake-input" class="input-field" value="2.00">
         <button class="btn-submit" onclick="submitBetScreenshot()">🚀 Gravar na Minha Planilha</button>
       </div>
@@ -762,7 +342,6 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ENDPOINT HTTPS DEFINITIVO COM FALLBACK RESILIENTE
     const PRIMARY_API = 'https://prince-singles-encouraged-bond.trycloudflare.com';
     const FALLBACK_API = 'http://169.58.169.188:8000';
 
@@ -771,16 +350,15 @@
     let selectedFile = null;
     let verifiedInvite = null;
 
-    // Fallback de dados estáticos para carregamento instantâneo se a rede oscilar
     const DEFAULT_SIMPLES = [
-      { league: "🇹🇷 Süper Lig", datetime: "Hoje 15:30", match: "Galatasaray vs Çorum FK", market: "Mais de 7.5 Escanteios (Over 7.5)", odd: "1.45", monte_carlo: "87.5%", stake: "R$ 3,00" },
-      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:15", match: "Sporting CP vs Vitória de Guimarães", market: "Vitória do Sporting ou Empate (1X)", odd: "1.33", monte_carlo: "86.2%", stake: "R$ 3,00" },
-      { league: "⚾ MLB (Beisebol)", datetime: "Hoje 19:05", match: "New York Yankees vs Boston Red Sox", market: "Yankees Vence ou Empata 5 Innings (F5 1X)", odd: "1.42", monte_carlo: "85.2%", stake: "R$ 3,00" }
+      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 21:00", match: "São Paulo vs Coritiba", market: "São Paulo ou Empate (1X)", odd: "1.28", monte_carlo: "88.4%", stake: "R$ 3,00" },
+      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 20:30", match: "Rio Ave vs FC Porto", market: "Empate ou FC Porto (X2)", odd: "1.22", monte_carlo: "89.1%", stake: "R$ 3,00" },
+      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 18:30", match: "Athletico-PR vs RB Bragantino", market: "Athletico-PR ou Empate (1X)", odd: "1.30", monte_carlo: "86.5%", stake: "R$ 3,00" }
     ];
 
     const DEFAULT_DUPLAS = [
-      { league: "🇹🇷 Turquia + 🇵🇹 Portugal", datetime: "Hoje 15:30 / 16:15", match: "Galatasaray (Cantos) + Sporting CP (1X)", market: "Galatasaray > 6.5 Cantos (@ 1.35) + Sporting 1X (@ 1.33)", odd: "1.80", monte_carlo: "75.4%", stake: "R$ 2,00" },
-      { league: "⚾ MLB + 🇦🇷 Argentina", datetime: "Hoje 19:05 / 20:30", match: "NY Yankees (F5 1X) + Racing Club (1X)", market: "Yankees F5 1X (@ 1.42) + Racing Club 1X (@ 1.34)", odd: "1.90", monte_carlo: "71.4%", stake: "R$ 2,00" }
+      { league: "🇧🇷 Brasil + 🇵🇹 Portugal", datetime: "Hoje 20:30 / 21:00", match: "São Paulo (1X) + FC Porto (X2)", market: "São Paulo 1X (@ 1.28) + FC Porto X2 (@ 1.22)", odd: "1.80", monte_carlo: "78.8%", stake: "R$ 2,00" },
+      { league: "🇧🇷 Brasileirão + ⚾ MLB", datetime: "Hoje 18:30 / 19:10", match: "Athletico-PR (1X) + LA Dodgers (F5 1X)", market: "Athletico 1X (@ 1.30) + Dodgers F5 1X (@ 1.40)", odd: "1.82", monte_carlo: "74.2%", stake: "R$ 2,00" }
     ];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -791,7 +369,6 @@
           applyClientSession(loggedClient);
         } catch(e) {}
       } else {
-        // Se primeiro acesso, abre o modal de boas-vindas / login
         setTimeout(() => openAuthModal(), 800);
       }
       loadPalpites();
@@ -832,7 +409,7 @@
         const res = await fetch(`${PRIMARY_API}${url}`, options);
         if (res.ok) return await res.json();
       } catch (err) {
-        console.warn("Falha no endpoint primário HTTPS, tentando fallback:", err);
+        console.warn("Fallback endpoint:", err);
       }
       try {
         const resFb = await fetch(`${FALLBACK_API}${url}`, options);
@@ -1001,8 +578,12 @@
       });
 
       if (data && data.success) {
-        document.getElementById('master-login-form').style.display = 'none';
-        document.getElementById('master-dashboard').style.display = 'flex';
+        loggedClient = data.client;
+        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+        applyClientSession(loggedClient);
+        closeAuthModal();
+        alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado com acesso total ao painel.`);
+        loadPalpites();
       } else {
         alert("Credenciais Master Inválidas");
       }
@@ -1017,7 +598,7 @@
 
       if (data && data.success) {
         const inv = data.invite;
-        const box = document.getElementById('generated-invite-box');
+        const box = document.getElementById('master-invite-result');
         box.style.display = 'block';
         box.innerHTML = `
           <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
@@ -1029,11 +610,23 @@
 
     function applyClientSession(client) {
       const badge = document.getElementById('header-auth-badge');
-      badge.classList.add('logged-in');
-      document.getElementById('header-user-text').innerText = `👤 ${client.name.split(' ')[0]}`;
+      badge.classList.remove('logged-in', 'is-master');
+
+      if (client.is_master || client.role === "MASTER") {
+        badge.classList.add('is-master');
+        document.getElementById('header-user-text').innerText = `👑 Mariano (Master)`;
+        document.getElementById('banca-card-title').innerText = `Banca Master — Mariano (SynapseBet)`;
+        document.getElementById('master-control-bar').style.display = 'flex';
+      } else {
+        badge.classList.add('logged-in');
+        document.getElementById('header-user-text').innerText = `👤 ${client.name.split(' ')[0]}`;
+        document.getElementById('banca-card-title').innerText = `Banca do Assinante — ${client.name}`;
+        document.getElementById('master-control-bar').style.display = 'none';
+      }
+
       document.getElementById('banca-display').innerText = `R$ ${client.initial_bankroll.toFixed(2)}`;
       document.getElementById('stake-display').innerText = `R$ ${client.stake_padrao.toFixed(2)}`;
-      document.getElementById('user-profile-tag').innerText = client.risk_profile.split(' ')[1] || "Moderado";
+      document.getElementById('user-profile-tag').innerText = client.risk_profile.split(' ')[1] || "Ultra-Quant";
       if (client.spreadsheet_url) {
         document.getElementById('sheet-link-btn').href = client.spreadsheet_url;
       }
@@ -1063,7 +656,7 @@
       if (!selectedFile) return alert("Selecione um print!");
       const formData = new FormData();
       formData.append('file', selectedFile);
-      formData.append('client_email', loggedClient ? loggedClient.email : 'operator@neuralhub.ai');
+      formData.append('client_email', loggedClient ? loggedClient.email : 'mariano@neuralhub.ai');
       formData.append('match_name', document.getElementById('match-input').value);
       formData.append('stake_brl', document.getElementById('stake-input').value);
 
@@ -1071,7 +664,7 @@
         const res = await fetch(`${PRIMARY_API}/api/upload-print`, { method: 'POST', body: formData });
         const data = await res.json();
         if (data.success) {
-          alert("🎉 Aposta registrada com sucesso na sua planilha pessoal!");
+          alert("🎉 Aposta registrada com sucesso na planilha!");
           selectedFile = null;
           document.getElementById('preview-box').style.display = 'none';
           document.getElementById('match-input').value = '';
