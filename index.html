@@ -44,7 +44,6 @@
     .auth-btn-badge.logged-in .status-dot { background: var(--green-win); box-shadow: 0 0 6px var(--green-win); }
     .auth-btn-badge.is-master .status-dot { background: #FF6000; box-shadow: 0 0 6px #FF6000; }
 
-    /* MASTER BAR */
     .master-admin-bar { background: linear-gradient(135deg, #2A170A 0%, #17100B 100%); border: 1px solid var(--orange-betano); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
     .master-admin-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; color: #FFA366; }
 
@@ -91,7 +90,7 @@
     .auth-tab-btn.active { background: var(--orange-betano); color: white; }
 
     .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; transition: all 0.2s; }
+    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; }
     .profile-card.selected { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.12); }
     .profile-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
     .profile-desc { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
@@ -243,21 +242,21 @@
       <div id="master-invite-result" style="display: none; padding: 10px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 8px; font-size: 12px;"></div>
     </div>
 
-    <!-- BANCA CARD -->
+    <!-- BANCA CARD DINÂMICO -->
     <div class="banca-card">
       <div class="banca-title">
-        <span id="banca-card-title">Banca do Assinante — SynapseBet Quant</span>
-        <span id="user-profile-tag" style="color: var(--orange-betano); font-weight: 700;">Moderado (70/30)</span>
+        <span id="banca-card-title">Banca Consolidada — SynapseBet Quant</span>
+        <span id="user-profile-tag" style="color: var(--orange-betano); font-weight: 700;">Ao Vivo 🟢</span>
       </div>
-      <div class="banca-amount" id="banca-display">R$ 100,00</div>
+      <div class="banca-amount" id="banca-display">R$ 99,18</div>
       <div class="banca-stats">
         <div class="stat-item">
-          <span class="stat-label">Stake Recomendada</span>
-          <span class="stat-val" id="stake-display">R$ 3,00</span>
+          <span class="stat-label">Stake Recomendada (3%)</span>
+          <span class="stat-val" id="stake-display">R$ 2,98</span>
         </div>
         <div class="stat-item">
           <span class="stat-label">Aproveitamento</span>
-          <span class="stat-val" id="winrate-display">12/12 GREENS 🟢</span>
+          <span class="stat-val" id="winrate-display">50% (1/2) 🟢</span>
         </div>
       </div>
     </div>
@@ -371,6 +370,7 @@
       } else {
         setTimeout(() => openAuthModal(), 800);
       }
+      loadBancaSummary();
       loadPalpites();
     });
 
@@ -416,6 +416,16 @@
         if (resFb.ok) return await resFb.json();
       } catch(e) {}
       return null;
+    }
+
+    async function loadBancaSummary() {
+      const emailParam = loggedClient ? `?client_email=${encodeURIComponent(loggedClient.email)}` : '';
+      const data = await safeFetch(`/api/banca${emailParam}`);
+      if (data && data.saldo_atual) {
+        document.getElementById('banca-display').innerText = data.saldo_atual;
+        document.getElementById('stake-display').innerText = data.stake_padrao;
+        document.getElementById('winrate-display').innerText = data.win_rate || "50% (1/2)";
+      }
     }
 
     async function loadPalpites() {
@@ -484,6 +494,7 @@
         applyClientSession(loggedClient);
         closeAuthModal();
         alert(`Bem-vindo, ${loggedClient.name}!`);
+        loadBancaSummary();
         loadPalpites();
       } else {
         alert(data?.detail || "E-mail ou senha incorretos.");
@@ -561,6 +572,7 @@
         applyClientSession(loggedClient);
         closeAuthModal();
         alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi provisionada no Google Drive!`);
+        loadBancaSummary();
         loadPalpites();
       } else {
         alert(data?.detail || "Falha no cadastro");
@@ -582,7 +594,8 @@
         localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
         applyClientSession(loggedClient);
         closeAuthModal();
-        alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado com acesso total ao painel.`);
+        alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado.`);
+        loadBancaSummary();
         loadPalpites();
       } else {
         alert("Credenciais Master Inválidas");
@@ -624,9 +637,6 @@
         document.getElementById('master-control-bar').style.display = 'none';
       }
 
-      document.getElementById('banca-display').innerText = `R$ ${client.initial_bankroll.toFixed(2)}`;
-      document.getElementById('stake-display').innerText = `R$ ${client.stake_padrao.toFixed(2)}`;
-      document.getElementById('user-profile-tag').innerText = client.risk_profile.split(' ')[1] || "Ultra-Quant";
       if (client.spreadsheet_url) {
         document.getElementById('sheet-link-btn').href = client.spreadsheet_url;
       }
@@ -669,6 +679,7 @@
           document.getElementById('preview-box').style.display = 'none';
           document.getElementById('match-input').value = '';
           switchTab('palpites');
+          loadBancaSummary();
         }
       } catch (err) {
         alert("Erro no envio: " + err.message);
