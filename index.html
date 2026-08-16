@@ -90,7 +90,7 @@
     .auth-tab-btn.active { background: var(--orange-betano); color: white; }
 
     .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; }
+    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; transition: all 0.2s; }
     .profile-card.selected { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.12); }
     .profile-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
     .profile-desc { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
@@ -104,10 +104,8 @@
 </head>
 <body>
 
-  <!-- MODAL DE LOGIN / CONVITE / MASTER -->
   <div id="auth-modal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
-      
       <div style="text-align: center; margin-bottom: 4px;">
         <span class="logo-badge">SYNAPSE</span>
         <h2 style="font-size: 20px; font-weight: 800; margin-top: 8px;">SynapseBet</h2>
@@ -120,7 +118,6 @@
         <button class="auth-tab-btn" onclick="switchAuthTab('master')">👑 Master</button>
       </div>
 
-      <!-- ABA 1: LOGIN -->
       <div id="auth-view-login" style="display: flex; flex-direction: column; gap: 12px;">
         <input type="email" id="login-email" class="input-field" placeholder="Seu E-mail (Gmail)">
         <input type="password" id="login-pass" class="input-field" placeholder="Sua Senha Pessoal">
@@ -128,7 +125,6 @@
         <button onclick="closeAuthModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 4px;">Explorar como visitante</button>
       </div>
 
-      <!-- ABA 2: CONVITE -->
       <div id="auth-view-invite" style="display: none; flex-direction: column; gap: 12px;">
         <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
           Recebeu um código de convite do Mariano? Digite abaixo para criar sua conta e gerar sua planilha exclusiva no Google Drive!
@@ -138,7 +134,6 @@
         <button class="btn-submit" onclick="unlockOnboarding()">Validar Convite e Cadastrar ➔</button>
       </div>
 
-      <!-- ABA 3: MASTER -->
       <div id="auth-view-master" style="display: none; flex-direction: column; gap: 12px;">
         <p style="font-size: 12px; color: var(--text-muted);">Acesso exclusivo do Administrador Master (Mariano):</p>
         <input type="text" id="master-user" class="input-field" placeholder="Usuário Master (Mariano)">
@@ -146,7 +141,6 @@
         <button class="btn-submit" onclick="submitMasterLogin()">Entrar como Administrador Master</button>
       </div>
 
-      <!-- ONBOARDING FORM -->
       <div id="onboarding-form" style="display: none; flex-direction: column; gap: 14px;">
         <div style="font-size: 14px; font-weight: 800; color: var(--orange-betano); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           📋 Cadastro & Personalização do Cliente
@@ -214,10 +208,7 @@
     </div>
   </div>
 
-  <!-- APP PRINCIPAL -->
   <div class="app-container">
-    
-    <!-- HEADER -->
     <header class="app-header">
       <div class="logo-container">
         <span class="logo-badge">SYNAPSE</span>
@@ -232,7 +223,6 @@
       </div>
     </header>
 
-    <!-- PAINEL MASTER (VISÍVEL APENAS PARA MARIANO) -->
     <div id="master-control-bar" class="master-admin-bar" style="display: none;">
       <div class="master-admin-header">
         <span>👑 PAINEL DO ADMINISTRADOR (MARIANO)</span>
@@ -242,26 +232,24 @@
       <div id="master-invite-result" style="display: none; padding: 10px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 8px; font-size: 12px;"></div>
     </div>
 
-    <!-- BANCA CARD DINÂMICO -->
     <div class="banca-card">
       <div class="banca-title">
         <span id="banca-card-title">Banca Consolidada — SynapseBet Quant</span>
         <span id="user-profile-tag" style="color: var(--orange-betano); font-weight: 700;">Ao Vivo 🟢</span>
       </div>
-      <div class="banca-amount" id="banca-display">R$ 99,18</div>
+      <div class="banca-amount" id="banca-display">R$ 99,85</div>
       <div class="banca-stats">
         <div class="stat-item">
           <span class="stat-label">Stake Recomendada (3%)</span>
-          <span class="stat-val" id="stake-display">R$ 2,98</span>
+          <span class="stat-val" id="stake-display">R$ 3,00</span>
         </div>
         <div class="stat-item">
           <span class="stat-label">Aproveitamento</span>
-          <span class="stat-val" id="winrate-display">50% (1/2) 🟢</span>
+          <span class="stat-val" id="winrate-display">75% (3/4) 🟢</span>
         </div>
       </div>
     </div>
 
-    <!-- TABS -->
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
       <button class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
@@ -269,10 +257,9 @@
       <button class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
 
-    <!-- TAB 1: PALPITES -->
     <div id="tab-palpites" class="tab-content">
       <div class="section-title">
-        <span>🛡️ Apostas Simples Seguras</span>
+        <span>🛡️ Apostas Simples Seguras (Domingo 16/08)</span>
         <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+</span>
       </div>
       <div class="palpites-list" id="simples-container">
@@ -281,14 +268,13 @@
 
       <div class="section-title" style="margin-top: 20px;">
         <span>💎 Duplas Blindadas (Acelerador 2x)</span>
-        <span style="font-size: 11px; color: #60A5FA; font-weight: 700;">Odds 1.80 a 1.95</span>
+        <span style="font-size: 11px; color: #60A5FA; font-weight: 700;">Odds 1.60 a 1.80</span>
       </div>
       <div class="palpites-list" id="duplas-container">
         <div style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando Duplas da bu_synapse_bet...</div>
       </div>
     </div>
 
-    <!-- TAB 2: UPLOAD DE PRINT -->
     <div id="tab-upload" class="tab-content" style="display: none;">
       <div class="section-title"><span>Registrar Aposta Real via Print</span></div>
       <div class="form-card">
@@ -307,7 +293,6 @@
       </div>
     </div>
 
-    <!-- TAB 3: MINHA PLANILHA -->
     <div id="tab-planilha" class="tab-content" style="display: none;">
       <div class="section-title"><span>Sua Planilha no Google Drive</span></div>
       <div class="form-card" style="text-align: center;">
@@ -320,7 +305,6 @@
       </div>
     </div>
 
-    <!-- TAB 4: REGRAS -->
     <div id="tab-regras" class="tab-content" style="display: none;">
       <div class="section-title"><span>Diretrizes SynapseBet Quant</span></div>
       <div class="form-card" style="font-size: 13px; line-height: 1.6;">
@@ -339,25 +323,22 @@
     </footer>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
   <script>
-    const PRIMARY_API = 'https://prince-singles-encouraged-bond.trycloudflare.com';
-    const FALLBACK_API = 'http://169.58.169.188:8000';
-
     let loggedClient = null;
     let selectedProfile = "2. Moderado";
     let selectedFile = null;
     let verifiedInvite = null;
 
     const DEFAULT_SIMPLES = [
-      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 21:00", match: "São Paulo vs Coritiba", market: "São Paulo ou Empate (1X)", odd: "1.28", monte_carlo: "88.4%", stake: "R$ 3,00" },
-      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 20:30", match: "Rio Ave vs FC Porto", market: "Empate ou FC Porto (X2)", odd: "1.22", monte_carlo: "89.1%", stake: "R$ 3,00" },
-      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 18:30", match: "Athletico-PR vs RB Bragantino", market: "Athletico-PR ou Empate (1X)", odd: "1.30", monte_carlo: "86.5%", stake: "R$ 3,00" }
+      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 18:30", match: "Flamengo vs Mirassol", market: "Vitória do Flamengo ou Empate (1X)", odd: "1.18", monte_carlo: "91.4%", stake: "R$ 3,00" },
+      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:30", match: "SC Braga vs Gil Vicente", market: "Vitória do SC Braga ou Empate (1X)", odd: "1.20", monte_carlo: "89.5%", stake: "R$ 3,00" },
+      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 16:00", match: "Atlético-MG vs Grêmio", market: "Vitória do Atlético-MG ou Empate (1X)", odd: "1.25", monte_carlo: "88.2%", stake: "R$ 3,00" },
+      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 19:30", match: "Corinthians vs Cruzeiro", market: "Vitória do Corinthians ou Empate (1X)", odd: "1.28", monte_carlo: "86.7%", stake: "R$ 3,00" }
     ];
 
     const DEFAULT_DUPLAS = [
-      { league: "🇧🇷 Brasil + 🇵🇹 Portugal", datetime: "Hoje 20:30 / 21:00", match: "São Paulo (1X) + FC Porto (X2)", market: "São Paulo 1X (@ 1.28) + FC Porto X2 (@ 1.22)", odd: "1.80", monte_carlo: "78.8%", stake: "R$ 2,00" },
-      { league: "🇧🇷 Brasileirão + ⚾ MLB", datetime: "Hoje 18:30 / 19:10", match: "Athletico-PR (1X) + LA Dodgers (F5 1X)", market: "Athletico 1X (@ 1.30) + Dodgers F5 1X (@ 1.40)", odd: "1.82", monte_carlo: "74.2%", stake: "R$ 2,00" }
+      { league: "🇧🇷 Brasil + 🇵🇹 Portugal", datetime: "Hoje 16:30 / 18:30", match: "Flamengo (1X) + SC Braga (1X)", market: "Flamengo 1X (@ 1.18) + SC Braga 1X (@ 1.20)", odd: "1.77", monte_carlo: "79.4%", stake: "R$ 2,00" },
+      { league: "🇧🇷 Clássicos Brasileirão", datetime: "Hoje 16:00 / 19:30", match: "Atlético-MG (1X) + Corinthians (1X)", market: "Atlético-MG 1X (@ 1.25) + Corinthians 1X (@ 1.28)", odd: "1.60", monte_carlo: "76.5%", stake: "R$ 2,00" }
     ];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -404,36 +385,32 @@
       selectedProfile = profileName;
     }
 
-    async function safeFetch(url, options = {}) {
-      try {
-        const res = await fetch(`${PRIMARY_API}${url}`, options);
-        if (res.ok) return await res.json();
-      } catch (err) {
-        console.warn("Fallback endpoint:", err);
-      }
-      try {
-        const resFb = await fetch(`${FALLBACK_API}${url}`, options);
-        if (resFb.ok) return await resFb.json();
-      } catch(e) {}
-      return null;
-    }
-
     async function loadBancaSummary() {
-      const emailParam = loggedClient ? `?client_email=${encodeURIComponent(loggedClient.email)}` : '';
-      const data = await safeFetch(`/api/banca${emailParam}`);
-      if (data && data.saldo_atual) {
-        document.getElementById('banca-display').innerText = data.saldo_atual;
-        document.getElementById('stake-display').innerText = data.stake_padrao;
-        document.getElementById('winrate-display').innerText = data.win_rate || "50% (1/2)";
-      }
+      try {
+        const res = await fetch('/api/banca');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.saldo_atual) {
+            document.getElementById('banca-display').innerText = data.saldo_atual;
+            document.getElementById('stake-display').innerText = data.stake_padrao;
+            document.getElementById('winrate-display').innerText = data.win_rate || "75% (3/4)";
+          }
+        }
+      } catch(e) {}
     }
 
     async function loadPalpites() {
-      const data = await safeFetch('/api/palpites');
-      const simples = (data && data.simples && data.simples.length > 0) ? data.simples : DEFAULT_SIMPLES;
-      const duplas = (data && data.duplas && data.duplas.length > 0) ? data.duplas : DEFAULT_DUPLAS;
-
-      renderPalpites(simples, duplas);
+      try {
+        const res = await fetch('/api/palpites');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && data.simples && data.simples.length > 0) {
+            renderPalpites(data.simples, data.duplas);
+            return;
+          }
+        }
+      } catch(e) {}
+      renderPalpites(DEFAULT_SIMPLES, DEFAULT_DUPLAS);
     }
 
     function renderPalpites(simples, duplas) {
@@ -482,23 +459,25 @@
       const pass = document.getElementById('login-pass').value.trim();
       if (!email || !pass) return alert("Preencha seu E-mail e Senha");
 
-      const data = await safeFetch('/api/auth/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ email, password: pass })
-      });
-
-      if (data && data.success) {
-        loggedClient = data.client;
-        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-        applyClientSession(loggedClient);
-        closeAuthModal();
-        alert(`Bem-vindo, ${loggedClient.name}!`);
-        loadBancaSummary();
-        loadPalpites();
-      } else {
-        alert(data?.detail || "E-mail ou senha incorretos.");
-      }
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email, password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          loggedClient = data.client;
+          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+          applyClientSession(loggedClient);
+          closeAuthModal();
+          alert(`Bem-vindo, ${loggedClient.name}!`);
+          loadBancaSummary();
+          loadPalpites();
+        } else {
+          alert(data.detail || "E-mail ou senha incorretos.");
+        }
+      } catch (err) { alert("Erro de conexão: " + err.message); }
     }
 
     async function unlockOnboarding() {
@@ -506,19 +485,21 @@
       const pass = document.getElementById('invite-pass').value.trim();
       if (!code || !pass) return alert("Digite o código e a senha temporária do convite");
 
-      const data = await safeFetch('/api/auth/validate-invite', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ invite_code: code, temp_password: pass })
-      });
-
-      if (data && data.success) {
-        verifiedInvite = { code, pass };
-        document.getElementById('auth-view-invite').style.display = 'none';
-        document.getElementById('onboarding-form').style.display = 'flex';
-      } else {
-        alert(data?.detail || "Convite inválido ou expirado");
-      }
+      try {
+        const res = await fetch('/api/auth/validate-invite', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ invite_code: code, temp_password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          verifiedInvite = { code, pass };
+          document.getElementById('auth-view-invite').style.display = 'none';
+          document.getElementById('onboarding-form').style.display = 'flex';
+        } else {
+          alert(data.detail || "Convite inválido ou expirado");
+        }
+      } catch (err) { alert("Erro ao validar: " + err.message); }
     }
 
     async function submitClientRegistration() {
@@ -560,65 +541,71 @@
         preferred_markets: markets
       };
 
-      const data = await safeFetch('/api/auth/register', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
-      });
-
-      if (data && data.success) {
-        loggedClient = data.client;
-        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-        applyClientSession(loggedClient);
-        closeAuthModal();
-        alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi provisionada no Google Drive!`);
-        loadBancaSummary();
-        loadPalpites();
-      } else {
-        alert(data?.detail || "Falha no cadastro");
-      }
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          loggedClient = data.client;
+          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+          applyClientSession(loggedClient);
+          closeAuthModal();
+          alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi provisionada no Google Drive!`);
+          loadBancaSummary();
+          loadPalpites();
+        } else {
+          alert(data.detail || "Falha no cadastro");
+        }
+      } catch (err) { alert("Erro no cadastro: " + err.message); }
     }
 
     async function submitMasterLogin() {
       const user = document.getElementById('master-user').value.trim();
       const pass = document.getElementById('master-pass').value.trim();
 
-      const data = await safeFetch('/api/auth/master-login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ username: user, password: pass })
-      });
-
-      if (data && data.success) {
-        loggedClient = data.client;
-        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-        applyClientSession(loggedClient);
-        closeAuthModal();
-        alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado.`);
-        loadBancaSummary();
-        loadPalpites();
-      } else {
-        alert("Credenciais Master Inválidas");
-      }
+      try {
+        const res = await fetch('/api/auth/master-login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          loggedClient = data.client;
+          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+          applyClientSession(loggedClient);
+          closeAuthModal();
+          alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado.`);
+          loadBancaSummary();
+          loadPalpites();
+        } else {
+          alert("Credenciais Master Inválidas");
+        }
+      } catch (err) { alert("Erro master: " + err.message); }
     }
 
     async function generateNewInviteMaster() {
-      const data = await safeFetch('/api/auth/generate-invite', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
-      });
-
-      if (data && data.success) {
-        const inv = data.invite;
-        const box = document.getElementById('master-invite-result');
-        box.style.display = 'block';
-        box.innerHTML = `
-          <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
-          <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
-          <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
-        `;
-      }
+      try {
+        const res = await fetch('/api/auth/generate-invite', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
+        });
+        const data = await res.json();
+        if (data.success) {
+          const inv = data.invite;
+          const box = document.getElementById('master-invite-result');
+          box.style.display = 'block';
+          box.innerHTML = `
+            <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
+            <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
+            <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
+          `;
+        }
+      } catch (err) { alert("Erro ao gerar convite: " + err.message); }
     }
 
     function applyClientSession(client) {
@@ -671,7 +658,7 @@
       formData.append('stake_brl', document.getElementById('stake-input').value);
 
       try {
-        const res = await fetch(`${PRIMARY_API}/api/upload-print`, { method: 'POST', body: formData });
+        const res = await fetch('/api/upload-print', { method: 'POST', body: formData });
         const data = await res.json();
         if (data.success) {
           alert("🎉 Aposta registrada com sucesso na planilha!");
@@ -681,9 +668,7 @@
           switchTab('palpites');
           loadBancaSummary();
         }
-      } catch (err) {
-        alert("Erro no envio: " + err.message);
-      }
+      } catch (err) { alert("Erro: " + err.message); }
     }
   </script>
 </body>
