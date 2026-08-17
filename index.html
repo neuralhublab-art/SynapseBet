@@ -81,6 +81,7 @@
     .input-field:focus { border-color: var(--orange-betano); }
     .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; box-shadow: 0 4px 16px var(--orange-glow); width: 100%; transition: transform 0.1s ease; }
     .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { background: #4A5568; cursor: not-allowed; box-shadow: none; }
     .dropzone { border: 2px dashed var(--border-color); border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; background: #0E121A; }
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
@@ -283,13 +284,13 @@
         </p>
         <div class="dropzone" onclick="document.getElementById('file-input').click()">
           <div style="font-size: 32px; margin-bottom: 6px;">📸</div>
-          <div style="font-size: 14px; font-weight: 700;">Toque para selecionar o Print</div>
+          <div style="font-size: 14px; font-weight: 700;" id="dropzone-label">Toque para selecionar o Print</div>
           <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
         </div>
         <div id="preview-box" style="display: none; width: 100%; border-radius: 10px; overflow: hidden;"><img id="preview-img" src="" style="width: 100%;"></div>
         <input type="text" id="match-input" class="input-field" placeholder="Nome do Jogo (opcional se legível no print)">
-        <input type="number" id="stake-input" class="input-field" value="2.00">
-        <button class="btn-submit" onclick="submitBetScreenshot()">🚀 Gravar na Minha Planilha</button>
+        <input type="number" id="stake-input" class="input-field" placeholder="Valor da Stake (R$)" value="3.00">
+        <button class="btn-submit" id="btn-upload-submit" onclick="submitBetScreenshot()">🚀 Gravar na Minha Planilha</button>
       </div>
     </div>
 
@@ -324,6 +325,9 @@
   </div>
 
   <script>
+    const PRIMARY_API = 'https://prince-singles-encouraged-bond.trycloudflare.com';
+    const FALLBACK_API = 'http://169.58.169.188:8000';
+
     let loggedClient = null;
     let selectedProfile = "2. Moderado";
     let selectedFile = null;
@@ -385,32 +389,36 @@
       selectedProfile = profileName;
     }
 
-    async function loadBancaSummary() {
+    async function safeFetch(url, options = {}) {
       try {
-        const res = await fetch('/api/banca');
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.saldo_atual) {
-            document.getElementById('banca-display').innerText = data.saldo_atual;
-            document.getElementById('stake-display').innerText = data.stake_padrao;
-            document.getElementById('winrate-display').innerText = data.win_rate || "75% (3/4)";
-          }
-        }
+        const res = await fetch(`${PRIMARY_API}${url}`, options);
+        if (res.ok) return await res.json();
+      } catch (err) {
+        console.warn("Primary API timeout/error:", err);
+      }
+      try {
+        const resFb = await fetch(`${FALLBACK_API}${url}`, options);
+        if (resFb.ok) return await resFb.json();
       } catch(e) {}
+      return null;
+    }
+
+    async function loadBancaSummary() {
+      const emailParam = loggedClient ? `?client_email=${encodeURIComponent(loggedClient.email)}` : '';
+      const data = await safeFetch(`/api/banca${emailParam}`);
+      if (data && data.saldo_atual) {
+        document.getElementById('banca-display').innerText = data.saldo_atual;
+        document.getElementById('stake-display').innerText = data.stake_padrao;
+        document.getElementById('winrate-display').innerText = data.win_rate || "75% (3/4)";
+      }
     }
 
     async function loadPalpites() {
-      try {
-        const res = await fetch('/api/palpites');
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.success && data.simples && data.simples.length > 0) {
-            renderPalpites(data.simples, data.duplas);
-            return;
-          }
-        }
-      } catch(e) {}
-      renderPalpites(DEFAULT_SIMPLES, DEFAULT_DUPLAS);
+      const data = await safeFetch('/api/palpites');
+      const simples = (data && data.simples && data.simples.length > 0) ? data.simples : DEFAULT_SIMPLES;
+      const duplas = (data && data.duplas && data.duplas.length > 0) ? data.duplas : DEFAULT_DUPLAS;
+
+      renderPalpites(simples, duplas);
     }
 
     function renderPalpites(simples, duplas) {
@@ -459,25 +467,23 @@
       const pass = document.getElementById('login-pass').value.trim();
       if (!email || !pass) return alert("Preencha seu E-mail e Senha");
 
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ email, password: pass })
-        });
-        const data = await res.json();
-        if (data.success) {
-          loggedClient = data.client;
-          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-          applyClientSession(loggedClient);
-          closeAuthModal();
-          alert(`Bem-vindo, ${loggedClient.name}!`);
-          loadBancaSummary();
-          loadPalpites();
-        } else {
-          alert(data.detail || "E-mail ou senha incorretos.");
-        }
-      } catch (err) { alert("Erro de conexão: " + err.message); }
+      const data = await safeFetch('/api/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, password: pass })
+      });
+
+      if (data && data.success) {
+        loggedClient = data.client;
+        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+        applyClientSession(loggedClient);
+        closeAuthModal();
+        alert(`Bem-vindo, ${loggedClient.name}!`);
+        loadBancaSummary();
+        loadPalpites();
+      } else {
+        alert(data?.detail || "E-mail ou senha incorretos.");
+      }
     }
 
     async function unlockOnboarding() {
@@ -485,21 +491,19 @@
       const pass = document.getElementById('invite-pass').value.trim();
       if (!code || !pass) return alert("Digite o código e a senha temporária do convite");
 
-      try {
-        const res = await fetch('/api/auth/validate-invite', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ invite_code: code, temp_password: pass })
-        });
-        const data = await res.json();
-        if (data.success) {
-          verifiedInvite = { code, pass };
-          document.getElementById('auth-view-invite').style.display = 'none';
-          document.getElementById('onboarding-form').style.display = 'flex';
-        } else {
-          alert(data.detail || "Convite inválido ou expirado");
-        }
-      } catch (err) { alert("Erro ao validar: " + err.message); }
+      const data = await safeFetch('/api/auth/validate-invite', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ invite_code: code, temp_password: pass })
+      });
+
+      if (data && data.success) {
+        verifiedInvite = { code, pass };
+        document.getElementById('auth-view-invite').style.display = 'none';
+        document.getElementById('onboarding-form').style.display = 'flex';
+      } else {
+        alert(data?.detail || "Convite inválido ou expirado");
+      }
     }
 
     async function submitClientRegistration() {
@@ -541,71 +545,65 @@
         preferred_markets: markets
       };
 
-      try {
-        const res = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if (data.success) {
-          loggedClient = data.client;
-          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-          applyClientSession(loggedClient);
-          closeAuthModal();
-          alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi provisionada no Google Drive!`);
-          loadBancaSummary();
-          loadPalpites();
-        } else {
-          alert(data.detail || "Falha no cadastro");
-        }
-      } catch (err) { alert("Erro no cadastro: " + err.message); }
+      const data = await safeFetch('/api/auth/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+
+      if (data && data.success) {
+        loggedClient = data.client;
+        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+        applyClientSession(loggedClient);
+        closeAuthModal();
+        alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi provisionada no Google Drive!`);
+        loadBancaSummary();
+        loadPalpites();
+      } else {
+        alert(data?.detail || "Falha no cadastro");
+      }
     }
 
     async function submitMasterLogin() {
       const user = document.getElementById('master-user').value.trim();
       const pass = document.getElementById('master-pass').value.trim();
 
-      try {
-        const res = await fetch('/api/auth/master-login', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ username: user, password: pass })
-        });
-        const data = await res.json();
-        if (data.success) {
-          loggedClient = data.client;
-          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
-          applyClientSession(loggedClient);
-          closeAuthModal();
-          alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado.`);
-          loadBancaSummary();
-          loadPalpites();
-        } else {
-          alert("Credenciais Master Inválidas");
-        }
-      } catch (err) { alert("Erro master: " + err.message); }
+      const data = await safeFetch('/api/auth/master-login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ username: user, password: pass })
+      });
+
+      if (data && data.success) {
+        loggedClient = data.client;
+        localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+        applyClientSession(loggedClient);
+        closeAuthModal();
+        alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado.`);
+        loadBancaSummary();
+        loadPalpites();
+      } else {
+        alert("Credenciais Master Inválidas");
+      }
     }
 
     async function generateNewInviteMaster() {
-      try {
-        const res = await fetch('/api/auth/generate-invite', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
-        });
-        const data = await res.json();
-        if (data.success) {
-          const inv = data.invite;
-          const box = document.getElementById('master-invite-result');
-          box.style.display = 'block';
-          box.innerHTML = `
-            <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
-            <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
-            <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
-          `;
-        }
-      } catch (err) { alert("Erro ao gerar convite: " + err.message); }
+      const data = await safeFetch('/api/auth/generate-invite', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
+      });
+
+      if (data && data.success) {
+        const inv = data.invite;
+        const box = document.getElementById('master-invite-result');
+        box.style.display = 'block';
+        box.innerHTML = `
+          <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
+          <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
+          <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
+        `;
+      }
     }
 
     function applyClientSession(client) {
@@ -640,6 +638,7 @@
       const file = e.target.files[0];
       if (file) {
         selectedFile = file;
+        document.getElementById('dropzone-label').innerText = `📄 ${file.name}`;
         const reader = new FileReader();
         reader.onload = function(event) {
           document.getElementById('preview-img').src = event.target.result;
@@ -650,25 +649,54 @@
     }
 
     async function submitBetScreenshot() {
-      if (!selectedFile) return alert("Selecione um print!");
+      if (!selectedFile) return alert("Selecione um print da aposta!");
+      
+      const btn = document.getElementById('btn-upload-submit');
+      const originalText = btn.innerText;
+      btn.disabled = true;
+      btn.innerText = "⏳ Lendo Print via OCR...";
+
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('client_email', loggedClient ? loggedClient.email : 'mariano@neuralhub.ai');
-      formData.append('match_name', document.getElementById('match-input').value);
-      formData.append('stake_brl', document.getElementById('stake-input').value);
+      formData.append('match_name', document.getElementById('match-input').value || '');
+      formData.append('stake_brl', document.getElementById('stake-input').value || '3.00');
 
+      let success = false;
       try {
-        const res = await fetch('/api/upload-print', { method: 'POST', body: formData });
-        const data = await res.json();
-        if (data.success) {
-          alert("🎉 Aposta registrada com sucesso na planilha!");
-          selectedFile = null;
-          document.getElementById('preview-box').style.display = 'none';
-          document.getElementById('match-input').value = '';
-          switchTab('palpites');
-          loadBancaSummary();
+        const res = await fetch(`${PRIMARY_API}/api/upload-print`, { method: 'POST', body: formData });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success) success = true;
         }
-      } catch (err) { alert("Erro: " + err.message); }
+      } catch (err) {
+        console.warn("Upload via primary API falhou, tentando fallback...", err);
+      }
+
+      if (!success) {
+        try {
+          const resFb = await fetch(`${FALLBACK_API}/api/upload-print`, { method: 'POST', body: formData });
+          if (resFb.ok) {
+            const dataFb = await resFb.json();
+            if (dataFb.success) success = true;
+          }
+        } catch(e) {}
+      }
+
+      btn.disabled = false;
+      btn.innerText = originalText;
+
+      if (success) {
+        alert("🎉 Print processado com sucesso pelo OCR e registrado na sua planilha!");
+        selectedFile = null;
+        document.getElementById('preview-box').style.display = 'none';
+        document.getElementById('match-input').value = '';
+        document.getElementById('dropzone-label').innerText = "Toque para selecionar o Print";
+        switchTab('palpites');
+        loadBancaSummary();
+      } else {
+        alert("Não foi possível enviar o print no momento. Verifique sua conexão ou tente novamente.");
+      }
     }
   </script>
 </body>
