@@ -75,7 +75,6 @@
     
     .radar-bar { display: flex; align-items: center; gap: 6px; font-size: 11px; background: #111722; padding: 6px 10px; border-radius: 8px; border: 1px solid #222C3D; }
     .snsi-badge { color: #F59E0B; font-weight: 700; display: flex; align-items: center; gap: 4px; }
-    .momentum-tag { color: var(--green-win); font-weight: 700; }
 
     .palpite-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
     .monte-carlo-tag { color: var(--green-win); font-weight: 700; }
@@ -264,7 +263,7 @@
       </div>
 
       <div class="section-title" style="margin-top: 20px;">
-        <span>💎 Duplas Blindadas (Acelerador 2x)</span>
+        <span>💎 Duplas & Múltiplas Blindadas (Acelerador 2x)</span>
         <span style="font-size: 11px; color: #60A5FA; font-weight: 700;">Odds 1.60 a 1.75</span>
       </div>
       <div class="palpites-list" id="duplas-container">
@@ -334,12 +333,12 @@
       { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 20:00", match: "Internacional vs Remo", market: "Vitória do Internacional ou Empate (1X)", odd: "1.16", monte_carlo: "93.5%", stake: "R$ 3,00", snsi: "+4.5% Vestiário & Torcida" },
       { league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:15", match: "Casa Pia vs Benfica", market: "Empate ou Benfica (X2)", odd: "1.15", monte_carlo: "92.1%", stake: "R$ 3,00", snsi: "+4.0% Elenco Titular" },
       { league: "🇪🇸 La Liga", datetime: "Hoje 16:00", match: "Deportivo vs Elche", market: "Vitória do Deportivo ou Empate (1X)", odd: "1.25", monte_carlo: "87.8%", stake: "R$ 3,00", snsi: "+3.5% Fator Riazor" },
-      { league: "⚾ MLB Baseball", datetime: "Hoje 21:40", match: "LA Dodgers vs Colorado Rockies", market: "LA Dodgers (F5 1X / ML)", odd: "1.38", monte_carlo: "88.0%", stake: "R$ 3,00", snsi: "+4.8% Pitcher Titular" }
+      { league: "⚾ MLB Baseball", datetime: "Hoje 21:40", match: "Los Angeles Dodgers vs Colorado Rockies", market: "LA Dodgers (F5 1X / ML)", odd: "1.38", monte_carlo: "88.0%", stake: "R$ 3,00", snsi: "+4.8% Pitcher Titular" }
     ];
 
     const DEFAULT_DUPLAS = [
-      { league: "🇧🇷 Brasil + 🇵🇹 Portugal", datetime: "Hoje 16:15 / 20:00", match: "Internacional (1X) + Benfica (X2)", market: "Inter 1X (@ 1.16) + Benfica X2 (@ 1.15)", odd: "1.67", monte_carlo: "81.2%", stake: "R$ 2,00", snsi: "+4.2% Conexão Internacional" },
-      { league: "🇧🇷 Futebol + ⚾ MLB", datetime: "Hoje 20:00 / 21:40", match: "Internacional (1X) + LA Dodgers (F5)", market: "Internacional 1X (@ 1.16) + Dodgers F5 1X (@ 1.38)", odd: "1.60", monte_carlo: "79.5%", stake: "R$ 2,00", snsi: "+3.9% Dupla Multi-Esportes" }
+      { league: "🇧🇷 Brasil + 🇵🇹 Portugal + 🇪🇸 Espanha", datetime: "Hoje 16:00 / 16:15 / 20:00", match: "Internacional (1X) + Benfica (X2) + Deportivo (1X)", market: "Inter 1X (@ 1.16) + Benfica X2 (@ 1.15) + Deportivo 1X (@ 1.25)", odd: "1.67", monte_carlo: "81.2%", stake: "R$ 2,00", snsi: "+4.2% Tripla Blindada" },
+      { league: "🇧🇷 Futebol + ⚾ MLB", datetime: "Hoje 20:00 / 21:40", match: "Internacional (1X) + Los Angeles Dodgers (F5 1X)", market: "Inter 1X (@ 1.16) + Dodgers F5 1X (@ 1.38)", odd: "1.60", monte_carlo: "79.5%", stake: "R$ 2,00", snsi: "+3.9% Dupla Multi-Esportes" }
     ];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -465,7 +464,7 @@
             <span class="odd-tag blue">@ ${p.odd}</span>
           </div>
           <div class="radar-bar">
-            <span class="snsi-badge" style="color: #60A5FA;">💎 Dupla Blindada: ${p.snsi || '+4.2% Multi-Fatores'}</span>
+            <span class="snsi-badge" style="color: #60A5FA;">💎 ${p.tipo || 'Dupla/Tripla'}: ${p.snsi || '+4.2% Multi-Fatores'}</span>
           </div>
           <div class="palpite-footer">
             <span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span>
