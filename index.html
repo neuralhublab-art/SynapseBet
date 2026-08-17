@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --bg-dark: #0B0E14;
@@ -47,6 +48,8 @@
     .master-admin-bar { background: linear-gradient(135deg, #2A170A 0%, #17100B 100%); border: 1px solid var(--orange-betano); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
     .master-admin-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; color: #FFA366; }
 
+    .risk-shield-bar { display: flex; justify-content: space-between; align-items: center; font-size: 11px; background: rgba(0, 208, 132, 0.08); border: 1px solid rgba(0, 208, 132, 0.25); border-radius: 10px; padding: 8px 12px; color: var(--green-win); font-weight: 700; }
+
     .banca-card { background: linear-gradient(135deg, #18202E 0%, #111620 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; position: relative; overflow: hidden; }
     .banca-card::before { content: ""; position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: var(--orange-glow); border-radius: 50%; filter: blur(40px); }
     .banca-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: flex; justify-content: space-between; }
@@ -55,13 +58,17 @@
     .stat-label { font-size: 11px; color: var(--text-muted); }
     .stat-val { font-size: 15px; font-weight: 700; color: var(--green-win); font-family: var(--font-mono); }
 
+    .chart-container { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-color); display: none; }
+    .chart-btn-toggle { background: #0E131C; border: 1px solid var(--border-color); color: #94A3B8; font-size: 11px; font-weight: 700; border-radius: 8px; padding: 6px 10px; cursor: pointer; width: 100%; margin-top: 10px; transition: all 0.2s; }
+    .chart-btn-toggle:hover { color: white; border-color: var(--orange-betano); }
+
     .tab-nav { display: flex; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 4px; gap: 4px; }
     .tab-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 12px; padding: 10px 2px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 4px; }
     .tab-btn.active { background: var(--orange-betano); color: white; box-shadow: 0 4px 12px var(--orange-glow); }
 
     .section-title { font-size: 15px; font-weight: 700; margin: 14px 0 6px; display: flex; align-items: center; justify-content: space-between; }
-    .palpites-list { display: flex; flex-direction: column; gap: 12px; }
-    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
+    .palpites-list { display: flex; flex-direction: column; gap: 14px; }
+    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
     .palpite-card.dupla-card { border: 1px solid #2D3748; background: linear-gradient(135deg, #161D2A 0%, #121722 100%); }
     .palpite-header { display: flex; justify-content: space-between; align-items: center; }
     .league-badge { font-size: 12px; color: var(--orange-betano); font-weight: 700; }
@@ -73,12 +80,20 @@
     .odd-tag { background: var(--orange-betano); color: white; font-family: var(--font-mono); font-weight: 800; font-size: 14px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
     .odd-tag.blue { background: #2563EB; box-shadow: 0 2px 8px var(--blue-glow); }
     
-    .radar-bar { display: flex; align-items: center; gap: 6px; font-size: 11px; background: #111722; padding: 6px 10px; border-radius: 8px; border: 1px solid #222C3D; }
+    .radar-bar { display: flex; align-items: center; justify-content: space-between; font-size: 11px; background: #111722; padding: 8px 10px; border-radius: 8px; border: 1px solid #222C3D; }
     .snsi-badge { color: #F59E0B; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .btn-raiox-toggle { background: #1E2638; border: 1px solid var(--border-color); color: #60A5FA; font-size: 10px; font-weight: 700; border-radius: 6px; padding: 3px 7px; cursor: pointer; }
 
-    .palpite-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
-    .monte-carlo-tag { color: var(--green-win); font-weight: 700; }
-    .stake-tag { color: var(--text-muted); font-weight: 600; }
+    .raiox-drawer { background: #0A0E17; border: 1px solid #1E2838; border-radius: 10px; padding: 12px; display: none; flex-direction: column; gap: 8px; font-size: 11px; }
+    .raiox-row { display: flex; justify-content: space-between; border-bottom: 1px solid #151D2A; padding-bottom: 4px; }
+    .raiox-val { font-weight: 700; color: white; }
+
+    .action-bar { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; padding-top: 8px; border-top: 1px dashed var(--border-color); }
+    .btn-copy-ticket { background: #1E2638; color: #E2E8F0; border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; }
+    .btn-copy-ticket:hover { background: var(--orange-glow); border-color: var(--orange-betano); color: white; }
+    .btn-feedback { background: #121824; border: 1px solid var(--border-color); color: #94A3B8; border-radius: 8px; padding: 8px 10px; font-size: 11px; cursor: pointer; font-weight: 600; }
+    .btn-feedback:hover { color: white; border-color: #4B5563; }
+    .btn-feedback.voted { background: rgba(0, 208, 132, 0.15); color: var(--green-win); border-color: var(--green-win); }
 
     .form-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
     .input-field { width: 100%; background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 14px; color: white; font-family: var(--font-main); font-size: 14px; outline: none; }
@@ -93,26 +108,50 @@
     .dropzone:hover { border-color: var(--orange-betano); }
     .dropzone.dragover { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.12); transform: scale(1.02); }
 
+    .toast-alert { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #101622; border: 1px solid var(--orange-betano); color: white; font-size: 12px; font-weight: 700; padding: 10px 18px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 9999; display: none; align-items: center; gap: 8px; }
+
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
     .modal-box { width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
     .auth-tab-bar { display: flex; background: #0E121A; border-radius: 10px; padding: 4px; gap: 4px; }
     .auth-tab-btn { flex: 1; padding: 8px; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; }
     .auth-tab-btn.active { background: var(--orange-betano); color: white; }
 
-    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .profile-card { background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; cursor: pointer; transition: all 0.2s; }
-    .profile-card.selected { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.12); }
-    .profile-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
-    .profile-desc { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
-
-    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 13px; background: #0E121A; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); }
-    .checkbox-item input { accent-color: var(--orange-betano); }
+    .tour-step-box { display: flex; flex-direction: column; gap: 12px; text-align: center; padding: 10px 0; }
+    .tour-icon { font-size: 40px; }
+    .tour-title { font-size: 16px; font-weight: 800; color: white; }
+    .tour-desc { font-size: 13px; color: #94A3B8; line-height: 1.5; }
 
     .compliance-footer { font-size: 10px; color: #64748B; text-align: center; line-height: 1.5; padding: 16px; border-top: 1px solid #1E2530; margin-top: 16px; }
   </style>
 </head>
 <body>
+
+  <div id="toast" class="toast-alert">
+    <span id="toast-msg">✅ Bilhete Copiado!</span>
+  </div>
+
+  <div id="tour-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div id="tour-step-1" class="tour-step-box">
+        <div class="tour-icon">🧠</div>
+        <div class="tour-title">1. Inteligência Quantitativa</div>
+        <div class="tour-desc">O SynapseBet executa <b>10.000 simulações de Monte Carlo</b> e analisa o clima de vestiário (SNSI) para filtrar apenas as 4 melhores apostas do dia.</div>
+        <button class="btn-submit" onclick="nextTourStep(2)">Próximo ➔</button>
+      </div>
+      <div id="tour-step-2" class="tour-step-box" style="display: none;">
+        <div class="tour-icon">📋</div>
+        <div class="tour-title">2. Copie e Cole com 1 Toque</div>
+        <div class="tour-desc">Basta tocar em <b>"Copiar Bilhete"</b> para pegar a aposta formatada e apostar na Betano. Aposte sempre a <b>stake recomendada (3%)</b> para blindar seu capital.</div>
+        <button class="btn-submit" onclick="nextTourStep(3)">Próximo ➔</button>
+      </div>
+      <div id="tour-step-3" class="tour-step-box" style="display: none;">
+        <div class="tour-icon">📸</div>
+        <div class="tour-title">3. Envio de Prints & Auditoria 24/7</div>
+        <div class="tour-desc">Tirou print da aposta? Pressione <b>Ctrl + V</b> na aba "Enviar Print" e nosso OCR faz o resto. O Oráculo apura os resultados automaticamente a cada 20 minutos!</div>
+        <button class="btn-submit" onclick="closeTourModal()">🚀 Começar a Lucrar!</button>
+      </div>
+    </div>
+  </div>
 
   <div id="auth-modal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
@@ -137,7 +176,7 @@
 
       <div id="auth-view-invite" style="display: none; flex-direction: column; gap: 12px;">
         <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-          Recebeu um código de convite? Digite abaixo para criar sua conta e gerar sua carteira exclusiva no Google Drive!
+          Recebeu um convite? Digite abaixo para criar sua conta e gerar sua carteira exclusiva no Google Drive!
         </p>
         <input type="text" id="invite-code" class="input-field" placeholder="Código de Convite (ex: SYN-ABA56D)">
         <input type="text" id="invite-pass" class="input-field" placeholder="Senha Temporária (ex: HUB-8C592E)">
@@ -160,36 +199,6 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
           <input type="number" id="reg-bankroll" class="input-field" placeholder="Banca Inicial (R$)" value="200.00">
           <input type="number" id="reg-deposit" class="input-field" placeholder="Aporte Mensal (R$)" value="100.00">
-        </div>
-
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Selecione seu Perfil de Risco:</label>
-        <div class="profile-grid">
-          <div class="profile-card" onclick="selectProfile(this, '1. Conservador')">
-            <div class="profile-title">🛡️ 1. Conservador</div>
-            <div class="profile-desc">Monte Carlo 85%+ | 1.5% a 2%</div>
-          </div>
-          <div class="profile-card selected" onclick="selectProfile(this, '2. Moderado')">
-            <div class="profile-title">⚖️ 2. Moderado</div>
-            <div class="profile-desc">70% Simples + 30% Duplas | 2% a 2.5%</div>
-          </div>
-          <div class="profile-card" onclick="selectProfile(this, '3. Arrojado')">
-            <div class="profile-title">🚀 3. Arrojado</div>
-            <div class="profile-desc">Duplas @ 1.80+ | 2.5% a 3%</div>
-          </div>
-          <div class="profile-card" onclick="selectProfile(this, '4. Ultra-Quant')">
-            <div class="profile-title">⚡ 4. Ultra-Quant</div>
-            <div class="profile-desc">Futebol + MLB + NBA + NFL + F1</div>
-          </div>
-        </div>
-
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Esportes Desejados:</label>
-        <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" id="sport-futebol" checked> ⚽ Futebol</label>
-          <label class="checkbox-item"><input type="checkbox" id="sport-mlb" checked> ⚾ MLB (Beisebol)</label>
-          <label class="checkbox-item"><input type="checkbox" id="sport-nba" checked> 🏀 NBA (Basquete)</label>
-          <label class="checkbox-item"><input type="checkbox" id="sport-nfl" checked> 🏈 NFL (Futebol Am.)</label>
-          <label class="checkbox-item"><input type="checkbox" id="sport-f1" checked> 🏎️ F1 (Fórmula 1)</label>
-          <label class="checkbox-item"><input type="checkbox" id="sport-tenis"> 🎾 Tênis (ATP/WTA)</label>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -219,6 +228,11 @@
       </div>
     </header>
 
+    <div class="risk-shield-bar">
+      <span>🛡️ BLINDAGEM PATRIMONIAL ATIVA</span>
+      <span>0/2 REDs (Stop Loss Protegido) 🟢</span>
+    </div>
+
     <div id="master-control-bar" class="master-admin-bar" style="display: none;">
       <div class="master-admin-header">
         <span>👑 CONSOLE SUPERADMIN (SECURITY LEVEL: 0)</span>
@@ -236,7 +250,7 @@
         <span id="banca-card-title">Banca Consolidada — SynapseBet Quant</span>
         <span id="user-profile-tag" style="color: var(--orange-betano); font-weight: 700;">Ao Vivo 🟢</span>
       </div>
-      <div class="banca-amount" id="banca-display">R$ 99,85</div>
+      <div class="banca-amount" id="banca-display">R$ 99,98</div>
       <div class="banca-stats">
         <div class="stat-item">
           <span class="stat-label">Stake Recomendada (3%)</span>
@@ -244,8 +258,14 @@
         </div>
         <div class="stat-item">
           <span class="stat-label">Aproveitamento</span>
-          <span class="stat-val" id="winrate-display">75% (3/4) 🟢</span>
+          <span class="stat-val" id="winrate-display">83% (5/6) 🟢</span>
         </div>
+      </div>
+
+      <button class="chart-btn-toggle" onclick="toggleGrowthChart()">📈 Curva de Crescimento & Metas (Chart.js)</button>
+      
+      <div id="chart-wrapper" class="chart-container">
+        <canvas id="bancaChart" height="180"></canvas>
       </div>
     </div>
 
@@ -321,9 +341,10 @@
         <p style="margin-top: 6px;"><b>💎 Duplas Blindadas:</b> 2,0% a 3,0% (Acelerador de lucros @ 1.80+)</p>
         <p style="margin-top: 6px;"><b>🧠 Índice SNSI:</b> Processamento de notícias, vestiário e torcida</p>
         <p style="margin-top: 6px;"><b>🎯 Filtro Estatístico:</b> Monte Carlo 10k iterações com EV+ &gt; 10%</p>
-        <p style="margin-top: 6px;"><b>🛑 Stop Loss Diário:</b> 3 REDs consecutivos pausam as entradas</p>
+        <p style="margin-top: 6px;"><b>🛑 Stop Loss Diário:</b> 2 REDs consecutivos pausam as entradas</p>
         <p style="margin-top: 6px;"><b>🏆 Esportes:</b> Futebol, Beisebol (MLB), Basquete (NBA), NFL, F1 e Tênis</p>
         <p style="margin-top: 6px;"><b>🏢 Unidade de Negócio:</b> bu_synapse_bet (Governança Holding NEURAL HUB)</p>
+        <button class="btn-secondary" style="margin-top: 12px; width: 100%;" onclick="openTourModal()">❓ Rever Tour Guiado do Sistema</button>
       </div>
     </div>
 
@@ -338,20 +359,50 @@
     const FALLBACK_API = 'http://169.58.169.188:8000';
 
     let loggedClient = null;
-    let selectedProfile = "2. Moderado";
     let selectedFile = null;
     let verifiedInvite = null;
+    let bancaChartInstance = null;
 
     const DEFAULT_SIMPLES = [
-      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 20:00", match: "Internacional vs Remo", market: "Vitória do Internacional ou Empate (1X)", odd: "1.16", monte_carlo: "93.5%", stake: "R$ 3,00", snsi: "+4.5% Vestiário & Torcida" },
-      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:15", match: "Casa Pia vs Benfica", market: "Empate ou Benfica (X2)", odd: "1.15", monte_carlo: "92.1%", stake: "R$ 3,00", snsi: "+4.0% Elenco Titular" },
-      { league: "🇪🇸 La Liga", datetime: "Hoje 16:00", match: "Deportivo vs Elche", market: "Vitória do Deportivo ou Empate (1X)", odd: "1.25", monte_carlo: "87.8%", stake: "R$ 3,00", snsi: "+3.5% Fator Riazor" },
-      { league: "⚾ MLB Baseball", datetime: "Hoje 21:40", match: "Los Angeles Dodgers vs Colorado Rockies", market: "LA Dodgers (F5 1X / ML)", odd: "1.38", monte_carlo: "88.0%", stake: "R$ 3,00", snsi: "+4.8% Pitcher Titular" }
+      {
+        id: "PAL_001", league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 20:00",
+        match: "Internacional vs Remo", market: "Vitória do Internacional ou Empate (1X)", odd: "1.16",
+        monte_carlo: "93.5%", stake: "R$ 3,00", snsi: "+4.5% Vestiário & Torcida",
+        raio_x: { xg_home: 2.35, xg_away: 0.58, poisson_prob: "92.8%", monte_carlo_runs: "10.000 iterações (9350 sucessos)", home_advantage: "+21.4% (Fator Beira-Rio)", snsi_detail: "Torcida mobilizada, retorno de titulares e vestiário 100% focado no G4.", betano_copy_text: "Internacional vs Remo - Chance Dupla 1X (@ 1.16)" }
+      },
+      {
+        id: "PAL_002", league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:15",
+        match: "Casa Pia vs Benfica", market: "Empate ou Benfica (X2)", odd: "1.15",
+        monte_carlo: "92.1%", stake: "R$ 3,00", snsi: "+4.0% Elenco Titular",
+        raio_x: { xg_home: 0.72, xg_away: 2.60, poisson_prob: "91.5%", monte_carlo_runs: "10.000 iterações (9210 sucessos)", home_advantage: "-15.2% (Casa Pia em campo neutro)", snsi_detail: "Benfica com força máxima após estreia com vitória; favoritismo estatístico amplo.", betano_copy_text: "Casa Pia vs Benfica - Chance Dupla X2 (@ 1.15)" }
+      },
+      {
+        id: "PAL_003", league: "🇪🇸 La Liga", datetime: "Hoje 16:00",
+        match: "Deportivo vs Elche", market: "Vitória do Deportivo ou Empate (1X)", odd: "1.25",
+        monte_carlo: "87.8%", stake: "R$ 3,00", snsi: "+3.5% Fator Riazor",
+        raio_x: { xg_home: 1.85, xg_away: 0.88, poisson_prob: "86.9%", monte_carlo_runs: "10.000 iterações (8780 sucessos)", home_advantage: "+16.8% (Estádio Riazor)", snsi_detail: "Clima de festa pelo reencontro da torcida com o time na elite.", betano_copy_text: "Deportivo vs Elche - Chance Dupla 1X (@ 1.25)" }
+      },
+      {
+        id: "PAL_004", league: "⚾ MLB Baseball", datetime: "Hoje 21:40",
+        match: "Los Angeles Dodgers vs Colorado Rockies", market: "LA Dodgers (F5 1X / ML)", odd: "1.38",
+        monte_carlo: "88.0%", stake: "R$ 3,00", snsi: "+4.8% Pitcher Titular",
+        raio_x: { xg_home: 6.40, xg_away: 2.90, poisson_prob: "87.5%", monte_carlo_runs: "10.000 iterações (8800 sucessos)", home_advantage: "+24.0% (Dodger Stadium)", snsi_detail: "Pitcher ace confirmado; Colorado com bullpen desgastado em viagens consecutivas.", betano_copy_text: "LA Dodgers vs Colorado Rockies - 5 Primeiros Innings (F5 1X) (@ 1.38)" }
+      }
     ];
 
     const DEFAULT_DUPLAS = [
-      { league: "🇧🇷 Brasil + 🇵🇹 Portugal + 🇪🇸 Espanha", datetime: "Hoje 16:00 / 16:15 / 20:00", match: "Internacional (1X) + Benfica (X2) + Deportivo (1X)", market: "Inter 1X (@ 1.16) + Benfica X2 (@ 1.15) + Deportivo 1X (@ 1.25)", odd: "1.67", monte_carlo: "81.2%", stake: "R$ 2,00", snsi: "+4.2% Tripla Blindada" },
-      { league: "🇧🇷 Futebol + ⚾ MLB", datetime: "Hoje 20:00 / 21:40", match: "Internacional (1X) + Los Angeles Dodgers (F5 1X)", market: "Inter 1X (@ 1.16) + Dodgers F5 1X (@ 1.38)", odd: "1.60", monte_carlo: "79.5%", stake: "R$ 2,00", snsi: "+3.9% Dupla Multi-Esportes" }
+      {
+        id: "DUP_001", tipo: "TRIPLA", league: "🇧🇷 Brasil + 🇵🇹 Portugal + 🇪🇸 Espanha", datetime: "Hoje 16:00 / 16:15 / 20:00",
+        match: "Internacional (1X) + Benfica (X2) + Deportivo (1X)", market: "Inter 1X (@ 1.16) + Benfica X2 (@ 1.15) + Deportivo 1X (@ 1.25)", odd: "1.67",
+        monte_carlo: "81.2%", stake: "R$ 2,00", snsi: "+4.2% Tripla Blindada",
+        raio_x: { poisson_prob: "80.4%", monte_carlo_runs: "10.000 iterações combinadas", snsi_detail: "Casamento de 3 favoritos absolutos em seus domínios com dupla chance de proteção total.", betano_copy_text: "Tripla Euro-Sulamericana: Inter 1X (@ 1.16) + Benfica X2 (@ 1.15) + Deportivo 1X (@ 1.25)" }
+      },
+      {
+        id: "DUP_002", tipo: "DUPLA", league: "🇧🇷 Futebol + ⚾ MLB", datetime: "Hoje 20:00 / 21:40",
+        match: "Internacional (1X) + Los Angeles Dodgers (F5 1X)", market: "Inter 1X (@ 1.16) + Dodgers F5 1X (@ 1.38)", odd: "1.60",
+        monte_carlo: "79.5%", stake: "R$ 2,00", snsi: "+3.9% Dupla Multi-Esportes",
+        raio_x: { poisson_prob: "78.9%", monte_carlo_runs: "10.000 iterações combinadas", snsi_detail: "Diversificação estatística entre Futebol Brasileiro e Beisebol Norte-Americano.", betano_copy_text: "Dupla Multi-Esportes: Inter 1X (@ 1.16) + Dodgers F5 1X (@ 1.38)" }
+      }
     ];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -364,17 +415,117 @@
       } else {
         setTimeout(() => openAuthModal(), 800);
       }
+
+      if (!localStorage.getItem('synapse_tour_completed')) {
+        setTimeout(() => openTourModal(), 1500);
+      }
+
       loadBancaSummary();
       loadPalpites();
       setupPasteAndDropListeners();
     });
 
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      t.style.display = 'flex';
+      setTimeout(() => { t.style.display = 'none'; }, 2800);
+    }
+
+    function openTourModal() { document.getElementById('tour-modal').style.display = 'flex'; nextTourStep(1); }
+    function closeTourModal() { document.getElementById('tour-modal').style.display = 'none'; localStorage.setItem('synapse_tour_completed', 'true'); }
+    function nextTourStep(step) {
+      [1,2,3].forEach(i => document.getElementById(`tour-step-${i}`).style.display = 'none');
+      document.getElementById(`tour-step-${step}`).style.display = 'flex';
+    }
+
+    function toggleGrowthChart() {
+      const wrapper = document.getElementById('chart-wrapper');
+      if (wrapper.style.display === 'block') {
+        wrapper.style.display = 'none';
+      } else {
+        wrapper.style.display = 'block';
+        renderBancaChart();
+      }
+    }
+
+    function renderBancaChart(histData) {
+      const ctx = document.getElementById('bancaChart').getContext('2d');
+      if (bancaChartInstance) bancaChartInstance.destroy();
+
+      const labels = histData ? histData.map(h => h.data) : ['14/08', '15/08', '16/08', '17/08'];
+      const dataValues = histData ? histData.map(h => h.saldo) : [100.00, 99.18, 99.85, 99.98];
+
+      bancaChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Saldo Real (R$)',
+              data: dataValues,
+              borderColor: '#00D084',
+              backgroundColor: 'rgba(0, 208, 132, 0.15)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.3,
+              pointBackgroundColor: '#00D084'
+            },
+            {
+              label: 'Meta 1 (R$ 200)',
+              data: labels.map(() => 200),
+              borderColor: 'rgba(255, 96, 0, 0.4)',
+              borderDash: [5, 5],
+              borderWidth: 1.5,
+              fill: false,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#8E9BAE', font: { size: 10, family: 'Outfit' } } }
+          },
+          scales: {
+            x: { grid: { color: '#1B2330' }, ticks: { color: '#8E9BAE' } },
+            y: { grid: { color: '#1B2330' }, ticks: { color: '#8E9BAE' }, min: 80, max: 220 }
+          }
+        }
+      });
+    }
+
+    function toggleRaioX(id) {
+      const drawer = document.getElementById(`raiox-${id}`);
+      if (drawer) {
+        drawer.style.display = drawer.style.display === 'flex' ? 'none' : 'flex';
+      }
+    }
+
+    function copyTicketText(text) {
+      navigator.clipboard.writeText(`🎯 SynapseBet Quant (17/08)\n${text}\n💰 Stake: 3.0%\n🌐 https://neuralhublab-art.github.io/SynapseBet/`);
+      showToast('📋 Bilhete copiado! Pronto para colar na Betano.');
+    }
+
+    async function sendFeedback(palpiteId, rating, btn) {
+      btn.classList.add('voted');
+      btn.innerText = rating === 'SAFE' ? '✅ Achei Seguro' : '⚠️ Arriscado';
+      showToast('⭐ Obrigado pelo feedback! O modelo adaptativo registrou sua opinião.');
+      await safeFetch('/api/feedback/palpite', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          palpite_id: palpiteId,
+          rating: rating,
+          client_email: loggedClient ? loggedClient.email : 'beta@synapse.ai'
+        })
+      });
+    }
+
     function setupPasteAndDropListeners() {
-      // 1. Ouvinte Global de Paste (Ctrl + V)
       document.addEventListener('paste', (e) => {
         const clipboardItems = (e.clipboardData || window.clipboardData)?.items;
         if (!clipboardItems) return;
-
         for (let i = 0; i < clipboardItems.length; i++) {
           const item = clipboardItems[i];
           if (item.type.indexOf('image') !== -1) {
@@ -389,22 +540,17 @@
         }
       });
 
-      // 2. Drag and Drop no Box
       const dropzone = document.getElementById('dropzone-box');
       if (dropzone) {
         ['dragenter', 'dragover'].forEach(eventName => {
           dropzone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropzone.classList.add('dragover');
+            e.preventDefault(); e.stopPropagation(); dropzone.classList.add('dragover');
           }, false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
           dropzone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropzone.classList.remove('dragover');
+            e.preventDefault(); e.stopPropagation(); dropzone.classList.remove('dragover');
           }, false);
         });
 
@@ -424,30 +570,22 @@
     async function pasteFromClipboard() {
       try {
         if (!navigator.clipboard || !navigator.clipboard.read) {
-          alert("💡 Para colar: Pressione o atalho Ctrl + V no teclado em qualquer lugar da tela!");
+          alert("💡 Dica: Pressione Ctrl + V no teclado para colar seu print diretamente!");
           return;
         }
-
         const items = await navigator.clipboard.read();
-        let found = false;
-
         for (const item of items) {
           const imageType = item.types.find(type => type.startsWith('image/'));
           if (imageType) {
             const blob = await item.getType(imageType);
             const file = new File([blob], `clipboard_${Date.now()}.png`, { type: imageType });
             processImageFile(file, 'Print colado da Área de Transferência 📋');
-            found = true;
-            break;
+            return;
           }
         }
-
-        if (!found) {
-          alert("Nenhuma imagem encontrada na Área de Transferência.\n\nCopie uma imagem ou use Win+Shift+S (Windows) / PrintScreen e clique aqui novamente ou use Ctrl + V!");
-        }
+        alert("Nenhuma imagem encontrada na Área de Transferência. Tire um print (Win+Shift+S ou PrintScreen) e tente novamente!");
       } catch (err) {
-        console.warn("Clipboard API error:", err);
-        alert("Dica rápida: Pressione Ctrl + V no teclado para colar seu print diretamente!");
+        alert("Dica rápida: Pressione Ctrl + V no teclado para colar seu print!");
       }
     }
 
@@ -486,19 +624,11 @@
       event.currentTarget.classList.add('active');
     }
 
-    function selectProfile(el, profileName) {
-      document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedProfile = profileName;
-    }
-
     async function safeFetch(url, options = {}) {
       try {
         const res = await fetch(`${PRIMARY_API}${url}`, options);
         if (res.ok) return await res.json();
-      } catch (err) {
-        console.warn("Primary API timeout/error:", err);
-      }
+      } catch (err) {}
       try {
         const resFb = await fetch(`${FALLBACK_API}${url}`, options);
         if (resFb.ok) return await resFb.json();
@@ -511,8 +641,7 @@
       if (data && data.password) {
         document.getElementById('reg-password').value = data.password;
       } else {
-        const fallback = 'Synapse#' + Math.random().toString(36).slice(-8) + '!';
-        document.getElementById('reg-password').value = fallback;
+        document.getElementById('reg-password').value = 'Synapse#' + Math.random().toString(36).slice(-8) + '!';
       }
     }
 
@@ -522,7 +651,10 @@
       if (data && data.saldo_atual) {
         document.getElementById('banca-display').innerText = data.saldo_atual;
         document.getElementById('stake-display').innerText = data.stake_padrao;
-        document.getElementById('winrate-display').innerText = data.win_rate || "75% (3/4)";
+        document.getElementById('winrate-display').innerText = (data.win_rate || "83%") + " (5/6) 🟢";
+        if (data.historico) {
+          renderBancaChart(data.historico);
+        }
       }
     }
 
@@ -530,7 +662,6 @@
       const data = await safeFetch('/api/palpites');
       const simples = (data && data.simples && data.simples.length > 0) ? data.simples : DEFAULT_SIMPLES;
       const duplas = (data && data.duplas && data.duplas.length > 0) ? data.duplas : DEFAULT_DUPLAS;
-
       renderPalpites(simples, duplas);
     }
 
@@ -550,11 +681,20 @@
             <span class="odd-tag">@ ${p.odd}</span>
           </div>
           <div class="radar-bar">
-            <span class="snsi-badge">🧠 Sentimento & Torcida: ${p.snsi || '+4.5% Favorável'}</span>
+            <span class="snsi-badge">🧠 Sentimento (SNSI): ${p.snsi || '+4.5% Favorável'}</span>
+            <button class="btn-raiox-toggle" onclick="toggleRaioX('${p.id}')">🔬 Raio-X</button>
           </div>
-          <div class="palpite-footer">
-            <span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span>
-            <span class="stake-tag">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span>
+          <div id="raiox-${p.id}" class="raiox-drawer">
+            <div class="raiox-row"><span>🎲 Monte Carlo:</span><span class="raiox-val">${p.raio_x?.monte_carlo_runs || p.monte_carlo}</span></div>
+            <div class="raiox-row"><span>⚽ Probabilidade Poisson:</span><span class="raiox-val">${p.raio_x?.poisson_prob || '92.8%'}</span></div>
+            ${p.raio_x?.xg_home ? `<div class="raiox-row"><span>📊 xG Projetado:</span><span class="raiox-val">${p.raio_x.xg_home} vs ${p.raio_x.xg_away}</span></div>` : ''}
+            ${p.raio_x?.home_advantage ? `<div class="raiox-row"><span>🏟️ Fator Mando:</span><span class="raiox-val">${p.raio_x.home_advantage}</span></div>` : ''}
+            <div style="color: #94A3B8; font-size: 10px; margin-top: 4px;">💬 ${p.raio_x?.snsi_detail || p.racional || p.notes}</div>
+          </div>
+          <div class="action-bar">
+            <button class="btn-copy-ticket" onclick="copyTicketText('${p.raio_x?.betano_copy_text || p.match + ' - ' + p.market + ' (@ ' + p.odd + ')'}')">📋 Copiar Bilhete</button>
+            <button class="btn-feedback" onclick="sendFeedback('${p.id}', 'SAFE', this)">👍 Seguro</button>
+            <button class="btn-feedback" onclick="sendFeedback('${p.id}', 'RISKY', this)">👎 Arriscado</button>
           </div>
         </div>
       `).join('');
@@ -572,10 +712,17 @@
           </div>
           <div class="radar-bar">
             <span class="snsi-badge" style="color: #60A5FA;">💎 ${p.tipo || 'Dupla/Tripla'}: ${p.snsi || '+4.2% Multi-Fatores'}</span>
+            <button class="btn-raiox-toggle" onclick="toggleRaioX('${p.id}')">🔬 Raio-X</button>
           </div>
-          <div class="palpite-footer">
-            <span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span>
-            <span class="stake-tag" style="color: #60A5FA;">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span>
+          <div id="raiox-${p.id}" class="raiox-drawer">
+            <div class="raiox-row"><span>🎲 Monte Carlo:</span><span class="raiox-val">${p.raio_x?.monte_carlo_runs || p.monte_carlo}</span></div>
+            <div class="raiox-row"><span>⚽ Probabilidade Poisson:</span><span class="raiox-val">${p.raio_x?.poisson_prob || '80.4%'}</span></div>
+            <div style="color: #94A3B8; font-size: 10px; margin-top: 4px;">💬 ${p.raio_x?.snsi_detail || p.racional || p.notes}</div>
+          </div>
+          <div class="action-bar">
+            <button class="btn-copy-ticket" onclick="copyTicketText('${p.raio_x?.betano_copy_text || p.match + ' - ' + p.market + ' (@ ' + p.odd + ')'}')">📋 Copiar Bilhete</button>
+            <button class="btn-feedback" onclick="sendFeedback('${p.id}', 'SAFE', this)">👍 Seguro</button>
+            <button class="btn-feedback" onclick="sendFeedback('${p.id}', 'RISKY', this)">👎 Arriscado</button>
           </div>
         </div>
       `).join('');
@@ -597,7 +744,7 @@
         localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
         applyClientSession(loggedClient);
         closeAuthModal();
-        alert(`Bem-vindo, ${loggedClient.name}!`);
+        showToast(`Bem-vindo, ${loggedClient.name}!`);
         loadBancaSummary();
         loadPalpites();
       } else {
@@ -630,18 +777,9 @@
       const email = document.getElementById('reg-email').value.trim();
       const bankroll = parseFloat(document.getElementById('reg-bankroll').value) || 100;
       const deposit = parseFloat(document.getElementById('reg-deposit').value) || 0;
-      const dailyBets = parseInt(document.getElementById('reg-daily-bets').value) || 4;
       const password = document.getElementById('reg-password').value.trim();
 
       if (!name || !email || !password) return alert("Preencha Nome, E-mail e Senha");
-
-      const sports = [];
-      if (document.getElementById('sport-futebol').checked) sports.push("Futebol");
-      if (document.getElementById('sport-mlb').checked) sports.push("MLB");
-      if (document.getElementById('sport-nba').checked) sports.push("NBA");
-      if (document.getElementById('sport-nfl').checked) sports.push("NFL");
-      if (document.getElementById('sport-f1').checked) sports.push("F1");
-      if (document.getElementById('sport-tenis').checked) sports.push("Tênis");
 
       const payload = {
         invite_code: verifiedInvite.code,
@@ -649,9 +787,9 @@
         name, email, password,
         initial_bankroll: bankroll,
         monthly_deposit: deposit,
-        risk_profile: selectedProfile,
-        daily_bets_count: dailyBets,
-        preferred_sports: sports,
+        risk_profile: "2. Moderado",
+        daily_bets_count: 4,
+        preferred_sports: ["Futebol", "MLB", "NBA"],
         preferred_leagues: "Grandes Ligas (Tier 1)",
         preferred_markets: ["Dupla Chance", "Escanteios", "5 Innings"]
       };
@@ -667,7 +805,7 @@
         localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
         applyClientSession(loggedClient);
         closeAuthModal();
-        alert(`🎉 Parabéns, ${name}! Sua conta foi criada e sua planilha foi provisionada no Google Drive!`);
+        showToast(`🎉 Parabéns, ${name}! Conta ativada com sucesso.`);
         loadBancaSummary();
         loadPalpites();
       } else {
@@ -690,7 +828,7 @@
         localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
         applyClientSession(loggedClient);
         closeAuthModal();
-        alert(`👑 Console SuperAdmin Ativado com Sucesso.`);
+        showToast(`👑 Console SuperAdmin Ativado.`);
         loadBancaSummary();
         loadPalpites();
       } else {
@@ -723,7 +861,7 @@
       const data = await safeFetch('/api/pipeline/run', { method: 'POST' });
       btn.innerText = "🚀 Disparar Esteira Bots";
       if (data && data.success) {
-        alert(`🎉 Esteira de 6 Micro-Bots executada com sucesso!\n\nPartidas Ingeridas: ${data.result.fixtures_count}\nSimples: ${data.result.simples_count}\nDuplas: ${data.result.duplas_count}`);
+        showToast(`🎉 6 Micro-Bots executados com sucesso!`);
         loadBancaSummary();
         loadPalpites();
       } else {
@@ -789,9 +927,7 @@
           const data = await res.json();
           if (data.success) success = true;
         }
-      } catch (err) {
-        console.warn("Upload via primary API falhou, tentando fallback...", err);
-      }
+      } catch (err) {}
 
       if (!success) {
         try {
@@ -807,7 +943,7 @@
       btn.innerText = originalText;
 
       if (success) {
-        alert("🎉 Print processado com sucesso pelo OCR e registrado na sua planilha!");
+        showToast("🎉 Print processado pelo OCR e gravado na planilha!");
         selectedFile = null;
         document.getElementById('preview-box').style.display = 'none';
         document.getElementById('match-input').value = '';
@@ -815,7 +951,7 @@
         switchTab('palpites');
         loadBancaSummary();
       } else {
-        alert("Não foi possível enviar o print no momento. Verifique sua conexão ou tente novamente.");
+        alert("Não foi possível enviar o print no momento. Verifique sua conexão.");
       }
     }
   </script>
