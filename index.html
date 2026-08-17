@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SynapseBet (Powered by Neural Hub)</title>
+  <title>SynapseBet SaaS (Powered by Neural Hub)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@
     .auth-btn-badge.logged-in .status-dot { background: var(--green-win); box-shadow: 0 0 6px var(--green-win); }
     .auth-btn-badge.is-master .status-dot { background: #FF6000; box-shadow: 0 0 6px #FF6000; }
 
-    .master-admin-bar { background: linear-gradient(135deg, #2A170A 0%, #17100B 100%); border: 1px solid var(--orange-betano); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+    .master-admin-bar { background: linear-gradient(135deg, #2A170A 0%, #17100B 100%); border: 1px solid var(--orange-betano); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
     .master-admin-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; color: #FFA366; }
 
     .banca-card { background: linear-gradient(135deg, #18202E 0%, #111620 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; position: relative; overflow: hidden; }
@@ -61,7 +61,7 @@
 
     .section-title { font-size: 15px; font-weight: 700; margin: 14px 0 6px; display: flex; align-items: center; justify-content: space-between; }
     .palpites-list { display: flex; flex-direction: column; gap: 12px; }
-    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .palpite-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
     .palpite-card.dupla-card { border: 1px solid #2D3748; background: linear-gradient(135deg, #161D2A 0%, #121722 100%); }
     .palpite-header { display: flex; justify-content: space-between; align-items: center; }
     .league-badge { font-size: 12px; color: var(--orange-betano); font-weight: 700; }
@@ -72,6 +72,11 @@
     .market-name { font-size: 13px; font-weight: 600; color: #E2E8F0; }
     .odd-tag { background: var(--orange-betano); color: white; font-family: var(--font-mono); font-weight: 800; font-size: 14px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
     .odd-tag.blue { background: #2563EB; box-shadow: 0 2px 8px var(--blue-glow); }
+    
+    .radar-bar { display: flex; align-items: center; gap: 6px; font-size: 11px; background: #111722; padding: 6px 10px; border-radius: 8px; border: 1px solid #222C3D; }
+    .snsi-badge { color: #F59E0B; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .momentum-tag { color: var(--green-win); font-weight: 700; }
+
     .palpite-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
     .monte-carlo-tag { color: var(--green-win); font-weight: 700; }
     .stake-tag { color: var(--text-muted); font-weight: 600; }
@@ -82,6 +87,8 @@
     .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; box-shadow: 0 4px 16px var(--orange-glow); width: 100%; transition: transform 0.1s ease; }
     .btn-submit:active { transform: scale(0.98); }
     .btn-submit:disabled { background: #4A5568; cursor: not-allowed; box-shadow: none; }
+    .btn-secondary { background: #1E2638; color: #94A3B8; border: 1px solid var(--border-color); font-weight: 700; font-size: 12px; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+    .btn-secondary:hover { color: white; border-color: var(--orange-betano); }
     .dropzone { border: 2px dashed var(--border-color); border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; background: #0E121A; }
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
@@ -109,18 +116,18 @@
     <div class="modal-box">
       <div style="text-align: center; margin-bottom: 4px;">
         <span class="logo-badge">SYNAPSE</span>
-        <h2 style="font-size: 20px; font-weight: 800; margin-top: 8px;">SynapseBet</h2>
+        <h2 style="font-size: 20px; font-weight: 800; margin-top: 8px;">SynapseBet SaaS</h2>
         <p style="font-size: 11px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase;">Powered by Neural Hub</p>
       </div>
 
       <div class="auth-tab-bar">
         <button class="auth-tab-btn active" onclick="switchAuthTab('login')">🔑 Entrar</button>
         <button class="auth-tab-btn" onclick="switchAuthTab('invite')">🎟️ Convite</button>
-        <button class="auth-tab-btn" onclick="switchAuthTab('master')">👑 Master</button>
+        <button class="auth-tab-btn" onclick="switchAuthTab('master')">👑 SuperAdmin</button>
       </div>
 
       <div id="auth-view-login" style="display: flex; flex-direction: column; gap: 12px;">
-        <input type="email" id="login-email" class="input-field" placeholder="Seu E-mail (Gmail)">
+        <input type="email" id="login-email" class="input-field" placeholder="Seu E-mail Cadastrado">
         <input type="password" id="login-pass" class="input-field" placeholder="Sua Senha Pessoal">
         <button class="btn-submit" onclick="submitClientLogin()">Acessar Minha Carteira</button>
         <button onclick="closeAuthModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 4px;">Explorar como visitante</button>
@@ -128,7 +135,7 @@
 
       <div id="auth-view-invite" style="display: none; flex-direction: column; gap: 12px;">
         <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-          Recebeu um código de convite do Mariano? Digite abaixo para criar sua conta e gerar sua planilha exclusiva no Google Drive!
+          Recebeu um código de convite? Digite abaixo para criar sua conta e gerar sua carteira exclusiva no Google Drive!
         </p>
         <input type="text" id="invite-code" class="input-field" placeholder="Código de Convite (ex: SYN-ABA56D)">
         <input type="text" id="invite-pass" class="input-field" placeholder="Senha Temporária (ex: HUB-8C592E)">
@@ -136,15 +143,15 @@
       </div>
 
       <div id="auth-view-master" style="display: none; flex-direction: column; gap: 12px;">
-        <p style="font-size: 12px; color: var(--text-muted);">Acesso exclusivo do Administrador Master (Mariano):</p>
-        <input type="text" id="master-user" class="input-field" placeholder="Usuário Master (Mariano)">
-        <input type="password" id="master-pass" class="input-field" placeholder="Senha Master">
-        <button class="btn-submit" onclick="submitMasterLogin()">Entrar como Administrador Master</button>
+        <p style="font-size: 12px; color: var(--text-muted);">Acesso restrito ao Console Administrativo Master (SuperAdmin):</p>
+        <input type="text" id="master-user" class="input-field" placeholder="ID de Usuário SuperAdmin">
+        <input type="password" id="master-pass" class="input-field" placeholder="Chave Mestra de Acesso">
+        <button class="btn-submit" onclick="submitMasterLogin()">Acessar Console SuperAdmin</button>
       </div>
 
       <div id="onboarding-form" style="display: none; flex-direction: column; gap: 14px;">
         <div style="font-size: 14px; font-weight: 800; color: var(--orange-betano); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-          📋 Cadastro & Personalização do Cliente
+          📋 Cadastro & Personalização do Assinante
         </div>
         <input type="text" id="reg-name" class="input-field" placeholder="Nome Completo">
         <input type="email" id="reg-email" class="input-field" placeholder="E-mail (Gmail para o Google Drive)">
@@ -183,26 +190,12 @@
           <label class="checkbox-item"><input type="checkbox" id="sport-tenis"> 🎾 Tênis (ATP/WTA)</label>
         </div>
 
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Mercados de Interesse:</label>
-        <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" id="mkt-dupla" checked> Dupla Chance (1X/X2)</label>
-          <label class="checkbox-item"><input type="checkbox" id="mkt-cantos" checked> Escanteios</label>
-          <label class="checkbox-item"><input type="checkbox" id="mkt-f5" checked> MLB 5 Innings (F5)</label>
-          <label class="checkbox-item"><input type="checkbox" id="mkt-spreads" checked> Spreads & Pontos</label>
-          <label class="checkbox-item"><input type="checkbox" id="mkt-tds" checked> Touchdowns NFL</label>
-          <label class="checkbox-item"><input type="checkbox" id="mkt-f1" checked> H2H F1</label>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Crie sua Senha Pessoal:</label>
+          <button type="button" class="btn-secondary" onclick="generateAndSetStrongPassword()">🎲 Sugerir Senha Forte (NIST)</button>
         </div>
+        <input type="text" id="reg-password" class="input-field" placeholder="Sua Senha Definitiva">
 
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Quantas apostas quer fazer por dia?</label>
-        <select id="reg-daily-bets" class="input-field">
-          <option value="2">2 Apostas por dia (Cirúrgico)</option>
-          <option value="3">3 Apostas por dia (Recomendado)</option>
-          <option value="4" selected>4 Apostas por dia (3 Simples + 1 Dupla)</option>
-          <option value="5">5 Apostas por dia (3 Simples + 2 Duplas)</option>
-          <option value="6">6 Apostas por dia (Multi-Esportes)</option>
-        </select>
-
-        <input type="password" id="reg-password" class="input-field" placeholder="Crie sua Senha Pessoal Definitiva">
         <button class="btn-submit" onclick="submitClientRegistration()">⚡ Concluir Cadastro & Gerar Planilha</button>
       </div>
 
@@ -226,10 +219,13 @@
 
     <div id="master-control-bar" class="master-admin-bar" style="display: none;">
       <div class="master-admin-header">
-        <span>👑 PAINEL DO ADMINISTRADOR (MARIANO)</span>
-        <span style="font-size: 10px; background: rgba(255,96,0,0.3); padding: 2px 6px; border-radius: 4px;">ACESSO TOTAL</span>
+        <span>👑 CONSOLE SUPERADMIN (SECURITY LEVEL: 0)</span>
+        <span style="font-size: 10px; background: rgba(255,96,0,0.3); padding: 2px 6px; border-radius: 4px;">6 MICRO-BOTS ATIVOS</span>
       </div>
-      <button class="btn-submit" style="padding: 10px; font-size: 13px;" onclick="generateNewInviteMaster()">⚡ Gerar Novo Convite para Cliente</button>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button class="btn-submit" style="padding: 10px; font-size: 12px;" onclick="generateNewInviteMaster()">🎟️ Novo Convite NIST</button>
+        <button class="btn-secondary" style="padding: 10px; font-size: 12px;" onclick="triggerPipelineMaster()">🚀 Disparar Esteira Bots</button>
+      </div>
       <div id="master-invite-result" style="display: none; padding: 10px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 8px; font-size: 12px;"></div>
     </div>
 
@@ -260,7 +256,7 @@
 
     <div id="tab-palpites" class="tab-content">
       <div class="section-title">
-        <span>🛡️ Apostas Simples Seguras (Segunda 17/08)</span>
+        <span>🛡️ Apostas Simples (Segunda 17/08)</span>
         <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+</span>
       </div>
       <div class="palpites-list" id="simples-container">
@@ -311,6 +307,7 @@
       <div class="form-card" style="font-size: 13px; line-height: 1.6;">
         <p><b>🛡️ Apostas Simples:</b> 1,5% a 2,5% da banca (Base sólida e segura)</p>
         <p style="margin-top: 6px;"><b>💎 Duplas Blindadas:</b> 2,0% a 3,0% (Acelerador de lucros @ 1.80+)</p>
+        <p style="margin-top: 6px;"><b>🧠 Índice SNSI:</b> Processamento de notícias, vestiário e torcida</p>
         <p style="margin-top: 6px;"><b>🎯 Filtro Estatístico:</b> Monte Carlo 10k iterações com EV+ &gt; 10%</p>
         <p style="margin-top: 6px;"><b>🛑 Stop Loss Diário:</b> 3 REDs consecutivos pausam as entradas</p>
         <p style="margin-top: 6px;"><b>🏆 Esportes:</b> Futebol, Beisebol (MLB), Basquete (NBA), NFL, F1 e Tênis</p>
@@ -319,7 +316,7 @@
     </div>
 
     <footer class="compliance-footer">
-      SynapseBet (Powered by Neural Hub) &bull; bu_synapse_bet<br>
+      SynapseBet SaaS (Powered by Neural Hub) &bull; bu_synapse_bet<br>
       Probabilidades e análises estatísticas. Rendimentos passados não garantem lucros futuros (+18).
     </footer>
   </div>
@@ -334,15 +331,15 @@
     let verifiedInvite = null;
 
     const DEFAULT_SIMPLES = [
-      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 20:00", match: "Internacional vs Remo", market: "Vitória do Internacional ou Empate (1X)", odd: "1.16", monte_carlo: "93.5%", stake: "R$ 3,00" },
-      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:15", match: "Casa Pia vs Benfica", market: "Empate ou Benfica (X2)", odd: "1.15", monte_carlo: "92.1%", stake: "R$ 3,00" },
-      { league: "🇪🇸 La Liga", datetime: "Hoje 16:00", match: "Deportivo vs Elche", market: "Vitória do Deportivo ou Empate (1X)", odd: "1.25", monte_carlo: "87.8%", stake: "R$ 3,00" },
-      { league: "⚾ MLB Baseball", datetime: "Hoje 21:40", match: "LA Dodgers vs Colorado Rockies", market: "LA Dodgers (F5 1X / ML)", odd: "1.38", monte_carlo: "88.0%", stake: "R$ 3,00" }
+      { league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 20:00", match: "Internacional vs Remo", market: "Vitória do Internacional ou Empate (1X)", odd: "1.16", monte_carlo: "93.5%", stake: "R$ 3,00", snsi: "+4.5% Vestiário & Torcida" },
+      { league: "🇵🇹 Liga Portugal", datetime: "Hoje 16:15", match: "Casa Pia vs Benfica", market: "Empate ou Benfica (X2)", odd: "1.15", monte_carlo: "92.1%", stake: "R$ 3,00", snsi: "+4.0% Elenco Titular" },
+      { league: "🇪🇸 La Liga", datetime: "Hoje 16:00", match: "Deportivo vs Elche", market: "Vitória do Deportivo ou Empate (1X)", odd: "1.25", monte_carlo: "87.8%", stake: "R$ 3,00", snsi: "+3.5% Fator Riazor" },
+      { league: "⚾ MLB Baseball", datetime: "Hoje 21:40", match: "LA Dodgers vs Colorado Rockies", market: "LA Dodgers (F5 1X / ML)", odd: "1.38", monte_carlo: "88.0%", stake: "R$ 3,00", snsi: "+4.8% Pitcher Titular" }
     ];
 
     const DEFAULT_DUPLAS = [
-      { league: "🇧🇷 Brasil + 🇵🇹 Portugal", datetime: "Hoje 16:15 / 20:00", match: "Internacional (1X) + Benfica (X2)", market: "Inter 1X (@ 1.16) + Benfica X2 (@ 1.15)", odd: "1.67", monte_carlo: "81.2%", stake: "R$ 2,00" },
-      { league: "🇧🇷 Futebol + ⚾ MLB", datetime: "Hoje 20:00 / 21:40", match: "Internacional (1X) + LA Dodgers (F5)", market: "Internacional 1X (@ 1.16) + Dodgers F5 1X (@ 1.38)", odd: "1.60", monte_carlo: "79.5%", stake: "R$ 2,00" }
+      { league: "🇧🇷 Brasil + 🇵🇹 Portugal", datetime: "Hoje 16:15 / 20:00", match: "Internacional (1X) + Benfica (X2)", market: "Inter 1X (@ 1.16) + Benfica X2 (@ 1.15)", odd: "1.67", monte_carlo: "81.2%", stake: "R$ 2,00", snsi: "+4.2% Conexão Internacional" },
+      { league: "🇧🇷 Futebol + ⚾ MLB", datetime: "Hoje 20:00 / 21:40", match: "Internacional (1X) + LA Dodgers (F5)", market: "Internacional 1X (@ 1.16) + Dodgers F5 1X (@ 1.38)", odd: "1.60", monte_carlo: "79.5%", stake: "R$ 2,00", snsi: "+3.9% Dupla Multi-Esportes" }
     ];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -403,6 +400,16 @@
       return null;
     }
 
+    async function generateAndSetStrongPassword() {
+      const data = await safeFetch('/api/auth/generate-strong-password');
+      if (data && data.password) {
+        document.getElementById('reg-password').value = data.password;
+      } else {
+        const fallback = 'Synapse#' + Math.random().toString(36).slice(-8) + '!';
+        document.getElementById('reg-password').value = fallback;
+      }
+    }
+
     async function loadBancaSummary() {
       const emailParam = loggedClient ? `?client_email=${encodeURIComponent(loggedClient.email)}` : '';
       const data = await safeFetch(`/api/banca${emailParam}`);
@@ -436,6 +443,9 @@
             <span class="market-name">${p.market}</span>
             <span class="odd-tag">@ ${p.odd}</span>
           </div>
+          <div class="radar-bar">
+            <span class="snsi-badge">🧠 Sentimento & Torcida: ${p.snsi || '+4.5% Favorável'}</span>
+          </div>
           <div class="palpite-footer">
             <span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span>
             <span class="stake-tag">💰 Stake: ${loggedClient ? 'R$ ' + loggedClient.stake_padrao.toFixed(2) : p.stake}</span>
@@ -453,6 +463,9 @@
           <div class="market-box">
             <span class="market-name">${p.market}</span>
             <span class="odd-tag blue">@ ${p.odd}</span>
+          </div>
+          <div class="radar-bar">
+            <span class="snsi-badge" style="color: #60A5FA;">💎 Dupla Blindada: ${p.snsi || '+4.2% Multi-Fatores'}</span>
           </div>
           <div class="palpite-footer">
             <span class="monte-carlo-tag">🎲 Monte Carlo: ${p.monte_carlo}</span>
@@ -524,14 +537,6 @@
       if (document.getElementById('sport-f1').checked) sports.push("F1");
       if (document.getElementById('sport-tenis').checked) sports.push("Tênis");
 
-      const markets = [];
-      if (document.getElementById('mkt-dupla').checked) markets.push("Dupla Chance");
-      if (document.getElementById('mkt-cantos').checked) markets.push("Escanteios");
-      if (document.getElementById('mkt-f5').checked) markets.push("5 Innings MLB");
-      if (document.getElementById('mkt-spreads').checked) markets.push("Spreads NBA");
-      if (document.getElementById('mkt-tds').checked) markets.push("Touchdowns NFL");
-      if (document.getElementById('mkt-f1').checked) markets.push("H2H F1");
-
       const payload = {
         invite_code: verifiedInvite.code,
         temp_password: verifiedInvite.pass,
@@ -542,7 +547,7 @@
         daily_bets_count: dailyBets,
         preferred_sports: sports,
         preferred_leagues: "Grandes Ligas (Tier 1)",
-        preferred_markets: markets
+        preferred_markets: ["Dupla Chance", "Escanteios", "5 Innings"]
       };
 
       const data = await safeFetch('/api/auth/register', {
@@ -579,11 +584,11 @@
         localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
         applyClientSession(loggedClient);
         closeAuthModal();
-        alert(`👑 Bem-vindo, Mariano! Modo Administrador Master ativado.`);
+        alert(`👑 Console SuperAdmin Ativado com Sucesso.`);
         loadBancaSummary();
         loadPalpites();
       } else {
-        alert("Credenciais Master Inválidas");
+        alert("Credenciais SuperAdmin Inválidas");
       }
     }
 
@@ -591,7 +596,7 @@
       const data = await safeFetch('/api/auth/generate-invite', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ created_by: "Mariano", days_valid: 7 })
+        body: JSON.stringify({ created_by: "SuperAdmin", days_valid: 7 })
       });
 
       if (data && data.success) {
@@ -601,8 +606,22 @@
         box.innerHTML = `
           <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
           <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
-          <b>Senha Temp:</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
+          <b>Senha Temp (NIST):</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
         `;
+      }
+    }
+
+    async function triggerPipelineMaster() {
+      const btn = event.currentTarget;
+      btn.innerText = "⏳ Rodando Esteira...";
+      const data = await safeFetch('/api/pipeline/run', { method: 'POST' });
+      btn.innerText = "🚀 Disparar Esteira Bots";
+      if (data && data.success) {
+        alert(`🎉 Esteira de 6 Micro-Bots executada com sucesso!\n\nPartidas Ingeridas: ${data.result.fixtures_count}\nSimples: ${data.result.simples_count}\nDuplas: ${data.result.duplas_count}`);
+        loadBancaSummary();
+        loadPalpites();
+      } else {
+        alert("Erro ao disparar esteira.");
       }
     }
 
@@ -610,10 +629,10 @@
       const badge = document.getElementById('header-auth-badge');
       badge.classList.remove('logged-in', 'is-master');
 
-      if (client.is_master || client.role === "MASTER") {
+      if (client.is_master || client.role === "SUPERADMIN" || client.role === "MASTER") {
         badge.classList.add('is-master');
-        document.getElementById('header-user-text').innerText = `👑 Mariano (Master)`;
-        document.getElementById('banca-card-title').innerText = `Banca Master — Mariano (SynapseBet)`;
+        document.getElementById('header-user-text').innerText = `👑 SuperAdmin`;
+        document.getElementById('banca-card-title').innerText = `Banca Consolidada — SuperAdmin`;
         document.getElementById('master-control-bar').style.display = 'flex';
       } else {
         badge.classList.add('logged-in');
