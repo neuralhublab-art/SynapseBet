@@ -86,9 +86,12 @@
     .btn-submit { background: var(--orange-betano); color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; padding: 14px; cursor: pointer; box-shadow: 0 4px 16px var(--orange-glow); width: 100%; transition: transform 0.1s ease; }
     .btn-submit:active { transform: scale(0.98); }
     .btn-submit:disabled { background: #4A5568; cursor: not-allowed; box-shadow: none; }
-    .btn-secondary { background: #1E2638; color: #94A3B8; border: 1px solid var(--border-color); font-weight: 700; font-size: 12px; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
-    .btn-secondary:hover { color: white; border-color: var(--orange-betano); }
-    .dropzone { border: 2px dashed var(--border-color); border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; background: #0E121A; }
+    .btn-secondary { background: #1E2638; color: #94A3B8; border: 1px solid var(--border-color); font-weight: 700; font-size: 12px; border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { color: white; border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.1); }
+    
+    .dropzone { border: 2px dashed var(--border-color); border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; background: #0E121A; transition: all 0.2s ease; }
+    .dropzone:hover { border-color: var(--orange-betano); }
+    .dropzone.dragover { border-color: var(--orange-betano); background: rgba(255, 96, 0, 0.12); transform: scale(1.02); }
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
     .modal-box { width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
@@ -275,14 +278,24 @@
       <div class="section-title"><span>Registrar Aposta Real via Print</span></div>
       <div class="form-card">
         <p style="font-size: 13px; color: var(--text-muted);">
-          Tirou print da aposta feita na Betano? Envie aqui e o <b>Betano OCR Vision Parser</b> extrai times, odds, stake e grava na planilha!
+          Tirou print da aposta feita na Betano? Envie o arquivo, arraste para o box ou <b>cole direto da Área de Transferência (Ctrl + V)</b>! O Betano OCR extrai odds e grava na planilha.
         </p>
-        <div class="dropzone" onclick="document.getElementById('file-input').click()">
+
+        <div class="dropzone" id="dropzone-box" onclick="document.getElementById('file-input').click()">
           <div style="font-size: 32px; margin-bottom: 6px;">📸</div>
-          <div style="font-size: 14px; font-weight: 700;" id="dropzone-label">Toque para selecionar o Print</div>
+          <div style="font-size: 14px; font-weight: 700;" id="dropzone-label">Toque para selecionar, arraste ou use Ctrl + V</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Suporta PNG, JPG, WebP ou Print da Área de Transferência</div>
           <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
         </div>
-        <div id="preview-box" style="display: none; width: 100%; border-radius: 10px; overflow: hidden;"><img id="preview-img" src="" style="width: 100%;"></div>
+
+        <button type="button" class="btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; font-size: 13px;" onclick="pasteFromClipboard()">
+          <span style="font-size: 16px;">📋</span> Colar Print da Área de Transferência (Clipboard)
+        </button>
+
+        <div id="preview-box" style="display: none; width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); background: #0E121A;">
+          <img id="preview-img" src="" style="width: 100%; display: block;">
+        </div>
+
         <input type="text" id="match-input" class="input-field" placeholder="Nome do Jogo (opcional se legível no print)">
         <input type="number" id="stake-input" class="input-field" placeholder="Valor da Stake (R$)" value="3.00">
         <button class="btn-submit" id="btn-upload-submit" onclick="submitBetScreenshot()">🚀 Gravar na Minha Planilha</button>
@@ -353,7 +366,101 @@
       }
       loadBancaSummary();
       loadPalpites();
+      setupPasteAndDropListeners();
     });
+
+    function setupPasteAndDropListeners() {
+      // 1. Ouvinte Global de Paste (Ctrl + V)
+      document.addEventListener('paste', (e) => {
+        const clipboardItems = (e.clipboardData || window.clipboardData)?.items;
+        if (!clipboardItems) return;
+
+        for (let i = 0; i < clipboardItems.length; i++) {
+          const item = clipboardItems[i];
+          if (item.type.indexOf('image') !== -1) {
+            const blob = item.getAsFile();
+            if (blob) {
+              const file = new File([blob], `print_ctrl_v_${Date.now()}.png`, { type: blob.type });
+              processImageFile(file, 'Print colado via Ctrl+V 📋');
+              switchTab('upload');
+              break;
+            }
+          }
+        }
+      });
+
+      // 2. Drag and Drop no Box
+      const dropzone = document.getElementById('dropzone-box');
+      if (dropzone) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('dragover');
+          }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('dragover');
+          }, false);
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+          if (files && files.length > 0) {
+            const file = files[0];
+            if (file.type.startsWith('image/')) {
+              processImageFile(file, `Print arrastado: ${file.name}`);
+            }
+          }
+        }, false);
+      }
+    }
+
+    async function pasteFromClipboard() {
+      try {
+        if (!navigator.clipboard || !navigator.clipboard.read) {
+          alert("💡 Para colar: Pressione o atalho Ctrl + V no teclado em qualquer lugar da tela!");
+          return;
+        }
+
+        const items = await navigator.clipboard.read();
+        let found = false;
+
+        for (const item of items) {
+          const imageType = item.types.find(type => type.startsWith('image/'));
+          if (imageType) {
+            const blob = await item.getType(imageType);
+            const file = new File([blob], `clipboard_${Date.now()}.png`, { type: imageType });
+            processImageFile(file, 'Print colado da Área de Transferência 📋');
+            found = true;
+            break;
+          }
+        }
+
+        if (!found) {
+          alert("Nenhuma imagem encontrada na Área de Transferência.\n\nCopie uma imagem ou use Win+Shift+S (Windows) / PrintScreen e clique aqui novamente ou use Ctrl + V!");
+        }
+      } catch (err) {
+        console.warn("Clipboard API error:", err);
+        alert("Dica rápida: Pressione Ctrl + V no teclado para colar seu print diretamente!");
+      }
+    }
+
+    function processImageFile(file, label = "") {
+      selectedFile = file;
+      document.getElementById('dropzone-label').innerHTML = `<span style="color: var(--green-win);">✅ ${label || file.name}</span>`;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        document.getElementById('preview-img').src = event.target.result;
+        document.getElementById('preview-box').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
 
     function handleAuthBadgeClick() {
       if (loggedClient) {
@@ -648,26 +755,21 @@
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(`tab-${tabId}`).style.display = 'block';
-      event.currentTarget.classList.add('active');
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) target.style.display = 'block';
+      const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (btn) btn.classList.add('active');
     }
 
     function handleFileSelect(e) {
       const file = e.target.files[0];
       if (file) {
-        selectedFile = file;
-        document.getElementById('dropzone-label').innerText = `📄 ${file.name}`;
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          document.getElementById('preview-img').src = event.target.result;
-          document.getElementById('preview-box').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
+        processImageFile(file, file.name);
       }
     }
 
     async function submitBetScreenshot() {
-      if (!selectedFile) return alert("Selecione um print da aposta!");
+      if (!selectedFile) return alert("Selecione ou cole um print da aposta!");
       
       const btn = document.getElementById('btn-upload-submit');
       const originalText = btn.innerText;
@@ -709,7 +811,7 @@
         selectedFile = null;
         document.getElementById('preview-box').style.display = 'none';
         document.getElementById('match-input').value = '';
-        document.getElementById('dropzone-label').innerText = "Toque para selecionar o Print";
+        document.getElementById('dropzone-label').innerText = "Toque para selecionar, arraste ou use Ctrl + V";
         switchTab('palpites');
         loadBancaSummary();
       } else {
