@@ -1449,9 +1449,10 @@
       const email = loggedClient ? loggedClient.email : null;
       const data = await safeFetch(`/api/banca${email ? '?email=' + encodeURIComponent(email) : ''}`);
       if (data) {
-        document.getElementById('banca-display').innerText = data.saldo_formatado || "R$ 103,85";
+        document.getElementById('banca-display').innerText = data.saldo_atual || data.saldo_formatado || "R$ 100,00";
         document.getElementById('stake-display').innerText = data.stake_padrao || "R$ 3,00";
-        document.getElementById('winrate-display').innerText = (data.win_rate || "88%") + " (7/8) 🟢";
+        const wr = data.win_rate || "100%";
+        document.getElementById('winrate-display').innerText = wr.includes("Novo") ? wr : `${wr} (7/8) 🟢`;
         if (data.historico) renderBancaChart(data.historico);
       }
     }
@@ -1552,60 +1553,23 @@
       const email = loggedClient ? loggedClient.email : null;
       const data = await safeFetch(`/api/user/bets-tracker${email ? '?email=' + encodeURIComponent(email) : ''}`);
       
-      if (data && data.success && data.bets) {
+      if (data && data.success && Array.isArray(data.bets)) {
         allUserTrackerBets = data.bets;
       } else {
-        allUserTrackerBets = [
-          {
-            id: "APO_010", date: "18/08 21:35", match: "Goiás vs Juventude-RS", league: "🇧🇷 Brasileirão Série B",
-            market: "Chance Dupla (1X)", odd: 1.30, stake: 3.00, expected_return: 3.90, ticket_id: "20860426154",
-            start_time: "21:35", end_time: "23:30", home_team: "Goiás", away_team: "Juventude-RS",
-            match_status: "PRE_GAME", match_clock: "Início às 21:35", display_score: "0 x 0 (Pré-Jogo)",
-            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 3,00 @ 1.30)"
-          },
-          {
-            id: "APO_011", date: "18/08 21:30", match: "Náutico vs Ceará + Goiás vs Juventude", league: "🇧🇷 Brasileirão Série B (Dupla)",
-            market: "Chance Dupla (X2) + Chance Dupla (1X)", odd: 2.21, stake: 2.00, expected_return: 4.42, ticket_id: "20860432744",
-            start_time: "21:30", end_time: "23:30", home_team: "Náutico / Goiás", away_team: "Ceará / Juventude",
-            match_status: "PRE_GAME", match_clock: "Início às 21:30", display_score: "0 x 0 (Dupla)",
-            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Dupla Blindada @ 2.21)"
-          },
-          {
-            id: "APO_012", date: "18/08 21:30", match: "Náutico vs Ceará", league: "🇧🇷 Brasileirão Série B",
-            market: "Chance Dupla (X2)", odd: 1.70, stake: 2.00, expected_return: 3.40, ticket_id: "20860437924",
-            start_time: "21:30", end_time: "23:25", home_team: "Náutico", away_team: "Ceará",
-            match_status: "PRE_GAME", match_clock: "Início às 21:30", display_score: "0 x 0 (Pré-Jogo)",
-            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 2,00 @ 1.70)"
-          },
-          {
-            id: "APO_013", date: "18/08 19:35", match: "Baltimore Orioles vs New York Yankees", league: "⚾ MLB Major League",
-            market: "5 primeiros innings - NY Yankees", odd: 2.15, stake: 2.00, expected_return: 4.30, ticket_id: "20860440604",
-            start_time: "19:35", end_time: "21:00", home_team: "Baltimore Orioles", away_team: "NY Yankees",
-            match_status: "PRE_GAME", match_clock: "Início às 19:35", display_score: "0 x 0 (MLB F5)",
-            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Pitcher Ace @ 2.15)"
-          },
-          {
-            id: "APO_014", date: "18/08 19:35", match: "Baltimore Orioles vs NY Yankees + Náutico vs Ceará", league: "⚾ MLB + 🇧🇷 Futebol",
-            market: "NY Yankees (F5) + Chance Dupla (X2)", odd: 3.65, stake: 2.00, expected_return: 7.31, ticket_id: "20860442574",
-            start_time: "19:35", end_time: "23:25", home_team: "Orioles / Náutico", away_team: "Yankees / Ceará",
-            match_status: "PRE_GAME", match_clock: "Início às 19:35", display_score: "0 x 0 (Multi-Esporte)",
-            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Multi-Esporte @ 3.65)"
-          },
-          {
-            id: "APO_007", date: "17/08 20:00", match: "Deportivo La Coruña vs Elche", league: "🇪🇸 La Liga 2",
-            market: "Chance Dupla (1X)", odd: 1.25, stake: 3.00, expected_return: 3.75, ticket_id: "20860119284",
-            start_time: "20:00", end_time: "21:55", home_team: "Deportivo La Coruña", away_team: "Elche",
-            match_status: "FINISHED", match_clock: "Encerrado", display_score: "1 x 1",
-            live_status_badge: "GREEN_FINAL", live_status_text: "🏆 LIQUIDADO: GREEN (+R$ 0,75 Lucro Líquido)"
-          },
-          {
-            id: "APO_006", date: "17/08 16:15", match: "Casa Pia vs Benfica", league: "🇵🇹 Liga Portugal",
-            market: "Chance Dupla (X2)", odd: 1.15, stake: 3.00, expected_return: 3.45, ticket_id: "20860098231",
-            start_time: "16:15", end_time: "18:10", home_team: "Casa Pia", away_team: "Benfica",
-            match_status: "FINISHED", match_clock: "Encerrado", display_score: "0 x 2",
-            live_status_badge: "GREEN_FINAL", live_status_text: "🏆 LIQUIDADO: GREEN (+R$ 0,45 Lucro Líquido)"
-          }
-        ];
+        // Se for SuperAdmin sem dados, mantém lista padrão; se for cliente comum, lista vazia
+        if (loggedClient && !loggedClient.is_master && loggedClient.role !== "SUPERADMIN") {
+          allUserTrackerBets = [];
+        } else {
+          allUserTrackerBets = [
+            {
+              id: "APO_010", date: "18/08 21:35", match: "Goiás vs Juventude-RS", league: "🇧🇷 Brasileirão Série B",
+              market: "Chance Dupla (1X)", odd: 1.30, stake: 3.00, expected_return: 3.90, ticket_id: "20860426154",
+              start_time: "21:35", end_time: "23:30", home_team: "Goiás", away_team: "Juventude-RS",
+              match_status: "PRE_GAME", match_clock: "Início às 21:35", display_score: "0 x 0 (Pré-Jogo)",
+              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 3,00 @ 1.30)"
+            }
+          ];
+        }
       }
 
       renderTrackerBets();
@@ -1639,7 +1603,16 @@
       }
 
       if (filtered.length === 0) {
-        box.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 30px; background: #121824; border-radius: 16px;">Nenhuma aposta encontrada neste filtro.</div>`;
+        box.innerHTML = `
+          <div style="text-align: center; color: #94A3B8; padding: 36px 20px; background: #121824; border-radius: 18px; border: 1px dashed var(--border-color); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <div style="font-size: 38px; margin-bottom: 4px;">📡</div>
+            <div style="font-size: 16px; font-weight: 800; color: white;">Nenhuma Aposta Registrada na sua Carteira</div>
+            <div style="font-size: 12px; color: #94A3B8; max-width: 440px; line-height: 1.5;">
+              Sua carteira individual está pronta! Escolha uma oportunidade na aba <b>🎯 Palpites</b>, faça a entrada na Betano e envie o print na aba <b>📸 Enviar Print</b> para acompanhar o placar ao vivo aqui.
+            </div>
+            <button class="btn-submit" style="max-width: 220px; margin-top: 10px; padding: 10px; font-size: 12px;" onclick="switchTab('palpites')">🎯 Ver Palpites de Hoje</button>
+          </div>
+        `;
         return;
       }
 
@@ -1702,8 +1675,6 @@
           </div>
         `;
       }).join('');
-    }
-
     function openBetDetailModal(betId, category) {
       let pool = (category === 'simples') ? DEFAULT_SIMPLES : (category === 'duplas') ? DEFAULT_DUPLAS : DEFAULT_VALUEBETS;
       const bet = pool.find(b => b.id === betId) || pool[0];
@@ -1719,10 +1690,14 @@
       const oddVal = bet.odd_betano || bet.odd || 1.30;
       document.getElementById('bm-odd-tag').innerText = `@ ${oddVal}`;
 
-      const stakeVal = bet.stake ? parseFloat(bet.stake.replace(/[^0-9\.]/g, '')) || 3.00 : (bet.suggested_stake_reais || 3.00);
+      // Calcula stake dinâmica baseada na banca do assinante logado
+      const bankroll = (loggedClient && (loggedClient.current_bankroll || loggedClient.initial_bankroll)) || 100.0;
+      const stakePct = category === 'simples' ? 0.03 : category === 'duplas' ? 0.02 : 0.01;
+      const stakeVal = bankroll * stakePct;
       const returnVal = (stakeVal * parseFloat(oddVal)).toFixed(2);
-      document.getElementById('bm-stake-val').innerText = `R$ ${stakeVal.toFixed(2)} (${category === 'simples' ? '3.0%' : category === 'duplas' ? '2.0%' : '1.0%'})`;
-      document.getElementById('bm-return-val').innerText = `R$ ${returnVal}`;
+      
+      document.getElementById('bm-stake-val').innerText = `R$ ${stakeVal.toFixed(2).replace('.', ',')} (${(stakePct * 100).toFixed(1)}%)`;
+      document.getElementById('bm-return-val').innerText = `R$ ${returnVal.replace('.', ',')}`;
 
       const rx = bet.raio_x || {};
       document.getElementById('bm-snsi-score').innerText = `🧠 SNSI: ${bet.snsi || '+4.2%'}`;
@@ -2412,6 +2387,13 @@
         document.getElementById('header-user-text').innerText = `👤 ${client.name.split(' ')[0]}`;
         document.getElementById('banca-card-title').innerText = `Banca do Assinante — ${client.name}`;
         if (adminTabBtn) adminTabBtn.style.display = 'none';
+
+        // Aplica imediatamente a banca e stake individual configuradas no cadastro do cliente
+        const bankroll = parseFloat(client.current_bankroll || client.initial_bankroll || 100);
+        const stakeVal = parseFloat(client.stake_padrao || (bankroll * 0.03));
+        document.getElementById('banca-display').innerText = `R$ ${bankroll.toFixed(2).replace('.', ',')}`;
+        document.getElementById('stake-display').innerText = `R$ ${stakeVal.toFixed(2).replace('.', ',')} (3.0%)`;
+        document.getElementById('winrate-display').innerText = "100% (Novo Assinante) 🟢";
       }
 
       if (client.spreadsheet_url) {
