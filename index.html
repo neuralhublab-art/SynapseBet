@@ -1255,16 +1255,8 @@
       { client_id: "cli_001", name: "Carlos Silva", email: "carlos.silva@gmail.com", initial_bankroll: 300.0, current_bankroll: 300.0, risk_profile: "1. Conservador", status: "DELETED", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=900073536" }
     ];
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('synapse_client');
-      if (saved) {
-        try {
-          loggedClient = JSON.parse(saved);
-          applyClientSession(loggedClient);
-        } catch(e) {}
-      } else {
-        setTimeout(() => openAuthModal(), 600);
-      }
+    window.addEventListener('DOMContentLoaded', async () => {
+      await validateAndApplySession();
 
       const savedProf = localStorage.getItem('synapse_profile');
       if (savedProf) {
@@ -1285,10 +1277,88 @@
       loadAdminClientsList();
       setupPasteAndDropListeners();
 
-      // Sincronização contínua a cada 30 segundos
-      setInterval(runSessionHeartbeat, 30000);
+      // Sincronização contínua a cada 15 segundos
+      setInterval(runSessionHeartbeat, 15000);
       setInterval(loadUserBetsTracker, 30000);
     });
+
+    async function validateAndApplySession() {
+      const saved = localStorage.getItem('synapse_client');
+      if (!saved) {
+        resetToGuestSession();
+        setTimeout(() => openAuthModal(), 600);
+        return;
+      }
+
+      try {
+        loggedClient = JSON.parse(saved);
+      } catch(e) {
+        resetToGuestSession();
+        return;
+      }
+
+      if (!loggedClient || !loggedClient.email) {
+        resetToGuestSession();
+        return;
+      }
+
+      // Se for SuperAdmin, aplica direto
+      if (loggedClient.is_master || loggedClient.role === "SUPERADMIN" || loggedClient.role === "MASTER") {
+        applyClientSession(loggedClient);
+        return;
+      }
+
+      // 1. Checagem local imediata no cache de clientes do SuperAdmin
+      const cachedClients = localStorage.getItem('synapse_admin_clients');
+      if (cachedClients) {
+        try {
+          const list = JSON.parse(cachedClients);
+          const found = list.find(c => (c.email || '').toLowerCase() === loggedClient.email.toLowerCase() || (c.client_id || '').toLowerCase() === (loggedClient.client_id || '').toLowerCase());
+          if (found && (found.status === 'DELETED' || found.status === 'SUSPENDED')) {
+            console.log('Conta suspensa/excluída no cache local. Deslogando...');
+            logoutClient(false);
+            return;
+          }
+        } catch(e) {}
+      }
+
+      // 2. Aplica a sessão
+      applyClientSession(loggedClient);
+
+      // 3. Validação imediata com o Backend em tempo real
+      try {
+        const res = await safeFetch(`/api/auth/validate-session?email=${encodeURIComponent(loggedClient.email)}`);
+        if (res && (res.valid === false || res.status === 'DELETED' || res.status === 'SUSPENDED' || res.status === 'NOT_FOUND')) {
+          console.log('Sessão revogada pelo servidor. Deslogando...');
+          logoutClient(true);
+        }
+      } catch (e) {}
+    }
+
+    function resetToGuestSession() {
+      loggedClient = null;
+      localStorage.removeItem('synapse_client');
+      const badge = document.getElementById('header-auth-badge');
+      const adminTabBtn = document.getElementById('tab-btn-admin');
+      if (badge) {
+        badge.classList.remove('logged-in', 'is-master');
+        document.getElementById('header-user-text').innerText = '🔑 Entrar / Convidado';
+      }
+      if (adminTabBtn) adminTabBtn.style.display = 'none';
+      document.getElementById('banca-card-title').innerText = 'Banca Consolidada — SynapseBet Quant';
+      document.getElementById('sheet-link-btn').href = 'https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit';
+    }
+
+    function logoutClient(notify = true) {
+      localStorage.removeItem('synapse_client');
+      loggedClient = null;
+      resetToGuestSession();
+      if (notify) {
+        showToast("⚠️ Sessão revogada ou conta desativada.");
+      }
+      switchTab('palpites');
+      openAuthModal();
+    }
 
     async function safeFetch(endpoint, options = {}) {
       try {
@@ -1306,17 +1376,10 @@
       if (!loggedClient || loggedClient.is_master) return;
       try {
         const res = await safeFetch(`/api/auth/validate-session?email=${encodeURIComponent(loggedClient.email)}`);
-        if (res && res.valid === false) {
-          alert("⚠️ Sua sessão foi revogada ou a conta foi suspensa pelo Administrador.");
-          logoutClient();
+        if (res && (res.valid === false || res.status === 'DELETED' || res.status === 'SUSPENDED' || res.status === 'NOT_FOUND')) {
+          logoutClient(true);
         }
       } catch (e) {}
-    }
-
-    function logoutClient() {
-      localStorage.removeItem('synapse_client');
-      loggedClient = null;
-      location.reload();
     }
 
     function showToast(msg) {
@@ -2029,6 +2092,10 @@
       renderAdminClients(list);
       showToast(`Status do cliente alterado para ${newStatus === 'ACTIVE' ? 'ATIVO' : 'SUSPENSO'}!`);
 
+      if (loggedClient && (loggedClient.email || '').toLowerCase() === email.toLowerCase() && newStatus === 'SUSPENDED') {
+        logoutClient(false);
+      }
+
       try {
         await safeFetch('/api/admin/clients/status', {
           method: 'POST',
@@ -2052,6 +2119,10 @@
 
       renderAdminClients(list);
       showToast("🗑️ Cliente movido para a Lixeira e acesso revogado!");
+
+      if (loggedClient && (loggedClient.email || '').toLowerCase() === email.toLowerCase()) {
+        logoutClient(false);
+      }
 
       try {
         await safeFetch('/api/admin/clients/delete', {
@@ -2094,6 +2165,10 @@
 
       renderAdminClients(list);
       showToast("❌ Registro excluído definitivamente da listagem!");
+
+      if (loggedClient && (loggedClient.email || '').toLowerCase() === email.toLowerCase()) {
+        logoutClient(false);
+      }
 
       try {
         await safeFetch('/api/admin/clients/purge', {
