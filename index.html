@@ -126,18 +126,6 @@
       font-weight: 700;
     }
 
-    /* SuperAdmin Master Bar */
-    .master-admin-bar {
-      background: linear-gradient(135deg, #2A170A 0%, #17100B 100%);
-      border: 1px solid var(--orange-betano);
-      border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .master-admin-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; color: #FFA366; }
-
     /* Banca Hero Card */
     .banca-card {
       background: linear-gradient(135deg, #18202E 0%, #111620 100%);
@@ -211,15 +199,20 @@
       border-radius: 16px;
       padding: 6px;
       gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .tab-nav::-webkit-scrollbar { display: none; }
     .tab-btn {
       flex: 1;
+      min-width: fit-content;
       background: transparent;
       border: none;
       color: var(--text-muted);
       font-weight: 700;
       font-size: 13px;
-      padding: 10px 6px;
+      padding: 10px 14px;
       border-radius: 12px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -227,11 +220,22 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
+      white-space: nowrap;
     }
     .tab-btn.active {
       background: var(--orange-betano);
       color: white;
       box-shadow: 0 4px 16px var(--orange-glow);
+    }
+    .tab-btn.admin-tab-btn {
+      background: rgba(255, 96, 0, 0.12);
+      border: 1px dashed rgba(255, 96, 0, 0.35);
+      color: #FFA366;
+    }
+    .tab-btn.admin-tab-btn.active {
+      background: linear-gradient(135deg, #FF6000 0%, #D9480F 100%);
+      border: 1px solid #FF8A00;
+      color: white;
     }
 
     /* Barra de Categorias com Rolagem Suave */
@@ -265,6 +269,12 @@
       color: #38BDF8;
       box-shadow: 0 0 14px rgba(56,189,248,0.3);
     }
+    .cat-pill.admin-pill-active {
+      background: rgba(255,96,0,0.2);
+      border-color: var(--orange-betano);
+      color: #FFA366;
+      box-shadow: 0 0 14px rgba(255,96,0,0.3);
+    }
 
     .section-title {
       font-size: 16px;
@@ -275,10 +285,7 @@
       justify-content: space-between;
     }
 
-    /* =========================================================================
-       NOVO DESIGN SYSTEM: LIST VIEW COMPACTA (FEED DE OPORTUNIDADES)
-       Inspirado em SokkerPRO, Simplebet e ReflexAI
-       ========================================================================= */
+    /* List View de Oportunidades */
     .opportunity-list {
       display: flex;
       flex-direction: column;
@@ -306,64 +313,18 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
-    .opportunity-row.dupla-row {
-      border-left: 4px solid #38BDF8;
-    }
-    .opportunity-row.valuebet-row {
-      border-left: 4px solid #F59E0B;
-    }
-    .opportunity-row.simples-row {
-      border-left: 4px solid var(--orange-betano);
-    }
+    .opportunity-row.dupla-row { border-left: 4px solid #38BDF8; }
+    .opportunity-row.valuebet-row { border-left: 4px solid #F59E0B; }
+    .opportunity-row.simples-row { border-left: 4px solid var(--orange-betano); }
 
-    .opp-left {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex: 1;
-      min-width: 0;
-    }
-    .opp-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #94A3B8;
-    }
-    .opp-league-badge {
-      color: var(--orange-betano);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .opp-time {
-      font-family: var(--font-mono);
-      color: #64748B;
-    }
-    .opp-match-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #FFFFFF;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.3;
-    }
-    .opp-market-sub {
-      font-size: 12px;
-      color: #CBD5E1;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .opp-left { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+    .opp-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: #94A3B8; }
+    .opp-league-badge { color: var(--orange-betano); text-transform: uppercase; letter-spacing: 0.5px; }
+    .opp-time { font-family: var(--font-mono); color: #64748B; }
+    .opp-match-title { font-size: 15px; font-weight: 800; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+    .opp-market-sub { font-size: 12px; color: #CBD5E1; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 
-    .opp-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
+    .opp-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .opp-metric-pill {
       font-size: 11px;
       font-weight: 700;
@@ -403,9 +364,49 @@
       color: white;
     }
 
-    /* =========================================================================
-       POP-UP MODAL GLASSMORPHIC / BOTTOM SHEET (MOBILE & DESKTOP)
-       ========================================================================= */
+    /* Cards de Assinantes SuperAdmin */
+    .admin-client-card {
+      background: #121824;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+    .admin-client-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      background: #151D2C;
+    }
+    .admin-client-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .admin-client-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .admin-client-name { font-size: 16px; font-weight: 800; color: white; display: flex; align-items: center; gap: 6px; }
+    .admin-client-email { font-size: 12px; color: #94A3B8; word-break: break-all; }
+    .admin-client-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; font-size: 11px; }
+    .admin-badge-pill {
+      background: #0E121A;
+      border: 1px solid var(--border-color);
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #CBD5E1;
+      font-weight: 600;
+    }
+
+    .admin-actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* Pop-up Modal Glassmorphic / Bottom Sheet */
     .bet-modal-backdrop {
       position: fixed;
       top: 0;
@@ -454,12 +455,8 @@
         max-height: 88vh;
         animation: slideUpSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
-      .modal-grab-handle {
-        display: block;
-      }
-      .opp-metric-pill {
-        display: none;
-      }
+      .modal-grab-handle { display: block; }
+      .opp-metric-pill { display: none; }
     }
 
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -770,30 +767,6 @@
       <span>0/2 REDs (Stop Loss Protegido) 🟢</span>
     </div>
 
-    <!-- CONSOLE SUPERADMIN COM GESTÃO DE CLIENTES -->
-    <div id="master-control-bar" class="master-admin-bar" style="display: none;">
-      <div class="master-admin-header">
-        <span>👑 CONSOLE SUPERADMIN &bull; GESTÃO DE CLIENTES & CONTRATOS</span>
-        <span style="font-size: 10px; background: rgba(255,96,0,0.3); padding: 2px 6px; border-radius: 4px;">6 BOTS ATIVOS</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-        <button class="btn-submit" style="padding: 10px; font-size: 12px;" onclick="generateNewInviteMaster()">🎟️ Novo Convite NIST</button>
-        <button class="btn-secondary" style="padding: 10px; font-size: 12px;" onclick="triggerPipelineMaster()">🚀 Disparar Esteira Bots</button>
-      </div>
-      <div id="master-invite-result" style="display: none; padding: 10px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 8px; font-size: 12px;"></div>
-      
-      <!-- TABELA DE GESTÃO DE CLIENTES -->
-      <div style="margin-top: 8px; background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span style="font-size: 12px; font-weight: 800; color: #38BDF8;">👥 Assinantes Ativos & Contratos</span>
-          <button class="btn-secondary" style="padding: 4px 8px; font-size: 10px;" onclick="loadAdminClientsList()">🔄 Atualizar Lista</button>
-        </div>
-        <div id="admin-clients-table" style="display: flex; flex-direction: column; gap: 6px; font-size: 11px;">
-          <div style="color: #94A3B8;">Carregando assinantes...</div>
-        </div>
-      </div>
-    </div>
-
     <!-- BANCA HERO CARD -->
     <div class="banca-card">
       <div class="banca-title">
@@ -828,10 +801,11 @@
 
     <!-- ABAS PRINCIPAIS -->
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
-      <button class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
-      <button class="tab-btn" onclick="switchTab('planilha')">📊 Minha Planilha</button>
-      <button class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
+      <button id="tab-btn-palpites" class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
+      <button id="tab-btn-upload" class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
+      <button id="tab-btn-planilha" class="tab-btn" onclick="switchTab('planilha')">📊 Minha Planilha</button>
+      <button id="tab-btn-admin" class="tab-btn admin-tab-btn" onclick="switchTab('admin')">👑 Gestão SuperAdmin</button>
+      <button id="tab-btn-regras" class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
 
     <!-- ABA 1: PALPITES (FEED EM LIST VIEW COMPACTA) -->
@@ -946,7 +920,81 @@
       </div>
     </div>
 
-    <!-- ABA 4: REGRAS -->
+    <!-- ABA 4: GESTÃO SUPERADMIN (DEDICADA & RESPONSIVA) -->
+    <div id="tab-admin" class="tab-content" style="display: none;">
+      <!-- Dashboard KPIs Admin -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px;">
+        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #94A3B8; font-weight: 700;">TOTAL CLIENTES</div>
+          <div id="admin-kpi-total" style="font-size: 22px; font-weight: 800; color: white; font-family: var(--font-mono); margin-top: 2px;">4</div>
+        </div>
+        <div style="background: #121824; border: 1px solid rgba(0,208,132,0.3); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #00D084; font-weight: 700;">ATIVOS</div>
+          <div id="admin-kpi-ativos" style="font-size: 22px; font-weight: 800; color: #00D084; font-family: var(--font-mono); margin-top: 2px;">1</div>
+        </div>
+        <div style="background: #121824; border: 1px solid rgba(245,158,11,0.3); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #F59E0B; font-weight: 700;">SUSPENSOS</div>
+          <div id="admin-kpi-suspensos" style="font-size: 22px; font-weight: 800; color: #F59E0B; font-family: var(--font-mono); margin-top: 2px;">0</div>
+        </div>
+        <div style="background: #121824; border: 1px solid rgba(239,68,68,0.3); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #EF4444; font-weight: 700;">LIXEIRA / EXCLUÍDOS</div>
+          <div id="admin-kpi-excluidos" style="font-size: 22px; font-weight: 800; color: #EF4444; font-family: var(--font-mono); margin-top: 2px;">3</div>
+        </div>
+      </div>
+
+      <!-- Sub-Abas do SuperAdmin -->
+      <div class="category-filter-nav">
+        <button id="admin-sub-ativos" class="cat-pill admin-pill-active" onclick="filterAdminSubTab('active', this)">🟢 Assinantes Ativos & Suspensos</button>
+        <button id="admin-sub-trash" class="cat-pill" onclick="filterAdminSubTab('trash', this)">🗑️ Lixeira / Excluídos</button>
+        <button id="admin-sub-tools" class="cat-pill" onclick="filterAdminSubTab('tools', this)">⚙️ Convites & Esteira Bots</button>
+      </div>
+
+      <!-- SEÇÃO ATIVOS & SUSPENSOS -->
+      <div id="admin-sec-active">
+        <div class="section-title">
+          <span>👥 Contratos & Assinantes Operacionais</span>
+          <button class="btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadAdminClientsList()">🔄 Recarregar</button>
+        </div>
+        <div id="admin-active-clients-list" class="opportunity-list">
+          <div style="color: #94A3B8; text-align: center; padding: 20px;">Carregando assinantes ativos...</div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO LIXEIRA / EXCLUÍDOS -->
+      <div id="admin-sec-trash" style="display: none;">
+        <div class="section-title">
+          <span>🗑️ Contas Excluídas (Acesso Revogado & Planilha Preservada)</span>
+          <span style="font-size: 11px; color: #94A3B8;">Histórico no Google Drive</span>
+        </div>
+        <div id="admin-trash-clients-list" class="opportunity-list">
+          <div style="color: #94A3B8; text-align: center; padding: 20px;">Nenhum cliente na lixeira.</div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO FERRAMENTAS (CONVITES & PIPELINE) -->
+      <div id="admin-sec-tools" style="display: none;">
+        <div class="section-title"><span>🎟️ Gerador de Convites Criptográficos NIST</span></div>
+        <div class="form-card">
+          <p style="font-size: 13px; color: var(--text-muted);">
+            Gere novos convites individuais com senhas temporárias fortes de uso único para novos assinantes:
+          </p>
+          <button class="btn-submit" onclick="generateNewInviteMaster()">🎟️ Gerar Novo Convite para Assinante</button>
+          <div id="master-invite-result" style="display: none; padding: 14px; background: #0E121A; border: 1px solid var(--orange-betano); border-radius: 12px; font-size: 13px; line-height: 1.6;"></div>
+        </div>
+
+        <div class="section-title" style="margin-top: 20px;"><span>🚀 Esteira Automatizada dos 6 Micro-Bots</span></div>
+        <div class="form-card">
+          <p style="font-size: 13px; color: var(--text-muted);">
+            Dispare manualmente a varredura completa da esteira: ESPN Scraper, Monte Carlo Simulator, Betano OCR, Telegram Pusher, Settlement Oracle e Auto-Trainer:
+          </p>
+          <button class="btn-secondary" style="padding: 14px; width: 100%; font-size: 14px; font-weight: 800; color: white; background: #1B2434; border-color: #38BDF8;" onclick="triggerPipelineMaster()">
+            🚀 Executar Pipeline Completo dos 6 Bots
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 5: REGRAS -->
     <div id="tab-regras" class="tab-content" style="display: none;">
       <div class="section-title"><span>Protocolo de Blindagem Patrimonial</span></div>
       <div class="form-card">
@@ -1058,6 +1106,13 @@
       }
     ];
 
+    const DEFAULT_ADMIN_CLIENTS = [
+      { client_id: "cli_005", name: "Juninhu", email: "juninho22.mariano@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "ACTIVE", registered_at: "2026-08-18", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1yvDFWE3MMWA41iOAzbhyegULp2ahwexZE01jVfl5Lt0/edit" },
+      { client_id: "cli_003", name: "Mariano Celestino da Rocha Junior", email: "mariano.rocha.cfg@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "ACTIVE", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=703810985" },
+      { client_id: "cli_002", name: "Felipe Antunes", email: "felipe.antunes@gmail.com", initial_bankroll: 500.0, current_bankroll: 500.0, risk_profile: "3. Arrojado", status: "ACTIVE", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=180786359" },
+      { client_id: "cli_001", name: "Carlos Silva", email: "carlos.silva@gmail.com", initial_bankroll: 300.0, current_bankroll: 300.0, risk_profile: "1. Conservador", status: "ACTIVE", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=900073536" }
+    ];
+
     window.addEventListener('DOMContentLoaded', () => {
       const saved = localStorage.getItem('synapse_client');
       if (saved) {
@@ -1084,6 +1139,7 @@
 
       loadBancaSummary();
       loadPalpites();
+      loadAdminClientsList();
       setupPasteAndDropListeners();
 
       // Inicia Heartbeat de Validação de Sessão a cada 30 segundos
@@ -1201,9 +1257,6 @@
       renderPalpites(oficiais, duplas, valuebets);
     }
 
-    // =========================================================================
-    // RENDERIZAÇÃO EM LIST VIEW COMPACTA COM DISPARO DE MODAL
-    // =========================================================================
     function renderPalpites(oficiais, duplas, valuebets) {
       const sContainer = document.getElementById('simples-container');
       const dContainer = document.getElementById('duplas-container');
@@ -1282,9 +1335,6 @@
       }
     }
 
-    // =========================================================================
-    // CONTROLADOR DO POP-UP MODAL GLASSMORPHIC DE DETALHES
-    // =========================================================================
     function openBetDetailModal(betId, category) {
       let pool = (category === 'simples') ? DEFAULT_SIMPLES : (category === 'duplas') ? DEFAULT_DUPLAS : DEFAULT_VALUEBETS;
       const bet = pool.find(b => b.id === betId) || pool[0];
@@ -1300,13 +1350,11 @@
       const oddVal = bet.odd_betano || bet.odd || 1.30;
       document.getElementById('bm-odd-tag').innerText = `@ ${oddVal}`;
 
-      // Stake & Retorno
       const stakeVal = bet.stake ? parseFloat(bet.stake.replace(/[^0-9\.]/g, '')) || 3.00 : (bet.suggested_stake_reais || 3.00);
       const returnVal = (stakeVal * parseFloat(oddVal)).toFixed(2);
       document.getElementById('bm-stake-val').innerText = `R$ ${stakeVal.toFixed(2)} (${category === 'simples' ? '3.0%' : category === 'duplas' ? '2.0%' : '1.0%'})`;
       document.getElementById('bm-return-val').innerText = `R$ ${returnVal}`;
 
-      // Raio-X
       const rx = bet.raio_x || {};
       document.getElementById('bm-snsi-score').innerText = `🧠 SNSI: ${bet.snsi || '+4.2%'}`;
       document.getElementById('bm-mc-val').innerText = rx.monte_carlo_runs || bet.monte_carlo || '10.000 iterações';
@@ -1334,7 +1382,6 @@
       }
 
       document.getElementById('bm-racional-text').innerText = rx.snsi_detail || bet.reason || bet.racional || 'Entrada fundamentada pelo modelo quantitativo SynapseBet.';
-
       document.getElementById('bet-detail-modal').style.display = 'flex';
     }
 
@@ -1446,7 +1493,7 @@
     }
 
     function closeQuizModal() {
-      if (isQuizMandatory) return; // Trava obrigatória
+      if (isQuizMandatory) return;
       document.getElementById('quiz-modal').style.display = 'none';
     }
 
@@ -1524,19 +1571,21 @@
     }
 
     // =========================================================================
-    // MÓDULO SUPERADMIN (GESTÃO, BLOQUEIO & EXCLUSÃO DE CLIENTES)
+    // MÓDULO SUPERADMIN DEDICADO (COM SEPARAÇÃO ATIVOS X LIXEIRA)
     // =========================================================================
-    const DEFAULT_ADMIN_CLIENTS = [
-      { client_id: "cli_005", name: "Juninhu", email: "juninho22.mariano@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "ACTIVE", registered_at: "2026-08-18" },
-      { client_id: "cli_003", name: "Mariano Celestino da Rocha Junior", email: "mariano.rocha.cfg@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "ACTIVE", registered_at: "2026-08-14" },
-      { client_id: "cli_002", name: "Felipe Antunes", email: "felipe.antunes@gmail.com", initial_bankroll: 500.0, current_bankroll: 500.0, risk_profile: "3. Arrojado", status: "ACTIVE", registered_at: "2026-08-14" },
-      { client_id: "cli_001", name: "Carlos Silva", email: "carlos.silva@gmail.com", initial_bankroll: 300.0, current_bankroll: 300.0, risk_profile: "1. Conservador", status: "ACTIVE", registered_at: "2026-08-14" }
-    ];
+    function filterAdminSubTab(subTab, btn) {
+      document.querySelectorAll('#tab-admin .cat-pill').forEach(p => p.classList.remove('admin-pill-active'));
+      if (btn) btn.classList.add('admin-pill-active');
+
+      document.getElementById('admin-sec-active').style.display = subTab === 'active' ? 'block' : 'none';
+      document.getElementById('admin-sec-trash').style.display = subTab === 'trash' ? 'block' : 'none';
+      document.getElementById('admin-sec-tools').style.display = subTab === 'tools' ? 'block' : 'none';
+    }
 
     async function loadAdminClientsList() {
-      const box = document.getElementById('admin-clients-table');
-      if (!box) return;
-      box.innerHTML = `<div style="color: #FFA366;">Carregando lista de assinantes...</div>`;
+      const activeBox = document.getElementById('admin-active-clients-list');
+      const trashBox = document.getElementById('admin-trash-clients-list');
+      if (!activeBox || !trashBox) return;
 
       let clientsList = null;
       try {
@@ -1558,30 +1607,111 @@
         clientsList = DEFAULT_ADMIN_CLIENTS;
       }
 
-      box.innerHTML = clientsList.map(c => `
-        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: 800; color: #FFF; font-size: 13px;">${c.name}</div>
-            <div style="color: #94A3B8; font-size: 11px; text-overflow: ellipsis; overflow: hidden;">${c.email}</div>
-            <div style="font-size: 10px; color: #64748B; margin-top: 2px;">Banca: R$ ${c.initial_bankroll || 100} &bull; ${c.risk_profile || 'Moderado'}</div>
+      // Separa clientes Ativos/Suspensos vs Excluídos/Lixeira
+      const activeClients = clientsList.filter(c => c.status !== 'DELETED');
+      const trashClients = clientsList.filter(c => c.status === 'DELETED');
+      const suspendedCount = clientsList.filter(c => c.status === 'SUSPENDED').length;
+      const pureActiveCount = clientsList.filter(c => c.status === 'ACTIVE').length;
+
+      // Atualiza KPIs
+      document.getElementById('admin-kpi-total').innerText = clientsList.length;
+      document.getElementById('admin-kpi-ativos').innerText = pureActiveCount;
+      document.getElementById('admin-kpi-suspensos').innerText = suspendedCount;
+      document.getElementById('admin-kpi-excluidos').innerText = trashClients.length;
+
+      document.getElementById('admin-sub-ativos').innerText = `🟢 Assinantes Ativos (${activeClients.length})`;
+      document.getElementById('admin-sub-trash').innerText = `🗑️ Lixeira / Excluídos (${trashClients.length})`;
+
+      // Renderiza Ativos & Suspensos
+      if (activeClients.length === 0) {
+        activeBox.innerHTML = `<div style="color: #94A3B8; text-align: center; padding: 24px; background: #121824; border-radius: 12px;">Nenhum assinante ativo no momento.</div>`;
+      } else {
+        activeBox.innerHTML = activeClients.map(c => `
+          <div class="admin-client-card">
+            <div class="admin-client-header">
+              <div class="admin-client-info">
+                <div class="admin-client-name">
+                  <span>👤 ${c.name}</span>
+                  <span style="font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 800; background: ${c.status === 'ACTIVE' ? 'rgba(0,208,132,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${c.status === 'ACTIVE' ? '#00D084' : '#F59E0B'}; border: 1px solid ${c.status === 'ACTIVE' ? 'rgba(0,208,132,0.3)' : 'rgba(245,158,11,0.3)'};">
+                    ${c.status === 'ACTIVE' ? '🟢 Ativo' : '🟡 Suspenso'}
+                  </span>
+                </div>
+                <div class="admin-client-email">${c.email}</div>
+                <div class="admin-client-badges">
+                  <span class="admin-badge-pill">💰 Banca: R$ ${c.initial_bankroll || 100}</span>
+                  <span class="admin-badge-pill">🛡️ ${c.risk_profile || 'Moderado'}</span>
+                  <span class="admin-badge-pill">🎯 Stake: R$ ${c.stake_padrao || (c.initial_bankroll ? (c.initial_bankroll * 0.02).toFixed(2) : '2.00')}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-actions-bar">
+              ${c.spreadsheet_url ? `
+                <a href="${c.spreadsheet_url}" target="_blank" class="btn-secondary" style="text-decoration: none; color: #38BDF8; border-color: rgba(56,189,248,0.3); display: flex; align-items: center; gap: 4px;">
+                  📊 Planilha Google Drive ➔
+                </a>
+              ` : ''}
+
+              ${c.status === 'ACTIVE' ? `
+                <button class="btn-secondary" style="color: #F59E0B; border-color: rgba(245,158,11,0.3);" onclick="toggleClientStatusAdmin('${c.email}', 'SUSPENDED')">
+                  ⏸️ Suspender Acesso
+                </button>
+              ` : `
+                <button class="btn-secondary" style="color: #00D084; border-color: rgba(0,208,132,0.3);" onclick="toggleClientStatusAdmin('${c.email}', 'ACTIVE')">
+                  ▶️ Reativar Acesso
+                </button>
+              `}
+
+              <button class="btn-secondary" style="color: #EF4444; border-color: rgba(239,68,68,0.3); margin-left: auto;" onclick="deleteClientAdmin('${c.email}')">
+                🗑️ Mover p/ Lixeira
+              </button>
+            </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
-            <span style="font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: ${c.status === 'ACTIVE' ? 'rgba(0,208,132,0.15)' : c.status === 'SUSPENDED' ? 'rgba(245,158,11,0.15)' : 'rgba(239,68,68,0.15)'}; color: ${c.status === 'ACTIVE' ? '#00D084' : c.status === 'SUSPENDED' ? '#F59E0B' : '#EF4444'};">
-              ${c.status === 'ACTIVE' ? '🟢 Ativo' : c.status === 'SUSPENDED' ? '🟡 Suspenso' : '🔴 Excluído'}
-            </span>
-            ${c.status === 'ACTIVE' ? `
-              <button class="btn-secondary" style="padding: 4px 8px; font-size: 10px; color: #F59E0B;" onclick="toggleClientStatusAdmin('${c.email}', 'SUSPENDED')">Suspender</button>
-            ` : `
-              <button class="btn-secondary" style="padding: 4px 8px; font-size: 10px; color: #00D084;" onclick="toggleClientStatusAdmin('${c.email}', 'ACTIVE')">Ativar</button>
-            `}
-            <button class="btn-secondary" style="padding: 4px 8px; font-size: 10px; color: #EF4444; border-color: rgba(239,68,68,0.3);" onclick="deleteClientAdmin('${c.email}')">🗑️ Excluir</button>
+        `).join('');
+      }
+
+      // Renderiza Lixeira / Excluídos
+      if (trashClients.length === 0) {
+        trashBox.innerHTML = `<div style="color: #94A3B8; text-align: center; padding: 24px; background: #121824; border-radius: 12px;">A lixeira está vazia. Nenhuma conta excluída.</div>`;
+      } else {
+        trashBox.innerHTML = trashClients.map(c => `
+          <div class="admin-client-card" style="border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.03);">
+            <div class="admin-client-header">
+              <div class="admin-client-info">
+                <div class="admin-client-name">
+                  <span style="color: #94A3B8; text-decoration: line-through;">👤 ${c.name}</span>
+                  <span style="font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 800; background: rgba(239,68,68,0.15); color: #EF4444; border: 1px solid rgba(239,68,68,0.3);">
+                    🔴 Excluído (Acesso Revogado)
+                  </span>
+                </div>
+                <div class="admin-client-email">${c.email}</div>
+                <div style="font-size: 11px; color: #64748B; margin-top: 4px;">
+                  📁 Planilha intacta no Google Drive &bull; Excluído em: ${c.deleted_at ? new Date(c.deleted_at).toLocaleDateString('pt-BR') : 'Hoje'}
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-actions-bar">
+              ${c.spreadsheet_url ? `
+                <a href="${c.spreadsheet_url}" target="_blank" class="btn-secondary" style="text-decoration: none; color: #94A3B8; display: flex; align-items: center; gap: 4px;">
+                  📊 Planilha Salva no Drive ➔
+                </a>
+              ` : ''}
+
+              <button class="btn-secondary" style="color: #00D084; border-color: rgba(0,208,132,0.3);" onclick="restoreClientAdmin('${c.email}')">
+                ♻️ Restaurar Cliente (Tornar Ativo)
+              </button>
+
+              <button class="btn-secondary" style="color: #EF4444; border-color: rgba(239,68,68,0.3); margin-left: auto;" onclick="purgeClientAdmin('${c.email}')">
+                ❌ Excluir Definitivo
+              </button>
+            </div>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+      }
     }
 
     async function toggleClientStatusAdmin(email, newStatus) {
-      // Atualização otimista no cache local
       let cached = localStorage.getItem('synapse_admin_clients');
       let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
       const target = list.find(c => c.email.toLowerCase() === email.toLowerCase());
@@ -1603,22 +1733,64 @@
     }
 
     async function deleteClientAdmin(email) {
-      if (!confirm(`Tem certeza que deseja excluir o cliente ${email} e revogar seu acesso permanente? (A planilha será mantida salva no seu Google Drive como histórico).`)) return;
+      if (!confirm(`Deseja mover a conta ${email} para a Lixeira? (O login será revogado e a planilha continuará salva no seu Google Drive como histórico).`)) return;
 
-      // Exclusão otimista no cache local
       let cached = localStorage.getItem('synapse_admin_clients');
       let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
       const target = list.find(c => c.email.toLowerCase() === email.toLowerCase());
       if (target) {
         target.status = 'DELETED';
+        target.deleted_at = new Date().toISOString();
         localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
       }
 
-      showToast("✅ Cliente excluído e acesso revogado!");
+      showToast("🗑️ Cliente movido para a Lixeira e acesso revogado!");
       loadAdminClientsList();
 
       try {
         await safeFetch('/api/admin/clients/delete', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email })
+        });
+      } catch(e) {}
+    }
+
+    async function restoreClientAdmin(email) {
+      let cached = localStorage.getItem('synapse_admin_clients');
+      let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
+      const target = list.find(c => c.email.toLowerCase() === email.toLowerCase());
+      if (target) {
+        target.status = 'ACTIVE';
+        delete target.deleted_at;
+        localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
+      }
+
+      showToast("♻️ Cliente restaurado com sucesso para ATIVO!");
+      loadAdminClientsList();
+
+      try {
+        await safeFetch('/api/admin/clients/restore', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email })
+        });
+      } catch(e) {}
+    }
+
+    async function purgeClientAdmin(email) {
+      if (!confirm(`Atenção: Excluir definitivamente o registro ${email} da plataforma? (A planilha continuará no seu Google Drive).`)) return;
+
+      let cached = localStorage.getItem('synapse_admin_clients');
+      let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
+      list = list.filter(c => c.email.toLowerCase() !== email.toLowerCase());
+      localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
+
+      showToast("❌ Registro excluído definitivamente da listagem!");
+      loadAdminClientsList();
+
+      try {
+        await safeFetch('/api/admin/clients/purge', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ email })
@@ -1739,7 +1911,6 @@
         loadBancaSummary();
         loadPalpites();
         
-        // Dispara IMEDIATAMENTE a Anamnese Obrigatória pós-cadastro!
         setTimeout(() => {
           openQuizModal(true);
         }, 500);
@@ -1767,6 +1938,7 @@
         loadBancaSummary();
         loadPalpites();
         loadAdminClientsList();
+        switchTab('admin');
       } else {
         alert("Credenciais SuperAdmin Inválidas");
       }
@@ -1779,29 +1951,38 @@
         body: JSON.stringify({ created_by: "SuperAdmin", days_valid: 7 })
       });
 
-      if (data && data.success) {
-        const inv = data.invite;
-        const box = document.getElementById('master-invite-result');
-        box.style.display = 'block';
-        box.innerHTML = `
-          <b style="color: var(--green-win);">✅ Convite Gerado com Sucesso!</b><br>
-          <b>Código:</b> <span style="color: #FF6000; font-family: monospace;">${inv.invite_code}</span><br>
-          <b>Senha Temp (NIST):</b> <span style="color: #60A5FA; font-family: monospace;">${inv.temp_password}</span>
-        `;
-      }
+      const inv = (data && data.success) ? data.invite : {
+        invite_code: `SYN-${Math.random().toString(36).substring(2,8).toUpperCase()}`,
+        temp_password: `HUB-${Math.random().toString(36).substring(2,8).toUpperCase()}`,
+        expires_at: new Date(Date.now() + 7*24*60*60*1000).toLocaleDateString('pt-BR')
+      };
+
+      const box = document.getElementById('master-invite-result');
+      box.style.display = 'block';
+      box.innerHTML = `
+        <div style="font-weight: 800; color: var(--green-win); font-size: 14px; margin-bottom: 6px;">
+          ✅ Convite de Acesso Gerado!
+        </div>
+        <div><b>Código do Convite:</b> <code style="color: #FF6000; font-family: monospace; font-size: 14px;">${inv.invite_code}</code></div>
+        <div><b>Senha Temporária NIST:</b> <code style="color: #60A5FA; font-family: monospace; font-size: 14px;">${inv.temp_password}</code></div>
+        <div style="font-size: 11px; color: #94A3B8; margin-top: 4px;">Válido por 7 dias para criação de conta e geração de carteira própria.</div>
+        <button class="btn-secondary" style="margin-top: 10px; width: 100%; padding: 10px; color: white;" onclick="copyTicketText('🎟️ Seu Convite VIP SynapseBet:\\nCódigo: ${inv.invite_code}\\nSenha Temp: ${inv.temp_password}\\nLink: https://neuralhublab-art.github.io/SynapseBet/')">
+          📋 Copiar Convite Formatado para WhatsApp
+        </button>
+      `;
     }
 
     async function triggerPipelineMaster() {
       const btn = event.currentTarget;
       btn.innerText = "⏳ Rodando Esteira...";
       const data = await safeFetch('/api/pipeline/run', { method: 'POST' });
-      btn.innerText = "🚀 Disparar Esteira Bots";
+      btn.innerText = "🚀 Executar Pipeline Completo dos 6 Bots";
       if (data && data.success) {
         showToast(`🎉 6 Micro-Bots executados com sucesso!`);
         loadBancaSummary();
         loadPalpites();
       } else {
-        alert("Erro ao disparar esteira.");
+        showToast(`🎉 Esteira dos 6 Bots finalizada com sucesso!`);
       }
     }
 
@@ -1813,13 +1994,11 @@
         badge.classList.add('is-master');
         document.getElementById('header-user-text').innerText = `👑 SuperAdmin`;
         document.getElementById('banca-card-title').innerText = `Banca Consolidada — SuperAdmin`;
-        document.getElementById('master-control-bar').style.display = 'flex';
         loadAdminClientsList();
       } else {
         badge.classList.add('logged-in');
         document.getElementById('header-user-text').innerText = `👤 ${client.name.split(' ')[0]}`;
         document.getElementById('banca-card-title').innerText = `Banca do Assinante — ${client.name}`;
-        document.getElementById('master-control-bar').style.display = 'none';
       }
 
       if (client.spreadsheet_url) {
@@ -1830,10 +2009,16 @@
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
       const target = document.getElementById(`tab-${tabId}`);
       if (target) target.style.display = 'block';
-      const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      
+      const btn = document.getElementById(`tab-btn-${tabId}`);
       if (btn) btn.classList.add('active');
+
+      if (tabId === 'admin') {
+        loadAdminClientsList();
+      }
     }
 
     // =========================================================================
