@@ -1432,11 +1432,13 @@
     async function safeFetch(endpoint, options = {}) {
       try {
         const res = await fetch(`${PRIMARY_API}${endpoint}`, options);
-        if (res.ok) return await res.json();
+        const data = await res.json();
+        return data;
       } catch (err) {}
       try {
         const res = await fetch(`${FALLBACK_API}${endpoint}`, options);
-        if (res.ok) return await res.json();
+        const data = await res.json();
+        return data;
       } catch (err) {}
       return null;
     }
@@ -2311,23 +2313,36 @@
       const pass = document.getElementById('login-pass').value.trim();
       if (!email || !pass) return alert("Preencha seu E-mail e Senha");
 
+      const btn = event?.currentTarget || document.querySelector('#auth-view-login .btn-submit');
+      const originalText = btn ? btn.innerText : "";
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = "⏳ Autenticando...";
+      }
+
       const data = await safeFetch('/api/auth/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ email, password: pass })
       });
 
-      if (data && data.success) {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = originalText;
+      }
+
+      if (data && data.success && data.client) {
         loggedClient = data.client;
         localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
         applyClientSession(loggedClient);
         closeAuthModal();
-        showToast(`Bem-vindo, ${loggedClient.name}!`);
+        showToast(`🎉 Bem-vindo, ${loggedClient.name}!`);
         loadBancaSummary();
         loadPalpites();
         loadUserBetsTracker();
+        loadAdminClientsList();
       } else {
-        alert(data?.detail || "E-mail ou senha incorretos.");
+        alert(data?.detail || data?.message || "E-mail ou senha incorretos.");
       }
     }
 
