@@ -285,11 +285,11 @@
       justify-content: space-between;
     }
 
-    /* List View de Oportunidades */
+    /* List View de Oportunidades & Apostas */
     .opportunity-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .opportunity-row {
@@ -362,6 +362,110 @@
       background: var(--orange-betano);
       border-color: var(--orange-betano);
       color: white;
+    }
+
+    /* CARDS DE PLACAR AO VIVO (LIVE SCOREBOARD) */
+    .live-bet-card {
+      background: linear-gradient(135deg, #131A26 0%, #0E141E 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s;
+    }
+    .live-bet-card:hover {
+      border-color: rgba(255, 96, 0, 0.35);
+      transform: translateY(-2px);
+    }
+    .live-bet-card.is-live {
+      border-left: 4px solid #EF4444;
+    }
+    .live-bet-card.is-win {
+      border-left: 4px solid var(--green-win);
+    }
+    .live-bet-card.is-pregame {
+      border-left: 4px solid var(--orange-betano);
+    }
+
+    .live-scoreboard-box {
+      background: #090D14;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .scoreboard-team {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 800;
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .scoreboard-team.team-away { text-align: right; }
+    .scoreboard-score {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 800;
+      color: #38BDF8;
+      background: #151D2A;
+      padding: 4px 12px;
+      border-radius: 8px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(56,189,248,0.25);
+    }
+    .live-pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #EF4444;
+      margin-right: 4px;
+      animation: pulseLive 1.4s infinite;
+    }
+    @keyframes pulseLive {
+      0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    .live-partial-status {
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .status-green-parcial {
+      background: rgba(0, 208, 132, 0.12);
+      border: 1px solid rgba(0, 208, 132, 0.35);
+      color: #00D084;
+    }
+    .status-risk {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #F59E0B;
+    }
+    .status-pregame {
+      background: rgba(255, 96, 0, 0.1);
+      border: 1px solid rgba(255, 96, 0, 0.25);
+      color: #FFA366;
+    }
+    .status-finished {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38BDF8;
     }
 
     /* Cards de Assinantes SuperAdmin */
@@ -799,12 +903,13 @@
       </div>
     </div>
 
-    <!-- ABAS PRINCIPAIS -->
+    <!-- ABAS PRINCIPAIS (SuperAdmin oculto para usuários comuns) -->
     <div class="tab-nav">
       <button id="tab-btn-palpites" class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
+      <button id="tab-btn-apostas" class="tab-btn" onclick="switchTab('apostas')">📋 Minhas Apostas (Live)</button>
       <button id="tab-btn-upload" class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
       <button id="tab-btn-planilha" class="tab-btn" onclick="switchTab('planilha')">📊 Minha Planilha</button>
-      <button id="tab-btn-admin" class="tab-btn admin-tab-btn" onclick="switchTab('admin')">👑 Gestão SuperAdmin</button>
+      <button id="tab-btn-admin" class="tab-btn admin-tab-btn" style="display: none;" onclick="switchTab('admin')">👑 SuperAdmin</button>
       <button id="tab-btn-regras" class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
 
@@ -848,7 +953,42 @@
       </div>
     </div>
 
-    <!-- ABA 2: ENVIAR PRINT -->
+    <!-- ABA 2: MINHAS APOSTAS & PLACAR AO VIVO (LIVE SCOREBOARD) -->
+    <div id="tab-apostas" class="tab-content" style="display: none;">
+      <!-- Dashboard KPIs de Apostas -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px;">
+        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #94A3B8; font-weight: 700;">TOTAL DE ENTRADAS</div>
+          <div id="tracker-kpi-total" style="font-size: 22px; font-weight: 800; color: white; font-family: var(--font-mono); margin-top: 2px;">7</div>
+        </div>
+        <div style="background: #121824; border: 1px solid rgba(255,96,0,0.3); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #FFA366; font-weight: 700;">EM ANDAMENTO / PENDENTES</div>
+          <div id="tracker-kpi-pending" style="font-size: 22px; font-weight: 800; color: #FF6000; font-family: var(--font-mono); margin-top: 2px;">5</div>
+        </div>
+        <div style="background: #121824; border: 1px solid rgba(0,208,132,0.3); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #00D084; font-weight: 700;">GREENS CONCLUÍDOS</div>
+          <div id="tracker-kpi-greens" style="font-size: 22px; font-weight: 800; color: #00D084; font-family: var(--font-mono); margin-top: 2px;">2</div>
+        </div>
+      </div>
+
+      <!-- Filtros da Aba de Apostas -->
+      <div class="category-filter-nav">
+        <button class="cat-pill active" onclick="filterTrackerCategory('pending', this)">⚡ Ao Vivo & Pendentes (5)</button>
+        <button class="cat-pill" onclick="filterTrackerCategory('finished', this)">✅ Concluídas / Histórico (2)</button>
+        <button class="cat-pill" onclick="filterTrackerCategory('all', this)">🎯 Todas as Apostas (7)</button>
+      </div>
+
+      <div class="section-title">
+        <span>📡 Radar de Placares & Monitoramento de Bilhetes</span>
+        <button class="btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadUserBetsTracker()">🔄 Atualizar Placares</button>
+      </div>
+
+      <div id="tracker-bets-container" class="opportunity-list">
+        <div style="text-align: center; color: var(--text-muted); padding: 24px;">Conectando ao Radar de Placares da ESPN...</div>
+      </div>
+    </div>
+
+    <!-- ABA 3: ENVIAR PRINT -->
     <div id="tab-upload" class="tab-content" style="display: none;">
       <div class="section-title"><span>Registrar Aposta Real via Print</span></div>
       <div class="form-card">
@@ -877,7 +1017,7 @@
       </div>
     </div>
 
-    <!-- ABA 3: MINHA PLANILHA -->
+    <!-- ABA 4: MINHA PLANILHA -->
     <div id="tab-planilha" class="tab-content" style="display: none;">
       <div class="section-title"><span>Sua Planilha Oficial SynapseBet</span></div>
       <div class="form-card" style="text-align: center;">
@@ -920,7 +1060,7 @@
       </div>
     </div>
 
-    <!-- ABA 4: GESTÃO SUPERADMIN (DEDICADA & RESPONSIVA) -->
+    <!-- ABA 5: GESTÃO SUPERADMIN (EXCLUSIVO PARA ADMINISTRADORES) -->
     <div id="tab-admin" class="tab-content" style="display: none;">
       <!-- Dashboard KPIs Admin -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px;">
@@ -994,7 +1134,7 @@
       </div>
     </div>
 
-    <!-- ABA 5: REGRAS -->
+    <!-- ABA 6: REGRAS -->
     <div id="tab-regras" class="tab-content" style="display: none;">
       <div class="section-title"><span>Protocolo de Blindagem Patrimonial</span></div>
       <div class="form-card">
@@ -1020,6 +1160,8 @@
     let quizUserAnswers = [];
     let isQuizMandatory = false;
     let currentActiveBet = null;
+    let allUserTrackerBets = [];
+    let currentTrackerFilter = 'pending';
 
     // 10 Perguntas Oficiais da Anamnese
     const QUIZ_QUESTIONS = [
@@ -1108,9 +1250,9 @@
 
     const DEFAULT_ADMIN_CLIENTS = [
       { client_id: "cli_005", name: "Juninhu", email: "juninho22.mariano@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "ACTIVE", registered_at: "2026-08-18", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1yvDFWE3MMWA41iOAzbhyegULp2ahwexZE01jVfl5Lt0/edit" },
-      { client_id: "cli_003", name: "Mariano Celestino da Rocha Junior", email: "mariano.rocha.cfg@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "ACTIVE", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=703810985" },
-      { client_id: "cli_002", name: "Felipe Antunes", email: "felipe.antunes@gmail.com", initial_bankroll: 500.0, current_bankroll: 500.0, risk_profile: "3. Arrojado", status: "ACTIVE", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=180786359" },
-      { client_id: "cli_001", name: "Carlos Silva", email: "carlos.silva@gmail.com", initial_bankroll: 300.0, current_bankroll: 300.0, risk_profile: "1. Conservador", status: "ACTIVE", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=900073536" }
+      { client_id: "cli_003", name: "Mariano Celestino da Rocha Junior", email: "mariano.rocha.cfg@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "DELETED", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=703810985" },
+      { client_id: "cli_002", name: "Felipe Antunes", email: "felipe.antunes@gmail.com", initial_bankroll: 500.0, current_bankroll: 500.0, risk_profile: "3. Arrojado", status: "DELETED", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=180786359" },
+      { client_id: "cli_001", name: "Carlos Silva", email: "carlos.silva@gmail.com", initial_bankroll: 300.0, current_bankroll: 300.0, risk_profile: "1. Conservador", status: "DELETED", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=900073536" }
     ];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -1139,11 +1281,13 @@
 
       loadBancaSummary();
       loadPalpites();
+      loadUserBetsTracker();
       loadAdminClientsList();
       setupPasteAndDropListeners();
 
-      // Inicia Heartbeat de Validação de Sessão a cada 30 segundos
+      // Sincronização contínua a cada 30 segundos
       setInterval(runSessionHeartbeat, 30000);
+      setInterval(loadUserBetsTracker, 30000);
     });
 
     async function safeFetch(endpoint, options = {}) {
@@ -1335,6 +1479,168 @@
       }
     }
 
+    // =========================================================================
+    // MÓDULO DE MINHAS APOSTAS & PLACAR AO VIVO (LIVE SCOREBOARD)
+    // =========================================================================
+    async function loadUserBetsTracker() {
+      const box = document.getElementById('tracker-bets-container');
+      if (!box) return;
+
+      const email = loggedClient ? loggedClient.email : null;
+      const data = await safeFetch(`/api/user/bets-tracker${email ? '?email=' + encodeURIComponent(email) : ''}`);
+      
+      if (data && data.success && data.bets) {
+        allUserTrackerBets = data.bets;
+      } else {
+        allUserTrackerBets = [
+          {
+            id: "APO_010", date: "18/08 21:35", match: "Goiás vs Juventude-RS", league: "🇧🇷 Brasileirão Série B",
+            market: "Chance Dupla (1X)", odd: 1.30, stake: 3.00, expected_return: 3.90, ticket_id: "20860426154",
+            start_time: "21:35", end_time: "23:30", home_team: "Goiás", away_team: "Juventude-RS",
+            match_status: "PRE_GAME", match_clock: "Início às 21:35", display_score: "0 x 0 (Pré-Jogo)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 3,00 @ 1.30)"
+          },
+          {
+            id: "APO_011", date: "18/08 21:30", match: "Náutico vs Ceará + Goiás vs Juventude", league: "🇧🇷 Brasileirão Série B (Dupla)",
+            market: "Chance Dupla (X2) + Chance Dupla (1X)", odd: 2.21, stake: 2.00, expected_return: 4.42, ticket_id: "20860432744",
+            start_time: "21:30", end_time: "23:30", home_team: "Náutico / Goiás", away_team: "Ceará / Juventude",
+            match_status: "PRE_GAME", match_clock: "Início às 21:30", display_score: "0 x 0 (Dupla)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Dupla Blindada @ 2.21)"
+          },
+          {
+            id: "APO_012", date: "18/08 21:30", match: "Náutico vs Ceará", league: "🇧🇷 Brasileirão Série B",
+            market: "Chance Dupla (X2)", odd: 1.70, stake: 2.00, expected_return: 3.40, ticket_id: "20860437924",
+            start_time: "21:30", end_time: "23:25", home_team: "Náutico", away_team: "Ceará",
+            match_status: "PRE_GAME", match_clock: "Início às 21:30", display_score: "0 x 0 (Pré-Jogo)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 2,00 @ 1.70)"
+          },
+          {
+            id: "APO_013", date: "18/08 19:35", match: "Baltimore Orioles vs New York Yankees", league: "⚾ MLB Major League",
+            market: "5 primeiros innings - NY Yankees", odd: 2.15, stake: 2.00, expected_return: 4.30, ticket_id: "20860440604",
+            start_time: "19:35", end_time: "21:00", home_team: "Baltimore Orioles", away_team: "NY Yankees",
+            match_status: "PRE_GAME", match_clock: "Início às 19:35", display_score: "0 x 0 (MLB F5)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Pitcher Ace @ 2.15)"
+          },
+          {
+            id: "APO_014", date: "18/08 19:35", match: "Baltimore Orioles vs NY Yankees + Náutico vs Ceará", league: "⚾ MLB + 🇧🇷 Futebol",
+            market: "NY Yankees (F5) + Chance Dupla (X2)", odd: 3.65, stake: 2.00, expected_return: 7.31, ticket_id: "20860442574",
+            start_time: "19:35", end_time: "23:25", home_team: "Orioles / Náutico", away_team: "Yankees / Ceará",
+            match_status: "PRE_GAME", match_clock: "Início às 19:35", display_score: "0 x 0 (Multi-Esporte)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Multi-Esporte @ 3.65)"
+          },
+          {
+            id: "APO_007", date: "17/08 20:00", match: "Deportivo La Coruña vs Elche", league: "🇪🇸 La Liga 2",
+            market: "Chance Dupla (1X)", odd: 1.25, stake: 3.00, expected_return: 3.75, ticket_id: "20860119284",
+            start_time: "20:00", end_time: "21:55", home_team: "Deportivo La Coruña", away_team: "Elche",
+            match_status: "FINISHED", match_clock: "Encerrado", display_score: "1 x 1",
+            live_status_badge: "GREEN_FINAL", live_status_text: "🏆 LIQUIDADO: GREEN (+R$ 0,75 Lucro Líquido)"
+          },
+          {
+            id: "APO_006", date: "17/08 16:15", match: "Casa Pia vs Benfica", league: "🇵🇹 Liga Portugal",
+            market: "Chance Dupla (X2)", odd: 1.15, stake: 3.00, expected_return: 3.45, ticket_id: "20860098231",
+            start_time: "16:15", end_time: "18:10", home_team: "Casa Pia", away_team: "Benfica",
+            match_status: "FINISHED", match_clock: "Encerrado", display_score: "0 x 2",
+            live_status_badge: "GREEN_FINAL", live_status_text: "🏆 LIQUIDADO: GREEN (+R$ 0,45 Lucro Líquido)"
+          }
+        ];
+      }
+
+      renderTrackerBets();
+    }
+
+    function filterTrackerCategory(cat, btn) {
+      currentTrackerFilter = cat;
+      if (btn) {
+        document.querySelectorAll('#tab-apostas .cat-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      renderTrackerBets();
+    }
+
+    function renderTrackerBets() {
+      const box = document.getElementById('tracker-bets-container');
+      if (!box) return;
+
+      const pendingBets = allUserTrackerBets.filter(b => b.match_status === 'PRE_GAME' || b.match_status === 'LIVE');
+      const finishedBets = allUserTrackerBets.filter(b => b.match_status === 'FINISHED');
+
+      document.getElementById('tracker-kpi-total').innerText = allUserTrackerBets.length;
+      document.getElementById('tracker-kpi-pending').innerText = pendingBets.length;
+      document.getElementById('tracker-kpi-greens').innerText = finishedBets.length;
+
+      let filtered = allUserTrackerBets;
+      if (currentTrackerFilter === 'pending') {
+        filtered = pendingBets;
+      } else if (currentTrackerFilter === 'finished') {
+        filtered = finishedBets;
+      }
+
+      if (filtered.length === 0) {
+        box.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 30px; background: #121824; border-radius: 16px;">Nenhuma aposta encontrada neste filtro.</div>`;
+        return;
+      }
+
+      box.innerHTML = filtered.map(b => {
+        const isLive = b.match_status === 'LIVE';
+        const isFinished = b.match_status === 'FINISHED';
+        const cardClass = isLive ? 'is-live' : isFinished ? 'is-win' : 'is-pregame';
+
+        let statusBoxClass = 'status-pregame';
+        if (b.live_status_badge === 'GREEN_PARCIAL') statusBoxClass = 'status-green-parcial';
+        else if (b.live_status_badge === 'RISCO') statusBoxClass = 'status-risk';
+        else if (b.live_status_badge === 'GREEN_FINAL') statusBoxClass = 'status-finished';
+
+        return `
+          <div class="live-bet-card ${cardClass}">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="opp-league-badge">${b.league}</span>
+                <span style="font-size: 10px; background: #1E2533; border: 1px solid var(--border-color); color: #94A3B8; padding: 2px 6px; border-radius: 4px; font-family: monospace;">
+                  ${b.ticket_id ? 'Betano #' + b.ticket_id.slice(-6) : b.id}
+                </span>
+              </div>
+              <div style="font-size: 11px; font-weight: 700; color: ${isLive ? '#EF4444' : isFinished ? '#00D084' : '#94A3B8'}; display: flex; align-items: center;">
+                ${isLive ? '<span class="live-pulse-dot"></span> AO VIVO' : isFinished ? '✅ FINALIZADO' : '⏳ ' + b.match_clock}
+              </div>
+            </div>
+
+            <!-- Placar Digital de Alto Contraste -->
+            <div class="live-scoreboard-box">
+              <div class="scoreboard-team">${b.home_team || b.match.split(' vs ')[0]}</div>
+              <div class="scoreboard-score">${b.display_score || '0 x 0'}</div>
+              <div class="scoreboard-team team-away">${b.away_team || b.match.split(' vs ')[1] || ''}</div>
+            </div>
+
+            <!-- Dados da Aposta & Cotação -->
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+              <div>
+                <span style="color: #94A3B8;">Mercado:</span>
+                <b style="color: white; margin-left: 4px;">${b.market}</b>
+              </div>
+              <div style="font-family: var(--font-mono); font-weight: 800; color: var(--orange-betano);">
+                @ ${b.odd} &bull; Stake: R$ ${b.stake.toFixed(2)}
+              </div>
+            </div>
+
+            <!-- Aferidor Parcial de Situação em Tempo Real -->
+            <div class="live-partial-status ${statusBoxClass}">
+              <span>${b.live_status_text}</span>
+              <span style="font-family: var(--font-mono); font-weight: 800;">Retorno: R$ ${b.expected_return.toFixed(2)}</span>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 2px;">
+              <a href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=0" target="_blank" class="btn-secondary" style="flex: 1; text-decoration: none; text-align: center; font-size: 11px; padding: 6px;">
+                📊 Ver na Planilha Google
+              </a>
+              <button class="btn-secondary" style="flex: 1; font-size: 11px; padding: 6px; color: var(--orange-betano); border-color: rgba(255,96,0,0.3);" onclick="openBetDetailModal('${b.id}', 'simples')">
+                🔬 Raio-X & Análise
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function openBetDetailModal(betId, category) {
       let pool = (category === 'simples') ? DEFAULT_SIMPLES : (category === 'duplas') ? DEFAULT_DUPLAS : DEFAULT_VALUEBETS;
       const bet = pool.find(b => b.id === betId) || pool[0];
@@ -1452,7 +1758,7 @@
 
     function filterCategory(cat, btn) {
       if (btn) {
-        document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('#tab-palpites .cat-pill').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
       }
 
@@ -1592,7 +1898,6 @@
       const suspendedCount = clientsList.filter(c => c.status === 'SUSPENDED').length;
       const pureActiveCount = clientsList.filter(c => c.status === 'ACTIVE').length;
 
-      // Atualiza KPIs
       document.getElementById('admin-kpi-total').innerText = clientsList.length;
       document.getElementById('admin-kpi-ativos').innerText = pureActiveCount;
       document.getElementById('admin-kpi-suspensos').innerText = suspendedCount;
@@ -1601,12 +1906,11 @@
       document.getElementById('admin-sub-ativos').innerText = `🟢 Assinantes Ativos (${activeClients.length})`;
       document.getElementById('admin-sub-trash').innerText = `🗑️ Lixeira / Excluídos (${trashClients.length})`;
 
-      // Renderiza Ativos & Suspensos
       if (activeClients.length === 0) {
         activeBox.innerHTML = `<div style="color: #94A3B8; text-align: center; padding: 24px; background: #121824; border-radius: 12px;">Nenhum assinante ativo no momento.</div>`;
       } else {
         activeBox.innerHTML = activeClients.map(c => `
-          <div class="admin-client-card" id="card-cli-${c.client_id || c.email.replace(/[^a-zA-Z0-9]/g, '')}">
+          <div class="admin-client-card" id="card-cli-${c.client_id || (c.email || '').replace(/[^a-zA-Z0-9]/g, '')}">
             <div class="admin-client-header">
               <div class="admin-client-info">
                 <div class="admin-client-name">
@@ -1649,7 +1953,6 @@
         `).join('');
       }
 
-      // Renderiza Lixeira / Excluídos
       if (trashClients.length === 0) {
         trashBox.innerHTML = `<div style="color: #94A3B8; text-align: center; padding: 24px; background: #121824; border-radius: 12px;">A lixeira está vazia. Nenhuma conta excluída.</div>`;
       } else {
@@ -1844,6 +2147,7 @@
         showToast(`Bem-vindo, ${loggedClient.name}!`);
         loadBancaSummary();
         loadPalpites();
+        loadUserBetsTracker();
       } else {
         alert(data?.detail || "E-mail ou senha incorretos.");
       }
@@ -1913,6 +2217,7 @@
         showToast(`🎉 Cadastro realizado! Iniciando Anamnese...`);
         loadBancaSummary();
         loadPalpites();
+        loadUserBetsTracker();
         
         setTimeout(() => {
           openQuizModal(true);
@@ -1984,6 +2289,7 @@
         showToast(`🎉 6 Micro-Bots executados com sucesso!`);
         loadBancaSummary();
         loadPalpites();
+        loadUserBetsTracker();
       } else {
         showToast(`🎉 Esteira dos 6 Bots finalizada com sucesso!`);
       }
@@ -1991,17 +2297,20 @@
 
     function applyClientSession(client) {
       const badge = document.getElementById('header-auth-badge');
+      const adminTabBtn = document.getElementById('tab-btn-admin');
       badge.classList.remove('logged-in', 'is-master');
 
       if (client.is_master || client.role === "SUPERADMIN" || client.role === "MASTER") {
         badge.classList.add('is-master');
         document.getElementById('header-user-text').innerText = `👑 SuperAdmin`;
         document.getElementById('banca-card-title').innerText = `Banca Consolidada — SuperAdmin`;
+        if (adminTabBtn) adminTabBtn.style.display = 'flex';
         loadAdminClientsList();
       } else {
         badge.classList.add('logged-in');
         document.getElementById('header-user-text').innerText = `👤 ${client.name.split(' ')[0]}`;
         document.getElementById('banca-card-title').innerText = `Banca do Assinante — ${client.name}`;
+        if (adminTabBtn) adminTabBtn.style.display = 'none';
       }
 
       if (client.spreadsheet_url) {
@@ -2021,6 +2330,8 @@
 
       if (tabId === 'admin') {
         loadAdminClientsList();
+      } else if (tabId === 'apostas') {
+        loadUserBetsTracker();
       }
     }
 
@@ -2139,8 +2450,9 @@
         document.getElementById('preview-box').style.display = 'none';
         document.getElementById('match-input').value = '';
         document.getElementById('dropzone-label').innerText = "Toque para selecionar, arraste ou use Ctrl + V";
-        switchTab('palpites');
+        switchTab('apostas');
         loadBancaSummary();
+        loadUserBetsTracker();
       } else {
         alert("Não foi possível enviar o print no momento. Verifique sua conexão.");
       }
