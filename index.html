@@ -159,6 +159,47 @@
     </div>
   </div>
 
+  <!-- MODAL DE ANAMNESE COGNITIVA (10 PERGUNTAS) -->
+  <div id="quiz-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-box" style="max-width: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+        <span class="logo-badge" style="background: rgba(56,189,248,0.2); color: #38BDF8; border-color: #38BDF8;">🩺 ANAMNESE DE PERFIL</span>
+        <span id="quiz-step-counter" style="font-size: 11px; color: var(--text-muted); font-weight: 700;">Questão 1 de 10</span>
+      </div>
+
+      <!-- BARRA DE PROGRESSO -->
+      <div style="width: 100%; background: #0E121A; border-radius: 6px; height: 6px; overflow: hidden; margin-top: 4px;">
+        <div id="quiz-progress-bar" style="width: 10%; height: 100%; background: linear-gradient(90deg, #38BDF8, var(--orange-betano)); transition: width 0.3s ease;"></div>
+      </div>
+
+      <!-- CONTAINER DA QUESTÃO ATIVA -->
+      <div id="quiz-question-container" style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
+        <div id="quiz-q-title" style="font-size: 15px; font-weight: 800; color: white; line-height: 1.4;">
+          Carregando pergunta...
+        </div>
+        <div id="quiz-options-box" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Opções A, B, C, D, E injetadas via JS -->
+        </div>
+      </div>
+
+      <!-- TELA DE RESULTADO / REVELAÇÃO DO PERFIL -->
+      <div id="quiz-result-container" style="display: none; flex-direction: column; gap: 14px; text-align: center; padding: 10px 0;">
+        <div id="quiz-res-badge" style="font-size: 36px; margin-bottom: 4px;">🏛️</div>
+        <h3 id="quiz-res-title" style="font-size: 20px; font-weight: 800; color: white;">Investidor Quantitativo</h3>
+        <span id="quiz-res-pill" class="badge-pill" style="align-self: center; background: rgba(56,189,248,0.2); color: #38BDF8; border: 1px solid #38BDF8; font-size: 12px;">Stake Sugerida: 3.0%</span>
+        <p id="quiz-res-desc" style="font-size: 13px; color: #94A3B8; line-height: 1.5; text-align: left; background: #0E121A; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+          Descrição do perfil...
+        </p>
+        <button class="btn-submit" onclick="applyQuizProfileToApp()">🚀 Aplicar Personalização ao App</button>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+        <button id="btn-quiz-prev" class="btn-secondary" style="display: none;" onclick="prevQuizQuestion()">⬅ Anterior</button>
+        <button onclick="closeQuizModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 4px; margin-left: auto;">Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <div id="auth-modal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
       <div style="text-align: center; margin-bottom: 4px;">
@@ -262,13 +303,20 @@
           <span class="stat-label">Stake Recomendada (3%)</span>
           <span class="stat-val" id="stake-display">R$ 3,00</span>
         </div>
-        <div class="stat-item">
+        <div class="stat-card">
+          <span class="stat-label">Perfil de Gestão</span>
+          <span class="stat-val" id="profile-badge-display" style="font-size: 12px; color: #38BDF8; cursor: pointer;" onclick="openQuizModal()">🏛️ Investidor Quant</span>
+        </div>
+        <div class="stat-card">
           <span class="stat-label">Aproveitamento</span>
-          <span class="stat-val" id="winrate-display">83% (5/6) 🟢</span>
+          <span class="stat-val" id="winrate-display">88% (7/8) 🟢</span>
         </div>
       </div>
 
-      <button class="chart-btn-toggle" onclick="toggleGrowthChart()">📈 Curva de Crescimento & Metas (Chart.js)</button>
+      <div style="display: flex; gap: 8px; margin-top: 10px;">
+        <button class="chart-btn-toggle" style="flex: 1;" onclick="toggleGrowthChart()">📈 Curva de Crescimento (Chart.js)</button>
+        <button class="chart-btn-toggle" style="flex: 1; background: rgba(56,189,248,0.15); border-color: #38BDF8; color: #38BDF8;" onclick="openQuizModal()">🩺 Anamnese de Perfil</button>
+      </div>
       
       <div id="chart-wrapper" class="chart-container">
         <canvas id="bancaChart" height="180"></canvas>
@@ -351,14 +399,51 @@
     </div>
 
     <div id="tab-planilha" class="tab-content" style="display: none;">
-      <div class="section-title"><span>Sua Planilha no Google Drive</span></div>
+      <!-- MÓDULO 1: PLANILHA OFICIAL NO GOOGLE DRIVE -->
+      <div class="section-title"><span>Sua Planilha Oficial SynapseBet</span></div>
       <div class="form-card" style="text-align: center;">
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
-          Sua carteira de apostas individual está sincronizada 24/7 na nuvem da Neural Hub:
+          Sua carteira de apostas individual está sincronizada 24/7 na nuvem da Neural Hub com tema Betano Dark:
         </p>
         <a id="sheet-link-btn" href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-submit" style="text-decoration: none; display: block;">
           📊 Abrir Minha Planilha no Google Drive
         </a>
+      </div>
+
+      <!-- MÓDULO 2: DETECTOR DE VAZAMENTOS DE BANCA (LEAKS DETECTOR) -->
+      <div class="section-title" style="margin-top: 22px;">
+        <span>🔍 Detector de Vazamentos de Banca (Leaks Detector)</span>
+        <span style="font-size: 11px; color: #F59E0B; font-weight: 700;">Auditoria IA de Histórico</span>
+      </div>
+      <div class="form-card">
+        <p style="font-size: 13px; color: var(--text-muted);">
+          Importe seu histórico de apostas (CSV ou Excel) de qualquer casa ou planilha antiga. A IA identificará <b>vazamentos ocultos de capital</b> (Over vs Under, armadilhas de múltiplas e desvios de Tilt):
+        </p>
+        <textarea id="leaks-csv-input" class="input-field" style="height: 70px; font-family: monospace; font-size: 11px;" placeholder="Cole aqui seu histórico em CSV ou use o botão abaixo..."></textarea>
+        <button class="btn-submit" style="background: linear-gradient(135deg, #F59E0B, #D97706); box-shadow: 0 4px 16px rgba(245,158,11,0.3);" onclick="runLeaksDetector()">
+          🧠 Auditar Vazamentos de Banca com IA
+        </button>
+
+        <div id="leaks-result-container" style="display: none; flex-direction: column; gap: 10px; margin-top: 8px;">
+          <!-- Diagnósticos injetados via JS -->
+        </div>
+      </div>
+
+      <!-- MÓDULO 3: CONECTAR PLANILHA PRÓPRIA (MODO PRO) -->
+      <div class="section-title" style="margin-top: 22px;">
+        <span>🔗 Conectar Minha Própria Planilha (Modo Pro)</span>
+      </div>
+      <div class="form-card">
+        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+          Prefere usar sua própria planilha pessoal no Google Sheets? Siga os 2 passos:
+        </p>
+        <div style="background: #0E121A; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; font-size: 12px;">
+          <b>1. Compartilhe sua planilha como Editor com:</b><br>
+          <code style="color: #38BDF8; font-size: 11px; word-break: break-all;">synapse-saas-gateway@synapse-bet-420000.iam.gserviceaccount.com</code>
+          <button class="btn-secondary" style="margin-top: 6px; padding: 4px 8px; font-size: 11px;" onclick="copyTicketText('synapse-saas-gateway@synapse-bet-420000.iam.gserviceaccount.com')">📋 Copiar E-mail</button>
+        </div>
+        <input type="text" id="custom-sheet-id-input" class="input-field" placeholder="Cole aqui o Link ou ID da sua Planilha Google">
+        <button class="btn-secondary" style="width: 100%; padding: 12px; font-weight: 700;" onclick="submitCustomSheetConnection()">🔗 Validar & Vincular Minha Planilha</button>
       </div>
     </div>
 
@@ -442,6 +527,20 @@
         } catch(e) {}
       } else {
         setTimeout(() => openAuthModal(), 800);
+      }
+
+      // Inicializa Perfil de Gestão
+      const savedProf = localStorage.getItem('synapse_profile');
+      if (savedProf) {
+        try {
+          const prof = JSON.parse(savedProf);
+          if (document.getElementById('profile-badge-display')) {
+            document.getElementById('profile-badge-display').innerText = prof.badge || '🏛️ Investidor Quant';
+          }
+          if (prof.default_tab) {
+            filterCategory(prof.default_tab);
+          }
+        } catch(e) {}
       }
 
       if (!localStorage.getItem('synapse_tour_completed')) {
@@ -742,6 +841,10 @@
             <div id="raiox-${p.id}" class="raiox-drawer">
               <div class="raiox-row"><span>🎲 Monte Carlo:</span><span class="raiox-val">${p.raio_x?.monte_carlo_runs || p.monte_carlo}</span></div>
               <div class="raiox-row"><span>⚽ Probabilidade Poisson:</span><span class="raiox-val">${p.raio_x?.poisson_prob || '92.8%'}</span></div>
+              ${p.raio_x?.clv_projected ? `<div class="raiox-row"><span>🎯 Closing Line Value (CLV):</span><span class="raiox-val" style="color: #00D084;">${p.raio_x.clv_projected}</span></div>` : ''}
+              ${p.raio_x?.custo_do_gol ? `<div class="raiox-row"><span>⚡ Custo do Gol (CG):</span><span class="raiox-val" style="color: #38BDF8;">${p.raio_x.custo_do_gol}</span></div>` : ''}
+              ${p.raio_x?.xpoints ? `<div class="raiox-row"><span>📈 Pontos Esperados (XPoints):</span><span class="raiox-val">${p.raio_x.xpoints}</span></div>` : ''}
+              ${p.raio_x?.defensive_score_inverted ? `<div class="raiox-row"><span>🛡️ Defesa US002 (0-100):</span><span class="raiox-val">${p.raio_x.defensive_score_inverted}</span></div>` : ''}
               ${p.raio_x?.xg_home ? `<div class="raiox-row"><span>📊 xG Projetado:</span><span class="raiox-val">${p.raio_x.xg_home} vs ${p.raio_x.xg_away}</span></div>` : ''}
               ${p.raio_x?.home_advantage ? `<div class="raiox-row"><span>🏟️ Fator Mando:</span><span class="raiox-val">${p.raio_x.home_advantage}</span></div>` : ''}
               <div style="color: #94A3B8; font-size: 10px; margin-top: 4px;">💬 ${p.raio_x?.snsi_detail || p.racional || p.notes || ''}</div>
@@ -844,6 +947,256 @@
         secSimples.style.display = 'none';
         secDuplas.style.display = 'none';
         secValuebets.style.display = 'block';
+      }
+    }
+
+    // =========================================================================
+    // MOTOR DE ANAMNESE COGNITIVA (10 QUESTÕES SITUACIONAIS)
+    // =========================================================================
+    let currentQuizIndex = 0;
+    let quizUserAnswers = [];
+
+    const QUIZ_QUESTIONS = [
+      {
+        title: "1. Qual é o seu objetivo principal ao realizar apostas esportivas?",
+        options: [
+          { letter: "A", text: "Criar um portfólio macro de longo prazo baseado em títulos e classificações." },
+          { letter: "B", text: "Adicionar emoção e entretenimento enquanto assisto aos jogos no sofá." },
+          { letter: "C", text: "Operar de forma metódica e disciplinada para obter renda consistente a longo prazo." },
+          { letter: "D", text: "Obter ganhos rápidos e exponenciais através de apostas combinadas." },
+          { letter: "E", text: "Identificar desajustes matemáticos nas cotações das casas (+EV)." }
+        ]
+      },
+      {
+        title: "2. Como você define o tamanho do valor (stake) que coloca em cada aposta?",
+        options: [
+          { letter: "A", text: "Aloco uma quantia estática no pré-live e deixo o capital retido por meses." },
+          { letter: "B", text: "Aposto valores baixos e intuitivos ('moedinhas'), sem regra rígida." },
+          { letter: "C", text: "Gestão de banca estrita, aplicando entre 0,5% e 3% do capital por entrada." },
+          { letter: "D", text: "Gestão agressiva, apostando frequentemente 20%, 50% ou all-in da banca." },
+          { letter: "E", text: "Ajusto o tamanho da stake conforme a margem de valor esperado (+EV)." }
+        ]
+      },
+      {
+        title: "3. Qual sua reação imediata após sofrer três 'Reds' seguidos no mesmo dia?",
+        options: [
+          { letter: "A", text: "Ignoro totalmente. Minhas apostas são macro e flutuações diárias não afetam." },
+          { letter: "B", text: "Desligo o aplicativo e vou fazer outra atividade. Aposto apenas por lazer." },
+          { letter: "C", text: "Registro na planilha, analiso se a premissa técnica estava certa e sigo o plano." },
+          { letter: "D", text: "Frustração extrema; busco imediatamente um jogo no ao vivo para recuperar." },
+          { letter: "E", text: "Verifico se as odds bateram a linha de fechamento (CLV) para validar o método." }
+        ]
+      },
+      {
+        title: "4. O que você faz quando tem uma sequência excelente de 'Greens' seguidos?",
+        options: [
+          { letter: "A", text: "Mantenho a tranquilidade. O resultado final só consolida no fim da temporada." },
+          { letter: "B", text: "Comemoro com amigos e uso o lucro para saques recreativos imediatos." },
+          { letter: "C", text: "Trato como um dia normal de trabalho e não subo a stake padrão." },
+          { letter: "D", text: "Sinto-me invencível, aumento o valor das apostas e busco alavancagens." },
+          { letter: "E", text: "Avalio se foi valor esperado real ou se a variância positiva de curto prazo inflou." }
+        ]
+      },
+      {
+        title: "5. Em quais mercados você costuma concentrar a maior parte das operações?",
+        options: [
+          { letter: "A", text: "Vencedor final do torneio, rebaixamento ou mercados de longo prazo (Outrights)." },
+          { letter: "B", text: "Resultados simples (1X2) e palpites intuitivos nos times mais famosos." },
+          { letter: "C", text: "Mercados técnicos (gols, escanteios asiáticos ou handicaps com proteção)." },
+          { letter: "D", text: "Múltiplas massivas de odds elevadas (OD > 10) combinando vários jogos." },
+          { letter: "E", text: "Qualquer mercado onde a odd oferecida seja maior que a odd do meu modelo." }
+        ]
+      },
+      {
+        title: "6. Qual a sua visão sobre apostar a favor de super times favoritos (Real Madrid, Bayern)?",
+        options: [
+          { letter: "A", text: "Aposto neles para campeões se a consistência do elenco justificar." },
+          { letter: "B", text: "Adoro apostar neles no pré-live porque a probabilidade é alta." },
+          { letter: "C", text: "Evito no pré-live porque as odds oferecidas costumam ser esmagadas e sem valor." },
+          { letter: "D", text: "Uso os super favoritos para montar duplas ou triplas no bilhete diário." },
+          { letter: "E", text: "Só aposto se a modelagem quantitativa mostrar valor real (+EV) contra a casa." }
+        ]
+      },
+      {
+        title: "7. Como você utiliza dados e estatísticas no seu dia a dia?",
+        options: [
+          { letter: "A", text: "Analiso a evolução histórica do elenco ao longo dos anos." },
+          { letter: "B", text: "Olho rapidamente a tabela e os últimos 5 jogos em apps como Sofascore." },
+          { letter: "C", text: "Cruzo bases estruturadas, analiso desfalques quentes e estudo a tática." },
+          { letter: "D", text: "Ignoro dados complexos. Prefiro focar no feeling e em gols no ao vivo." },
+          { letter: "E", text: "Utilizo modelagens avançadas (Poisson, regressão linear, xG e CLV)." }
+        ]
+      },
+      {
+        title: "8. De que forma você acompanha e opera durante os jogos ao vivo (In-play)?",
+        options: [
+          { letter: "A", text: "Não acompanho. Deixo a aposta correr até o encerramento sem estresse." },
+          { letter: "B", text: "Assisto ao jogo torcendo apaixonadamente em frente à TV." },
+          { letter: "C", text: "Monitoro o gráfico de pressão para avaliar se a premissa técnica se mantém." },
+          { letter: "D", text: "Fico ansioso atualizando o saldo e operando no mercado de minutos." },
+          { letter: "E", text: "Busco discrepâncias ao vivo onde o mercado reage de forma exagerada." }
+        ]
+      },
+      {
+        title: "9. Qual sua postura em relação a realizar apostas combinadas (múltiplas)?",
+        options: [
+          { letter: "A", text: "Não realizo acumuladoras." },
+          { letter: "B", text: "Faço bilhetes de fim de semana com várias seleções para brincar com trocados." },
+          { letter: "C", text: "Evito múltiplas padrão; se utilizo, uso apenas duplas blindadas protegidas." },
+          { letter: "D", text: "É meu mercado favorito: gosto de juntar 5 a 10 jogos para buscar a bolada." },
+          { letter: "E", text: "Desenvolvo algoritmos para precificar correlações e só entro com vantagem real." }
+        ]
+      },
+      {
+        title: "10. Qual o horizonte de tempo ideal para avaliar se você está tendo lucro ou prejuízo?",
+        options: [
+          { letter: "A", text: "Mínimo de 1 ano / temporada europeia ou nacional." },
+          { letter: "B", text: "Diariamente ou ao fim do fim de semana." },
+          { letter: "C", text: "No longo prazo: blocos de 500 a 1000 entradas idênticas do meu método." },
+          { letter: "D", text: "No curtíssimo prazo: se cresceu em 3 a 5 dias, considero validado." },
+          { letter: "E", text: "Avaliação constante do ROI e CLV acumulado a cada mês de operação." }
+        ]
+      }
+    ];
+
+    function openQuizModal() {
+      currentQuizIndex = 0;
+      quizUserAnswers = [];
+      document.getElementById('quiz-question-container').style.display = 'flex';
+      document.getElementById('quiz-result-container').style.display = 'none';
+      document.getElementById('btn-quiz-prev').style.display = 'none';
+      document.getElementById('quiz-modal').style.display = 'flex';
+      renderQuizQuestion(0);
+    }
+
+    function closeQuizModal() {
+      document.getElementById('quiz-modal').style.display = 'none';
+    }
+
+    function renderQuizQuestion(idx) {
+      const q = QUIZ_QUESTIONS[idx];
+      document.getElementById('quiz-step-counter').innerText = `Questão ${idx + 1} de ${QUIZ_QUESTIONS.length}`;
+      document.getElementById('quiz-progress-bar').style.width = `${((idx + 1) / QUIZ_QUESTIONS.length) * 100}%`;
+      document.getElementById('quiz-q-title').innerText = q.title;
+
+      const optBox = document.getElementById('quiz-options-box');
+      optBox.innerHTML = q.options.map(opt => `
+        <button class="btn-secondary" style="text-align: left; padding: 12px 14px; display: flex; gap: 10px; align-items: center; border-radius: 10px; font-size: 13px;" onclick="selectQuizOption('${opt.letter}')">
+          <span style="font-weight: 800; color: var(--orange-betano); background: #0E121A; border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 6px;">${opt.letter}</span>
+          <span>${opt.text}</span>
+        </button>
+      `).join('');
+
+      document.getElementById('btn-quiz-prev').style.display = idx > 0 ? 'block' : 'none';
+    }
+
+    function selectQuizOption(letter) {
+      quizUserAnswers[currentQuizIndex] = letter;
+      if (currentQuizIndex < QUIZ_QUESTIONS.length - 1) {
+        currentQuizIndex++;
+        renderQuizQuestion(currentQuizIndex);
+      } else {
+        submitQuizAssessment();
+      }
+    }
+
+    function prevQuizQuestion() {
+      if (currentQuizIndex > 0) {
+        currentQuizIndex--;
+        renderQuizQuestion(currentQuizIndex);
+      }
+    }
+
+    async function submitQuizAssessment() {
+      document.getElementById('quiz-question-container').style.display = 'none';
+      document.getElementById('quiz-result-container').style.display = 'flex';
+      document.getElementById('quiz-res-title').innerText = "Analisando seu Perfil...";
+
+      const email = loggedClient ? loggedClient.email : null;
+      const data = await safeFetch('/api/auth/profile-assessment', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ answers: quizUserAnswers, client_email: email })
+      });
+
+      if (data && data.success && data.profile) {
+        const prof = data.profile;
+        localStorage.setItem('synapse_profile', JSON.stringify(prof));
+        document.getElementById('quiz-res-badge').innerText = prof.badge.split(' ')[0];
+        document.getElementById('quiz-res-title').innerText = prof.name;
+        document.getElementById('quiz-res-pill').innerText = `Stake Recomendada: ${prof.stake_pct}% | Trava: ${prof.security_lock}`;
+        document.getElementById('quiz-res-desc').innerHTML = `
+          <b>Diagnóstico Comportamental:</b><br>${prof.description}<br><br>
+          <b>🎯 Mercados Prioritários:</b> ${prof.recommended_markets.join(' &bull; ')}
+        `;
+      }
+    }
+
+    function applyQuizProfileToApp() {
+      closeQuizModal();
+      const savedProf = localStorage.getItem('synapse_profile');
+      if (savedProf) {
+        const prof = JSON.parse(savedProf);
+        document.getElementById('profile-badge-display').innerText = prof.badge;
+        document.getElementById('stake-display').innerText = `R$ ${(100 * (prof.stake_pct / 100)).toFixed(2)} (${prof.stake_pct}%)`;
+        if (prof.default_tab) {
+          filterCategory(prof.default_tab);
+        }
+        showToast(`Perfil ${prof.badge} aplicado com sucesso!`);
+      }
+    }
+
+    // =========================================================================
+    // MÓDULO LEAKS DETECTOR (AUDITORIA DE VAZAMENTOS COM IA)
+    // =========================================================================
+    async function runLeaksDetector() {
+      const csvText = document.getElementById('leaks-csv-input').value.trim();
+      const resBox = document.getElementById('leaks-result-container');
+      resBox.style.display = 'flex';
+      resBox.innerHTML = `<div style="text-align: center; color: #F59E0B; padding: 12px;">🧠 IA processando dados históricos...</div>`;
+
+      const data = await safeFetch('/api/analytics/leaks-detector', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ csv_text: csvText })
+      });
+
+      if (data && data.success) {
+        resBox.innerHTML = `
+          <div style="background: rgba(0, 208, 132, 0.1); border: 1px solid var(--green-win); border-radius: 10px; padding: 12px; font-size: 12px;">
+            <b>🏆 Health Score da Banca: ${data.health_score}/100</b><br>
+            Total de Apostas Analisadas: ${data.total_bets_analyzed || 'Modo Simulação Ativo'}
+          </div>
+          ${data.leaks.map(l => `
+            <div style="background: #0E121A; border: 1px solid ${l.severity === 'HIGH' ? '#EF4444' : '#F59E0B'}; border-radius: 10px; padding: 12px; font-size: 12px;">
+              <div style="font-weight: 800; color: ${l.severity === 'HIGH' ? '#EF4444' : '#F59E0B'};">${l.title}</div>
+              <div style="color: #94A3B8; margin-top: 4px;">${l.detail}</div>
+              <div style="color: white; margin-top: 6px; font-size: 11px;">💡 <b>Ação Recomendada:</b> ${l.recommendation}</div>
+            </div>
+          `).join('')}
+        `;
+      }
+    }
+
+    // =========================================================================
+    // MÓDULO CONECTAR PLANILHA PRÓPRIA (MODO PRO)
+    // =========================================================================
+    async function submitCustomSheetConnection() {
+      const sheetInput = document.getElementById('custom-sheet-id-input').value.trim();
+      if (!sheetInput) return alert("Cole o Link ou ID da sua Planilha Google");
+
+      const email = loggedClient ? loggedClient.email : "visitante@synapsebet.ia";
+      const data = await safeFetch('/api/client/custom-sheet', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ client_email: email, sheet_id_or_url: sheetInput })
+      });
+
+      if (data && data.success) {
+        showToast("✅ Planilha conectada com sucesso!");
+        alert(`Sucesso! Sua planilha '${data.sheet_title}' foi vinculada ao SynapseBet.`);
+      } else {
+        alert(data?.error || "Erro ao conectar. Verifique o compartilhamento com a Service Account.");
       }
     }
 
