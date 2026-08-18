@@ -122,6 +122,12 @@
     .tour-desc { font-size: 13px; color: #94A3B8; line-height: 1.5; }
 
     .compliance-footer { font-size: 10px; color: #64748B; text-align: center; line-height: 1.5; padding: 16px; border-top: 1px solid #1E2530; margin-top: 16px; }
+    
+    .category-filter-nav { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px 2px; margin-bottom: 12px; scrollbar-width: none; }
+    .category-filter-nav::-webkit-scrollbar { display: none; }
+    .cat-pill { background: #121824; border: 1px solid rgba(255,255,255,0.08); color: #94A3B8; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+    .cat-pill:hover { color: white; border-color: rgba(255,255,255,0.2); }
+    .cat-pill.active { background: rgba(56,189,248,0.18); border-color: #38BDF8; color: #38BDF8; box-shadow: 0 0 12px rgba(56,189,248,0.3); }
   </style>
 </head>
 <body>
@@ -277,28 +283,42 @@
     </div>
 
     <div id="tab-palpites" class="tab-content">
-      <div class="section-title">
-        <span>🛡️ Apostas Simples Oficiais (Tier 1 — Âncora)</span>
-        <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+ | Stake 3%</span>
-      </div>
-      <div class="palpites-list" id="simples-container">
-        <div style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando oportunidades da IA...</div>
-      </div>
-
-      <div class="section-title" style="margin-top: 22px;">
-        <span>💎 Duplas & Múltiplas Blindadas (Tier 2 — Acelerador 2x)</span>
-        <span style="font-size: 11px; color: #38BDF8; font-weight: 700;">Proteção Dupla Chance | Stake 2%</span>
-      </div>
-      <div class="palpites-list" id="duplas-container">
-        <div style="text-align: center; color: var(--text-muted); padding: 20px;">Calculando combinações blindadas...</div>
+      <!-- BARRA DE FILTROS POR CATEGORIA -->
+      <div class="category-filter-nav">
+        <button class="cat-pill active" onclick="filterCategory('all', this)">🎯 Todas (8)</button>
+        <button class="cat-pill" onclick="filterCategory('simples', this)">🛡️ Simples (3)</button>
+        <button class="cat-pill" onclick="filterCategory('duplas', this)">💎 Duplas & Triplas (2)</button>
+        <button class="cat-pill" onclick="filterCategory('valuebets', this)">🔥 ValueBets (3)</button>
       </div>
 
-      <div class="section-title" style="margin-top: 22px;">
-        <span>🔥 ValueBets de Alto Retorno (Tier 3 — Odds 1.80 a 2.50+)</span>
-        <span style="font-size: 11px; color: #F59E0B; font-weight: 700;">Stake 0.5% - 1.0% (Sniper EV+)</span>
+      <div id="sec-simples">
+        <div class="section-title">
+          <span>🛡️ Apostas Simples Oficiais (Tier 1 — Âncora)</span>
+          <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+ | Stake 3%</span>
+        </div>
+        <div class="palpites-list" id="simples-container">
+          <div style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando oportunidades da IA...</div>
+        </div>
       </div>
-      <div class="palpites-list" id="valuebets-container">
-        <div style="text-align: center; color: var(--text-muted); padding: 20px;">Varrendo ValueBets da Surebet & Arbitragem...</div>
+
+      <div id="sec-duplas" style="margin-top: 22px;">
+        <div class="section-title">
+          <span>💎 Duplas & Múltiplas Blindadas (Tier 2 — Acelerador 2x)</span>
+          <span style="font-size: 11px; color: #38BDF8; font-weight: 700;">Proteção Dupla Chance | Stake 2%</span>
+        </div>
+        <div class="palpites-list" id="duplas-container">
+          <div style="text-align: center; color: var(--text-muted); padding: 20px;">Calculando combinações blindadas...</div>
+        </div>
+      </div>
+
+      <div id="sec-valuebets" style="margin-top: 22px;">
+        <div class="section-title">
+          <span>🔥 ValueBets de Alto Retorno (Tier 3 — Odds 1.80 a 2.50+)</span>
+          <span style="font-size: 11px; color: #F59E0B; font-weight: 700;">Stake 0.5% - 1.0% (Sniper EV+)</span>
+        </div>
+        <div class="palpites-list" id="valuebets-container">
+          <div style="text-align: center; color: var(--text-muted); padding: 20px;">Varrendo ValueBets da Surebet & Arbitragem...</div>
+        </div>
       </div>
     </div>
 
@@ -798,6 +818,34 @@
       }
     }
 
+    function filterCategory(cat, el) {
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const secSimples = document.getElementById('sec-simples');
+      const secDuplas = document.getElementById('sec-duplas');
+      const secValuebets = document.getElementById('sec-valuebets');
+
+      if (!secSimples || !secDuplas || !secValuebets) return;
+
+      if (cat === 'all') {
+        secSimples.style.display = 'block';
+        secDuplas.style.display = 'block';
+        secValuebets.style.display = 'block';
+      } else if (cat === 'simples') {
+        secSimples.style.display = 'block';
+        secDuplas.style.display = 'none';
+        secValuebets.style.display = 'none';
+      } else if (cat === 'duplas') {
+        secSimples.style.display = 'none';
+        secDuplas.style.display = 'block';
+        secValuebets.style.display = 'none';
+      } else if (cat === 'valuebets') {
+        secSimples.style.display = 'none';
+        secDuplas.style.display = 'none';
+        secValuebets.style.display = 'block';
+      }
+    }
 
     async function submitClientLogin() {
       const email = document.getElementById('login-email').value.trim();
