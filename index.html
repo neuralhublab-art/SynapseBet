@@ -1746,6 +1746,8 @@
           </div>
         `;
       }).join('');
+    }
+
     function openBetDetailModal(betId, category) {
       let pool = (category === 'simples') ? DEFAULT_SIMPLES : (category === 'duplas') ? DEFAULT_DUPLAS : DEFAULT_VALUEBETS;
       const bet = pool.find(b => b.id === betId) || pool[0];
