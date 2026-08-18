@@ -805,25 +805,43 @@
       </div>
 
       <div id="auth-view-login" style="display: flex; flex-direction: column; gap: 12px;">
-        <input type="email" id="login-email" class="input-field" placeholder="Seu E-mail Cadastrado">
-        <input type="password" id="login-pass" class="input-field" placeholder="Sua Senha Pessoal">
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">📧 Seu E-mail Cadastrado:</label>
+          <input type="email" id="login-email" class="input-field" placeholder="Ex: seu.email@gmail.com">
+        </div>
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">🔒 Sua Senha Pessoal:</label>
+          <input type="password" id="login-pass" class="input-field" placeholder="Digite sua senha de acesso">
+        </div>
         <button class="btn-submit" onclick="submitClientLogin()">Acessar Minha Carteira</button>
         <button onclick="closeAuthModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 4px;">Explorar como visitante</button>
       </div>
 
       <div id="auth-view-invite" style="display: none; flex-direction: column; gap: 12px;">
         <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-          Recebeu um convite? Digite abaixo para criar sua conta e gerar sua carteira exclusiva no Google Drive!
+          Recebeu um convite VIP? Digite as credenciais abaixo para gerar sua carteira exclusiva no Google Drive:
         </p>
-        <input type="text" id="invite-code" class="input-field" placeholder="Código de Convite (ex: SYN-ABA56D)">
-        <input type="text" id="invite-pass" class="input-field" placeholder="Senha Temporária (ex: HUB-8C592E)">
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">🎟️ Código de Convite:</label>
+          <input type="text" id="invite-code" class="input-field" placeholder="Ex: SYN-ABA56D">
+        </div>
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">🔑 Senha Temporária:</label>
+          <input type="text" id="invite-pass" class="input-field" placeholder="Ex: HUB-8C592E">
+        </div>
         <button class="btn-submit" onclick="unlockOnboarding()">Validar Convite e Cadastrar ➔</button>
       </div>
 
       <div id="auth-view-master" style="display: none; flex-direction: column; gap: 12px;">
         <p style="font-size: 12px; color: var(--text-muted);">Acesso restrito ao Console Administrativo Master (SuperAdmin):</p>
-        <input type="text" id="master-user" class="input-field" placeholder="ID de Usuário SuperAdmin">
-        <input type="password" id="master-pass" class="input-field" placeholder="Chave Mestra de Acesso">
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">👑 ID de Usuário SuperAdmin:</label>
+          <input type="text" id="master-user" class="input-field" placeholder="ID de Usuário SuperAdmin">
+        </div>
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">🔒 Chave Mestra de Acesso:</label>
+          <input type="password" id="master-pass" class="input-field" placeholder="Chave Mestra de Acesso">
+        </div>
         <button class="btn-submit" onclick="submitMasterLogin()">Acessar Console SuperAdmin</button>
       </div>
 
@@ -831,20 +849,48 @@
         <div style="font-size: 14px; font-weight: 800; color: var(--orange-betano); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           📋 Cadastro & Personalização do Assinante
         </div>
-        <input type="text" id="reg-name" class="input-field" placeholder="Nome Completo">
-        <input type="email" id="reg-email" class="input-field" placeholder="E-mail (Gmail para o Google Drive)">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <input type="number" id="reg-bankroll" class="input-field" placeholder="Banca Inicial (R$)" value="200.00">
-          <input type="number" id="reg-deposit" class="input-field" placeholder="Aporte Mensal (R$)" value="100.00">
+        
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">👤 Seu Nome Completo:</label>
+          <input type="text" id="reg-name" class="input-field" placeholder="Ex: Juninho Rocha">
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Crie sua Senha Pessoal:</label>
-          <button type="button" class="btn-secondary" onclick="generateAndSetStrongPassword()">🎲 Sugerir Senha Forte (NIST)</button>
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">📧 Seu E-mail (Google Drive para sua Planilha):</label>
+          <input type="email" id="reg-email" class="input-field" placeholder="Ex: seu.email@gmail.com">
         </div>
-        <input type="text" id="reg-password" class="input-field" placeholder="Sua Senha Definitiva">
 
-        <button class="btn-submit" onclick="submitClientRegistration()">⚡ Concluir Cadastro & Fazer Anamnese ➔</button>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">💰 Banca Inicial (R$):</label>
+            <input type="number" id="reg-bankroll" class="input-field" placeholder="R$ 100.00" value="100.00">
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">📈 Aporte Mensal (R$):</label>
+            <input type="number" id="reg-deposit" class="input-field" placeholder="R$ 50.00" value="50.00">
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #CBD5E1; margin-bottom: 4px;">🎯 Perfil de Gestão de Risco & Apostas:</label>
+          <select id="reg-profile" class="input-field" style="background: #121824; color: white; cursor: pointer;">
+            <option value="1. Conservador">🛡️ 1. Investidor Conservador (Stake 1.5% - 2.0% | Simples & Dupla Chance)</option>
+            <option value="2. Moderado" selected>⚖️ 2. Estrategista Moderado (Stake 2.5% - 3.0% | Duplas Acelerador 2x)</option>
+            <option value="3. Arrojado">🎯 3. Sniper ValueBets (+EV) (Stake 3.0% - 3.5% | Odds Desajustadas)</option>
+            <option value="4. Alavancador">⚡ 4. Alavancador Arrojado (Stake 3.5% - 4.5% | Múltiplas & Alta Rotação)</option>
+            <option value="5. Ultra-Quant">🧠 5. Investidor Ultra-Quant (Critério de Kelly | Automação Estatística)</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label style="font-size: 12px; font-weight: 700; color: #CBD5E1;">🔒 Crie sua Senha Pessoal Definitiva:</label>
+            <button type="button" class="btn-secondary" style="font-size: 10px; padding: 3px 8px;" onclick="generateAndSetStrongPassword()">🎲 Sugerir Forte</button>
+          </div>
+          <input type="text" id="reg-password" class="input-field" placeholder="Digite ou gere sua senha segura">
+        </div>
+
+        <button class="btn-submit" onclick="submitClientRegistration()">⚡ Concluir Cadastro & Acessar Carteira ➔</button>
       </div>
 
     </div>
@@ -960,42 +1006,69 @@
       <button id="tab-btn-regras" class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
 
-    <!-- ABA 1: PALPITES (FEED EM LIST VIEW COMPACTA) -->
+    <!-- ABA 1: PALPITES (FEED EM LIST VIEW COMPACTA COM 5 PERFIS SEGMENTADOS) -->
     <div id="tab-palpites" class="tab-content">
-      <div class="category-filter-nav">
-        <button class="cat-pill active" onclick="filterCategory('all', this)">🎯 Todas (8)</button>
-        <button class="cat-pill" onclick="filterCategory('simples', this)">🛡️ Simples (3)</button>
-        <button class="cat-pill" onclick="filterCategory('duplas', this)">💎 Duplas & Triplas (2)</button>
-        <button class="cat-pill" onclick="filterCategory('valuebets', this)">🔥 ValueBets (3)</button>
+      <div class="category-filter-nav" style="overflow-x: auto; white-space: nowrap; padding-bottom: 6px; display: flex; gap: 6px;">
+        <button class="cat-pill active" onclick="filterCategory('all', this)">🎯 Todas</button>
+        <button class="cat-pill" id="cat-pill-simples" onclick="filterCategory('simples', this)">🛡️ 1. Conservador (Simples)</button>
+        <button class="cat-pill" id="cat-pill-duplas" onclick="filterCategory('duplas', this)">⚖️ 2. Moderado (Duplas)</button>
+        <button class="cat-pill" id="cat-pill-valuebets" onclick="filterCategory('valuebets', this)">🎯 3. ValueBets (+EV)</button>
+        <button class="cat-pill" id="cat-pill-arrojado" onclick="filterCategory('arrojado', this)">⚡ 4. Arrojado (Múltiplas)</button>
+        <button class="cat-pill" id="cat-pill-quant" onclick="filterCategory('quant', this)">🧠 5. Ultra-Quant (Kelly)</button>
       </div>
 
+      <!-- SEÇÃO 1: CONSERVADOR -->
       <div id="sec-simples">
         <div class="section-title">
-          <span>🛡️ Apostas Simples Oficiais (Tier 1 — Âncora)</span>
-          <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+ | Stake 3%</span>
+          <span>🛡️ 1. Apostas Simples Oficiais (Perfil Conservador — Tier 1 Âncora)</span>
+          <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+ | Stake 1.5% a 2%</span>
         </div>
         <div class="opportunity-list" id="simples-container">
           <div style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando oportunidades da IA...</div>
         </div>
       </div>
 
+      <!-- SEÇÃO 2: MODERADO -->
       <div id="sec-duplas" style="margin-top: 20px;">
         <div class="section-title">
-          <span>💎 Duplas & Múltiplas Blindadas (Tier 2 — Acelerador 2x)</span>
-          <span style="font-size: 11px; color: #38BDF8; font-weight: 700;">Proteção Dupla Chance | Stake 2%</span>
+          <span>⚖️ 2. Duplas & Múltiplas Blindadas (Perfil Moderado — Tier 2 Acelerador 2x)</span>
+          <span style="font-size: 11px; color: #38BDF8; font-weight: 700;">Proteção Dupla Chance | Stake 2.5% a 3%</span>
         </div>
         <div class="opportunity-list" id="duplas-container">
           <div style="text-align: center; color: var(--text-muted); padding: 20px;">Calculando combinações blindadas...</div>
         </div>
       </div>
 
+      <!-- SEÇÃO 3: VALUEBETS SNIPER (+EV) -->
       <div id="sec-valuebets" style="margin-top: 20px;">
         <div class="section-title">
-          <span>🔥 ValueBets Sniper (+EV) (Tier 3 — Odds 1.80 a 2.50+)</span>
-          <span style="font-size: 11px; color: #F59E0B; font-weight: 700;">Stake 1.0% (Discrepâncias de Mercado)</span>
+          <span>🎯 3. ValueBets Sniper (+EV) (Perfil Sniper — Tier 3 Odds Desajustadas)</span>
+          <span style="font-size: 11px; color: #F59E0B; font-weight: 700;">Stake 3.0% a 3.5% (Discrepâncias de Mercado)</span>
         </div>
         <div class="opportunity-list" id="valuebets-container">
           <div style="text-align: center; color: var(--text-muted); padding: 20px;">Varrendo ValueBets da Surebet...</div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 4: ALAVANCADOR ARROJADO -->
+      <div id="sec-arrojado" style="margin-top: 20px;">
+        <div class="section-title">
+          <span>⚡ 4. Múltiplas & Alavancagem (Perfil Arrojado — Tier 4 Alta Rotação)</span>
+          <span style="font-size: 11px; color: #EC4899; font-weight: 700;">Odds 3.00 a 4.50+ | Stake 3.5% a 4.5%</span>
+        </div>
+        <div class="opportunity-list" id="arrojado-container">
+          <div style="text-align: center; color: var(--text-muted); padding: 20px;">Calculando alavancagens quantitativas...</div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 5: ULTRA-QUANT -->
+      <div id="sec-quant" style="margin-top: 20px;">
+        <div class="section-title">
+          <span>🧠 5. Entradas Quantitativas & Alpha (Perfil Ultra-Quant — Tier 5)</span>
+          <span style="font-size: 11px; color: #A855F7; font-weight: 700;">Modelagem Poisson + Critério de Kelly Fracionado</span>
+        </div>
+        <div class="opportunity-list" id="quant-container">
+          <div style="text-align: center; color: var(--text-muted); padding: 20px;">Processando regressões e CLV...</div>
         </div>
       </div>
     </div>
@@ -1322,6 +1395,42 @@
       }
     ];
 
+    const DEFAULT_ARROJADO = [
+      {
+        id: "ARR_001", tipo: "ARROJADO", league: "⚽ Tripla Série A & B + MLB", datetime: "Hoje 20:00 &bull; 21:35",
+        start_time: "20:00", end_time: "23:45",
+        match: "Orioles vs Yankees (MLB) + Náutico vs Ceará + Goiás vs Juventude",
+        market: "Yankees Vence + Náutico (X2) + Goiás (1X)", odd: "4.15",
+        monte_carlo: "72.4%", stake: "R$ 4,00 (4.0%)", snsi: "+8.5% Alavancagem",
+        raio_x: { poisson_prob: "71.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+24.0%", custo_do_gol: "4.15 CG", snsi_detail: "Combinação de 3 favoritos com alta probabilidade agregada para retorno 4x.", betano_copy_text: "Tripla Alavancada: Yankees + Náutico X2 + Goiás 1X (@ 4.15)" }
+      },
+      {
+        id: "ARR_002", tipo: "ARROJADO", league: "🇧🇷 Brasileirão Série B", datetime: "Hoje 21:35",
+        start_time: "21:35", end_time: "23:30",
+        match: "Goiás vs Juventude-RS",
+        market: "Mais de 9.5 Escanteios + Ambos Marcam (Criar Aposta)", odd: "3.40",
+        monte_carlo: "75.8%", stake: "R$ 4,00 (4.0%)", snsi: "+6.8% Cantos & Gols",
+        raio_x: { poisson_prob: "74.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+19.2%", custo_do_gol: "3.40 CG", snsi_detail: "Alta frequência de cruzamentos e média de 11.2 cantos/jogo.", betano_copy_text: "Goiás vs Juventude: +9.5 Cantos & Ambos Marcam (@ 3.40)" }
+      }
+    ];
+
+    const DEFAULT_QUANT = [
+      {
+        id: "QUA_001", tipo: "QUANT", league: "⚽ Premier League / La Liga Quant", datetime: "Hoje 16:00",
+        start_time: "16:00", end_time: "17:55",
+        match: "Fenerbahce SK vs Lyon", market: "Poisson xG Modelo Puro (Over 2.25 Asian)", odd: "1.92",
+        monte_carlo: "88.2%", stake: "Kelly Frac 25%", snsi: "+18.4% Alpha",
+        raio_x: { poisson_prob: "88.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+18.4%", custo_do_gol: "2.10 CG", snsi_detail: "Regressão bivariada de Poisson indicando xG esperado de 3.24 contra linha de 2.25.", betano_copy_text: "Fenerbahce vs Lyon: Over 2.25 Asiático (@ 1.92)" }
+      },
+      {
+        id: "QUA_002", tipo: "QUANT", league: "⚾ MLB Quant Model", datetime: "Hoje 20:05",
+        start_time: "20:05", end_time: "22:45",
+        match: "Baltimore Orioles vs NY Yankees", market: "F5 Runline (-0.5 Yankees) Modelo Preditivo", odd: "2.15",
+        monte_carlo: "83.6%", stake: "Kelly Frac 25%", snsi: "+22.1% Alpha",
+        raio_x: { poisson_prob: "83.6%", monte_carlo_runs: "10.000 iterações", clv_projected: "+22.1%", custo_do_gol: "1.85 CG", snsi_detail: "Descompasso acentuado entre ERA do arremessador titular e linha Betano.", betano_copy_text: "Orioles vs NY Yankees: F5 Runline -0.5 Yankees (@ 2.15)" }
+      }
+    ];
+
     const DEFAULT_ADMIN_CLIENTS = [];
 
     window.addEventListener('DOMContentLoaded', async () => {
@@ -1533,84 +1642,78 @@
       const oficiais = (data && data.oficiais && data.oficiais.length > 0) ? data.oficiais : DEFAULT_SIMPLES;
       const duplas = (data && data.duplas && data.duplas.length > 0) ? data.duplas : DEFAULT_DUPLAS;
       const valuebets = (data && data.valuebets && data.valuebets.length > 0) ? data.valuebets : DEFAULT_VALUEBETS;
-      renderPalpites(oficiais, duplas, valuebets);
+      const arrojado = (data && data.arrojado && data.arrojado.length > 0) ? data.arrojado : DEFAULT_ARROJADO;
+      const quant = (data && data.quant && data.quant.length > 0) ? data.quant : DEFAULT_QUANT;
+      renderPalpites(oficiais, duplas, valuebets, arrojado, quant);
     }
 
-    function renderPalpites(oficiais, duplas, valuebets) {
+    function renderPalpites(oficiais, duplas, valuebets, arrojado, quant) {
       const sContainer = document.getElementById('simples-container');
       const dContainer = document.getElementById('duplas-container');
       const vContainer = document.getElementById('valuebets-container');
+      const aContainer = document.getElementById('arrojado-container');
+      const qContainer = document.getElementById('quant-container');
 
-      if (sContainer) {
-        sContainer.innerHTML = oficiais.map(p => `
-          <div class="opportunity-row simples-row" onclick="openBetDetailModal('${p.id}', 'simples')">
+      const userProfile = (loggedClient && loggedClient.risk_profile) ? loggedClient.risk_profile : (localStorage.getItem('synapse_profile') ? JSON.parse(localStorage.getItem('synapse_profile')).name : '2. Moderado');
+      const userBankroll = (loggedClient && (loggedClient.current_bankroll || loggedClient.initial_bankroll)) ? (loggedClient.current_bankroll || loggedClient.initial_bankroll) : 100.0;
+
+      const isConservador = userProfile.includes('Conservador');
+      const isModerado = userProfile.includes('Moderado');
+      const isValueBet = userProfile.includes('Arrojado') || userProfile.includes('Sniper');
+      const isAlavancador = userProfile.includes('Alavancador');
+      const isUltraQuant = userProfile.includes('Ultra');
+
+      function renderBetCard(p, catType, badgeAfinidade, isMatch, pctBase) {
+        const oddNum = parseFloat(p.odd || p.odd_betano || 1.85);
+        const stakePct = isMatch ? (isConservador ? 1.5 : isModerado ? 2.5 : isValueBet ? 3.0 : isAlavancador ? 4.0 : 3.5) : pctBase;
+        const stakeReais = (userBankroll * (stakePct / 100)).toFixed(2);
+        const retornoReais = (parseFloat(stakeReais) * oddNum).toFixed(2);
+
+        return `
+          <div class="opportunity-row ${isMatch ? 'profile-matched-card' : ''}" onclick="openBetDetailModal('${p.id}', '${catType}')" style="${isMatch ? 'border: 1.5px solid #F59E0B; box-shadow: 0 0 14px rgba(245, 158, 11, 0.15); background: linear-gradient(135deg, #151D2A 0%, rgba(245,158,11,0.06) 100%);' : ''}">
             <div class="opp-left">
+              ${isMatch ? `
+                <div style="font-size: 10px; font-weight: 800; color: #F59E0B; display: flex; align-items: center; gap: 4px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  ✨ RECOMENDADO P/ SEU PERFIL (${userProfile.split('.')[1] ? userProfile.split('.')[1].trim() : userProfile})
+                </div>
+              ` : ''}
               <div class="opp-meta">
-                <span class="opp-league-badge">⚽ ${p.league}</span>
-                <span class="opp-time">🕒 ${p.start_time || p.datetime || 'Hoje'}</span>
+                <span class="opp-league-badge">${p.league}</span>
+                <span class="opp-time">🕒 ${p.start_time || p.datetime || p.kickoff || 'Hoje'}</span>
               </div>
               <div class="opp-match-title">${p.match}</div>
               <div class="opp-market-sub">
-                <span>${p.market}</span>
+                <span>${p.market || p.selection}</span>
                 <span style="color: #64748B;">&bull;</span>
-                <span style="color: #00D084; font-weight: 700;">${p.monte_carlo || '88%'} Acerto</span>
+                <span style="color: ${isMatch ? '#F59E0B' : '#00D084'}; font-weight: 700;">${p.monte_carlo || ('+' + p.ev_percent + '% EV') || '88%'}</span>
+              </div>
+              <div style="font-size: 11px; color: #94A3B8; margin-top: 4px; font-family: var(--font-mono);">
+                💵 Stake Sugerida: <b style="color: white;">R$ ${stakeReais.replace('.', ',')}</b> (${stakePct}%) &bull; Retorno: <b style="color: var(--orange-betano);">R$ ${retornoReais.replace('.', ',')}</b>
               </div>
             </div>
             <div class="opp-right">
-              <span class="opp-metric-pill">🛡️ Seguro</span>
-              <div class="opp-odd-box">@ ${p.odd}</div>
+              <span class="opp-metric-pill" style="${isMatch ? 'border-color: #F59E0B; color: #F59E0B; background: rgba(245,158,11,0.12);' : ''}">${badgeAfinidade}</span>
+              <div class="opp-odd-box" style="${isMatch ? 'background: #F59E0B; color: #090D14;' : ''}">@ ${p.odd || p.odd_betano}</div>
               <button class="opp-chevron-btn">🔬 Raio-X ➔</button>
             </div>
           </div>
-        `).join('');
+        `;
       }
 
+      if (sContainer) {
+        sContainer.innerHTML = oficiais.map(p => renderBetCard(p, 'simples', '🛡️ Seguro', isConservador, 1.5)).join('');
+      }
       if (dContainer) {
-        dContainer.innerHTML = duplas.map(d => `
-          <div class="opportunity-row dupla-row" onclick="openBetDetailModal('${d.id}', 'duplas')">
-            <div class="opp-left">
-              <div class="opp-meta">
-                <span class="opp-league-badge" style="color: #38BDF8;">💎 ${d.league}</span>
-                <span class="opp-time">🕒 ${d.start_time || d.datetime || 'Hoje'}</span>
-              </div>
-              <div class="opp-match-title">${d.match}</div>
-              <div class="opp-market-sub">
-                <span>${d.market}</span>
-                <span style="color: #64748B;">&bull;</span>
-                <span style="color: #38BDF8; font-weight: 700;">${d.monte_carlo || '81%'} Dupla</span>
-              </div>
-            </div>
-            <div class="opp-right">
-              <span class="opp-metric-pill" style="color: #38BDF8; border-color: rgba(56,189,248,0.3); background: rgba(56,189,248,0.12);">2x Retorno</span>
-              <div class="opp-odd-box" style="background: #38BDF8; color: #090D14;">@ ${d.odd}</div>
-              <button class="opp-chevron-btn">🔬 Raio-X ➔</button>
-            </div>
-          </div>
-        `).join('');
+        dContainer.innerHTML = duplas.map(d => renderBetCard(d, 'duplas', '⚖️ 2x Retorno', isModerado, 2.5)).join('');
       }
-
       if (vContainer) {
-        vContainer.innerHTML = valuebets.map(v => `
-          <div class="opportunity-row valuebet-row" onclick="openBetDetailModal('${v.id}', 'valuebets')">
-            <div class="opp-left">
-              <div class="opp-meta">
-                <span class="opp-league-badge" style="color: #F59E0B;">🔥 ${v.league}</span>
-                <span class="opp-time">🕒 ${v.start_time || v.kickoff || 'Hoje'}</span>
-              </div>
-              <div class="opp-match-title">${v.match}</div>
-              <div class="opp-market-sub">
-                <span>${v.selection || v.market}</span>
-                <span style="color: #64748B;">&bull;</span>
-                <span style="color: #F59E0B; font-weight: 700;">+${v.ev_percent}% EV</span>
-              </div>
-            </div>
-            <div class="opp-right">
-              <span class="opp-metric-pill" style="color: #F59E0B; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.12);">Sniper EV+</span>
-              <div class="opp-odd-box" style="background: #F59E0B; color: #090D14;">@ ${v.odd_betano || v.odd}</div>
-              <button class="opp-chevron-btn">🔬 Raio-X ➔</button>
-            </div>
-          </div>
-        `).join('');
+        vContainer.innerHTML = valuebets.map(v => renderBetCard(v, 'valuebets', '🎯 Sniper +EV', isValueBet, 3.0)).join('');
+      }
+      if (aContainer) {
+        aContainer.innerHTML = (arrojado || DEFAULT_ARROJADO).map(a => renderBetCard(a, 'arrojado', '⚡ Alavancagem', isAlavancador, 4.0)).join('');
+      }
+      if (qContainer) {
+        qContainer.innerHTML = (quant || DEFAULT_QUANT).map(q => renderBetCard(q, 'quant', '🧠 Kelly Frac', isUltraQuant, 3.5)).join('');
       }
     }
 
@@ -1749,8 +1852,18 @@
     }
 
     function openBetDetailModal(betId, category) {
-      let pool = (category === 'simples') ? DEFAULT_SIMPLES : (category === 'duplas') ? DEFAULT_DUPLAS : DEFAULT_VALUEBETS;
-      const bet = pool.find(b => b.id === betId) || pool[0];
+      let pool = (category === 'simples') ? DEFAULT_SIMPLES : 
+                 (category === 'duplas') ? DEFAULT_DUPLAS : 
+                 (category === 'valuebets') ? DEFAULT_VALUEBETS : 
+                 (category === 'arrojado') ? DEFAULT_ARROJADO : 
+                 (category === 'quant') ? DEFAULT_QUANT : DEFAULT_SIMPLES;
+
+      const bet = pool.find(b => b.id === betId) || 
+                  DEFAULT_SIMPLES.find(b => b.id === betId) ||
+                  DEFAULT_DUPLAS.find(b => b.id === betId) ||
+                  DEFAULT_VALUEBETS.find(b => b.id === betId) ||
+                  DEFAULT_ARROJADO.find(b => b.id === betId) ||
+                  DEFAULT_QUANT.find(b => b.id === betId) || pool[0];
       if (!bet) return;
       currentActiveBet = bet;
 
@@ -1765,7 +1878,7 @@
 
       // Calcula stake dinâmica baseada na banca do assinante logado
       const bankroll = (loggedClient && (loggedClient.current_bankroll || loggedClient.initial_bankroll)) || 100.0;
-      const stakePct = category === 'simples' ? 0.03 : category === 'duplas' ? 0.02 : 0.01;
+      const stakePct = category === 'simples' ? 0.015 : category === 'duplas' ? 0.025 : category === 'valuebets' ? 0.03 : category === 'arrojado' ? 0.04 : 0.035;
       const stakeVal = bankroll * stakePct;
       const returnVal = (stakeVal * parseFloat(oddVal)).toFixed(2);
       
@@ -1871,20 +1984,30 @@
       if (btn) {
         document.querySelectorAll('#tab-palpites .cat-pill').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
+      } else {
+        document.querySelectorAll('#tab-palpites .cat-pill').forEach(p => p.classList.remove('active'));
+        const targetPill = document.getElementById(`cat-pill-${cat}`);
+        if (targetPill) targetPill.classList.add('active');
       }
 
       const s = document.getElementById('sec-simples');
       const d = document.getElementById('sec-duplas');
       const v = document.getElementById('sec-valuebets');
+      const a = document.getElementById('sec-arrojado');
+      const q = document.getElementById('sec-quant');
 
       if (cat === 'all') {
-        s.style.display = 'block'; d.style.display = 'block'; v.style.display = 'block';
-      } else if (cat === 'simples') {
-        s.style.display = 'block'; d.style.display = 'none'; v.style.display = 'none';
-      } else if (cat === 'duplas') {
-        s.style.display = 'none'; d.style.display = 'block'; v.style.display = 'none';
-      } else if (cat === 'valuebets') {
-        s.style.display = 'none'; d.style.display = 'none'; v.style.display = 'block';
+        if(s) s.style.display = 'block';
+        if(d) d.style.display = 'block';
+        if(v) v.style.display = 'block';
+        if(a) a.style.display = 'block';
+        if(q) q.style.display = 'block';
+      } else {
+        if(s) s.style.display = (cat === 'simples') ? 'block' : 'none';
+        if(d) d.style.display = (cat === 'duplas') ? 'block' : 'none';
+        if(v) v.style.display = (cat === 'valuebets') ? 'block' : 'none';
+        if(a) a.style.display = (cat === 'arrojado') ? 'block' : 'none';
+        if(q) q.style.display = (cat === 'quant') ? 'block' : 'none';
       }
     }
 
@@ -2659,10 +2782,23 @@
 
         // Aplica imediatamente a banca e stake individual configuradas no cadastro do cliente
         const bankroll = parseFloat(client.current_bankroll || client.initial_bankroll || 100);
-        const stakeVal = parseFloat(client.stake_padrao || (bankroll * 0.03));
+        const profName = client.risk_profile || '2. Moderado';
+        let stakePct = 2.5;
+        let targetCat = 'duplas';
+        if (profName.includes('Conservador')) { stakePct = 1.5; targetCat = 'simples'; }
+        else if (profName.includes('Moderado')) { stakePct = 2.5; targetCat = 'duplas'; }
+        else if (profName.includes('Arrojado') || profName.includes('Sniper')) { stakePct = 3.0; targetCat = 'valuebets'; }
+        else if (profName.includes('Alavancador')) { stakePct = 4.0; targetCat = 'arrojado'; }
+        else if (profName.includes('Ultra')) { stakePct = 3.5; targetCat = 'quant'; }
+
+        const stakeVal = parseFloat(client.stake_padrao || (bankroll * (stakePct / 100)));
         document.getElementById('banca-display').innerText = `R$ ${bankroll.toFixed(2).replace('.', ',')}`;
-        document.getElementById('stake-display').innerText = `R$ ${stakeVal.toFixed(2).replace('.', ',')} (3.0%)`;
+        document.getElementById('stake-display').innerText = `R$ ${stakeVal.toFixed(2).replace('.', ',')} (${stakePct.toFixed(1)}%)`;
+        document.getElementById('profile-badge-display').innerText = profName;
         document.getElementById('winrate-display').innerText = "100% (Novo Assinante) 🟢";
+
+        filterCategory(targetCat);
+        loadPalpites();
       }
 
       if (client.spreadsheet_url) {
