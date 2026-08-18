@@ -850,6 +850,53 @@
     </div>
   </div>
 
+  <!-- MODAL DE SUPORTE VIP & ATENDIMENTO -->
+  <div id="support-modal" class="modal-overlay" style="display: none;" onclick="if(event.target.id==='support-modal') closeSupportModal()">
+    <div class="modal-box" style="max-width: 480px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+        <span class="logo-badge" style="background: rgba(56,189,248,0.2); color: #38BDF8; border: 1px solid #38BDF8;">💬 SUPORTE VIP</span>
+        <button onclick="closeSupportModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer;">✕</button>
+      </div>
+
+      <div style="font-size: 13px; color: #94A3B8; margin-top: 4px; line-height: 1.4;">
+        Canal Oficial: <b style="color: #38BDF8;">synapsebet.lab@gmail.com</b><br>
+        Envie sua mensagem ou anexe prints de dúvidas e relatórios para atendimento imediato.
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+        <input type="email" id="support-email" class="input-field" placeholder="Seu E-mail de Contato">
+        
+        <select id="support-category" class="input-field" style="background: #121824; color: white;">
+          <option value="DUVIDA">❓ Dúvida Operacional / Gestão de Banca</option>
+          <option value="OCR_PRINT">📸 Problema com OCR / Envio de Print</option>
+          <option value="PLANILHA">📊 Ajuste na Planilha Google Drive</option>
+          <option value="OUTROS">💬 Outros Assuntos / Sugestões</option>
+        </select>
+
+        <input type="text" id="support-subject" class="input-field" placeholder="Assunto do Chamado">
+        <textarea id="support-message" class="input-field" style="height: 90px; resize: none;" placeholder="Descreva sua dúvida ou problema detalhadamente..."></textarea>
+
+        <!-- Anexo de Print -->
+        <div class="dropzone" style="padding: 14px;" onclick="document.getElementById('support-file-input').click()">
+          <div style="font-size: 20px; margin-bottom: 2px;">📎</div>
+          <div style="font-size: 12px; font-weight: 700;" id="support-file-label">Toque para anexar print ou comprovante (Opcional)</div>
+          <input type="file" id="support-file-input" accept="image/*" style="display: none;" onchange="handleSupportFileSelect(event)">
+        </div>
+
+        <button class="btn-submit" id="btn-support-submit" onclick="submitSupportTicket()">🚀 Enviar Chamado ao Suporte VIP ➔</button>
+
+        <div style="display: flex; gap: 8px; margin-top: 4px;">
+          <a href="mailto:synapsebet.lab@gmail.com?subject=Suporte%20VIP%20SynapseBet" class="btn-secondary" style="flex: 1; text-decoration: none; text-align: center; font-size: 11px; padding: 8px; color: #38BDF8; border-color: rgba(56,189,248,0.3);">
+            📧 E-mail Direto
+          </a>
+          <button class="btn-secondary" style="flex: 1; font-size: 11px; padding: 8px; color: #00D084; border-color: rgba(0,208,132,0.3);" onclick="copyTicketText('Olá Suporte SynapseBet! Gostaria de tirar uma dúvida sobre minha conta.')">
+            📋 Copiar p/ WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- APLICAÇÃO PRINCIPAL -->
   <div class="app-container">
     <header class="app-header">
@@ -1086,6 +1133,7 @@
       <div class="category-filter-nav">
         <button id="admin-sub-ativos" class="cat-pill admin-pill-active" onclick="filterAdminSubTab('active', this)">🟢 Assinantes Ativos & Suspensos</button>
         <button id="admin-sub-trash" class="cat-pill" onclick="filterAdminSubTab('trash', this)">🗑️ Lixeira / Excluídos</button>
+        <button id="admin-sub-tickets" class="cat-pill" onclick="filterAdminSubTab('tickets', this)">📬 Chamados de Suporte</button>
         <button id="admin-sub-tools" class="cat-pill" onclick="filterAdminSubTab('tools', this)">⚙️ Convites & Esteira Bots</button>
       </div>
 
@@ -1108,6 +1156,17 @@
         </div>
         <div id="admin-trash-clients-list" class="opportunity-list">
           <div style="color: #94A3B8; text-align: center; padding: 20px;">Nenhum cliente na lixeira.</div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO CHAMADOS DE SUPORTE -->
+      <div id="admin-sec-tickets" style="display: none;">
+        <div class="section-title">
+          <span>📬 Central de Atendimento & Tickets de Suporte</span>
+          <button class="btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadAdminSupportTickets()">🔄 Recarregar</button>
+        </div>
+        <div id="admin-tickets-list" class="opportunity-list">
+          <div style="color: #94A3B8; text-align: center; padding: 20px;">Carregando chamados de suporte...</div>
         </div>
       </div>
 
@@ -1145,6 +1204,21 @@
         </div>
       </div>
     </div>
+
+    <!-- RODAPÉ OFICIAL & CANAL DE SUPORTE -->
+    <footer style="margin-top: 36px; padding: 24px 10px 40px; text-align: center; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div style="font-size: 12px; font-weight: 700; color: #94A3B8;">
+        SynapseBet &bull; Powered by Neural Hub &bull; bu_synapse_bet
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 4px;">
+        <button class="btn-secondary" style="font-size: 12px; padding: 6px 14px; border-color: rgba(56,189,248,0.4); color: #38BDF8;" onclick="openSupportModal()">
+          💬 Suporte VIP (synapsebet.lab@gmail.com)
+        </button>
+        <a href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; text-decoration: none;">
+          📊 Planilha Central Google Drive
+        </a>
+      </div>
+    </footer>
 
   </div>
 
@@ -1910,7 +1984,7 @@
     }
 
     // =========================================================================
-    // MÓDULO SUPERADMIN DEDICADO (COM SEPARAÇÃO ATIVOS X LIXEIRA)
+    // MÓDULO SUPERADMIN DEDICADO (COM SEPARAÇÃO ATIVOS X LIXEIRA X TICKETS)
     // =========================================================================
     function filterAdminSubTab(subTab, btn) {
       document.querySelectorAll('#tab-admin .cat-pill').forEach(p => p.classList.remove('admin-pill-active'));
@@ -1918,7 +1992,49 @@
 
       document.getElementById('admin-sec-active').style.display = subTab === 'active' ? 'block' : 'none';
       document.getElementById('admin-sec-trash').style.display = subTab === 'trash' ? 'block' : 'none';
+      document.getElementById('admin-sec-tickets').style.display = subTab === 'tickets' ? 'block' : 'none';
       document.getElementById('admin-sec-tools').style.display = subTab === 'tools' ? 'block' : 'none';
+
+      if (subTab === 'tickets') {
+        loadAdminSupportTickets();
+      }
+    }
+
+    async function loadAdminSupportTickets() {
+      const box = document.getElementById('admin-tickets-list');
+      if (!box) return;
+
+      const data = await safeFetch('/api/admin/support-tickets');
+      const tickets = (data && data.success && Array.isArray(data.tickets)) ? data.tickets : [];
+
+      if (tickets.length === 0) {
+        box.innerHTML = `<div style="color: #94A3B8; text-align: center; padding: 24px; background: #121824; border-radius: 12px;">Nenhum chamado de suporte aberto no momento.</div>`;
+        return;
+      }
+
+      box.innerHTML = tickets.map(t => `
+        <div class="admin-client-card" style="border-color: rgba(56,189,248,0.25);">
+          <div class="admin-client-header">
+            <div class="admin-client-info">
+              <div class="admin-client-name">
+                <span>💬 ${t.subject || 'Dúvida'}</span>
+                <span style="font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 800; background: rgba(56,189,248,0.15); color: #38BDF8; border: 1px solid rgba(56,189,248,0.3);">
+                  ${t.category || 'GERAL'}
+                </span>
+              </div>
+              <div class="admin-client-email">${t.client_email} &bull; <span style="font-size: 11px; color: #64748B;">${new Date(t.created_at).toLocaleString('pt-BR')}</span></div>
+              <div style="font-size: 13px; color: #CBD5E1; margin-top: 8px; background: #0B0F17; padding: 10px; border-radius: 8px; line-height: 1.4;">
+                ${t.message}
+              </div>
+              ${t.attachment ? `
+                <div style="margin-top: 8px;">
+                  <span style="font-size: 11px; color: #38BDF8;">📎 Anexo:</span> <code style="font-size: 11px; color: #94A3B8;">${t.attachment}</code>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
     function renderAdminClients(clientsList) {
@@ -2243,14 +2359,138 @@
       }
     }
 
+    let selectedSupportFile = null;
+
+    function validateEmailWithTypoCheck(email) {
+      const clean = (email || '').trim().toLowerCase();
+      const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!re.test(clean)) {
+        alert("Por favor, digite um formato de e-mail válido (ex: seu.nome@gmail.com).");
+        return null;
+      }
+
+      const parts = clean.split('@');
+      const user = parts[0];
+      const domain = parts[1];
+
+      const typoMap = {
+        "gmail.om": "gmail.com",
+        "gmail.con": "gmail.com",
+        "gmial.com": "gmail.com",
+        "gmai.com": "gmail.com",
+        "gamil.com": "gmail.com",
+        "gmaill.com": "gmail.com",
+        "hotmial.com": "hotmail.com",
+        "hotmai.com": "hotmail.com",
+        "hotmaill.com": "hotmail.com",
+        "outlok.com": "outlook.com",
+        "outloo.com": "outlook.com",
+        "yahoo.con": "yahoo.com"
+      };
+
+      if (typoMap[domain]) {
+        const suggested = `${user}@${typoMap[domain]}`;
+        if (confirm(`Detectamos um possível erro de digitação no e-mail:\n\nDigitado: "${clean}"\n\nVocê quis dizer "${suggested}"?`)) {
+          return suggested;
+        }
+      }
+      return clean;
+    }
+
+    function openSupportModal() {
+      if (loggedClient && loggedClient.email) {
+        document.getElementById('support-email').value = loggedClient.email;
+      }
+      document.getElementById('support-modal').style.display = 'flex';
+    }
+
+    function closeSupportModal() {
+      document.getElementById('support-modal').style.display = 'none';
+      selectedSupportFile = null;
+      const label = document.getElementById('support-file-label');
+      if (label) label.innerText = "Toque para anexar print ou comprovante (Opcional)";
+    }
+
+    function handleSupportFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        selectedSupportFile = file;
+        const label = document.getElementById('support-file-label');
+        if (label) label.innerText = `📎 Anexado: ${file.name}`;
+        showToast("📎 Print anexado ao chamado!");
+      }
+    }
+
+    async function submitSupportTicket() {
+      const rawEmail = document.getElementById('support-email').value.trim();
+      const subject = document.getElementById('support-subject').value.trim();
+      const message = document.getElementById('support-message').value.trim();
+      const category = document.getElementById('support-category').value;
+
+      if (!rawEmail || !message) {
+        return alert("Por favor, preencha seu E-mail e a Mensagem.");
+      }
+
+      const email = validateEmailWithTypoCheck(rawEmail);
+      if (!email) return;
+
+      const btn = document.getElementById('btn-support-submit');
+      btn.disabled = true;
+      btn.innerText = "⏳ Enviando chamado ao Suporte VIP...";
+
+      const formData = new FormData();
+      formData.append('client_email', email);
+      formData.append('subject', subject || 'Dúvida Geral');
+      formData.append('message', message);
+      formData.append('category', category);
+      if (selectedSupportFile) {
+        formData.append('file', selectedSupportFile);
+      }
+
+      try {
+        let res = await fetch(`${PRIMARY_API}/api/support/ticket`, {
+          method: 'POST',
+          body: formData
+        });
+        let data = await res.json();
+        if (!data || !data.success) {
+          res = await fetch(`${FALLBACK_API}/api/support/ticket`, {
+            method: 'POST',
+            body: formData
+          });
+          data = await res.json();
+        }
+
+        btn.disabled = false;
+        btn.innerText = "🚀 Enviar Chamado ao Suporte VIP ➔";
+
+        if (data && data.success) {
+          alert(`✅ Chamado registrado com sucesso!\nProtocolo: ${data.ticket_id}\n\nNossa equipe responderá via e-mail oficial (${data.official_email || 'synapsebet.lab@gmail.com'}).`);
+          closeSupportModal();
+          document.getElementById('support-subject').value = "";
+          document.getElementById('support-message').value = "";
+        } else {
+          alert(data?.detail || "Erro ao enviar chamado. Tente novamente.");
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerText = "🚀 Enviar Chamado ao Suporte VIP ➔";
+        alert("Erro de conexão ao enviar chamado. Você também pode enviar direto para synapsebet.lab@gmail.com");
+      }
+    }
+
     async function submitClientRegistration() {
       const name = document.getElementById('reg-name').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
+      const rawEmail = document.getElementById('reg-email').value.trim();
       const bankroll = parseFloat(document.getElementById('reg-bankroll').value) || 100;
       const deposit = parseFloat(document.getElementById('reg-deposit').value) || 0;
       const password = document.getElementById('reg-password').value.trim();
 
-      if (!name || !email || !password) return alert("Preencha Nome, E-mail e Senha");
+      if (!name || !rawEmail || !password) return alert("Preencha Nome, E-mail e Senha");
+
+      const email = validateEmailWithTypoCheck(rawEmail);
+      if (!email) return;
+      document.getElementById('reg-email').value = email;
 
       const btn = event.currentTarget;
       const originalText = btn ? btn.innerText : "";
