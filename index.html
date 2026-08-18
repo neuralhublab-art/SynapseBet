@@ -2265,6 +2265,13 @@
 
       if (!name || !email || !password) return alert("Preencha Nome, E-mail e Senha");
 
+      const btn = event.currentTarget;
+      const originalText = btn ? btn.innerText : "";
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = "⏳ Criando conta e provisionando carteira...";
+      }
+
       const payload = {
         invite_code: verifiedInvite ? verifiedInvite.code : "SYN-DIRECT",
         temp_password: verifiedInvite ? verifiedInvite.pass : "HUB-DIRECT",
@@ -2278,27 +2285,46 @@
         preferred_markets: ["Dupla Chance", "Escanteios", "5 Innings"]
       };
 
-      const data = await safeFetch('/api/auth/register', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
-      });
+      let data = null;
+      try {
+        const res = await fetch(`${PRIMARY_API}/api/auth/register`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        data = await res.json();
+      } catch(e) {
+        try {
+          const resFb = await fetch(`${FALLBACK_API}/api/auth/register`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+          });
+          data = await resFb.json();
+        } catch(err) {}
+      }
 
-      if (data && data.success) {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = originalText;
+      }
+
+      if (data && (data.success || data.client)) {
         loggedClient = data.client;
         localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
         applyClientSession(loggedClient);
         closeAuthModal();
-        showToast(`🎉 Cadastro realizado! Iniciando Anamnese...`);
+        showToast(`🎉 Cadastro de ${name} realizado! Iniciando Anamnese...`);
         loadBancaSummary();
         loadPalpites();
         loadUserBetsTracker();
+        loadAdminClientsList();
         
         setTimeout(() => {
           openQuizModal(true);
-        }, 500);
+        }, 400);
       } else {
-        alert(data?.detail || "Falha no cadastro");
+        alert(data?.detail || data?.error || "Falha no cadastro. Verifique sua conexão ou se o e-mail já existe.");
       }
     }
 
