@@ -630,8 +630,44 @@
     }
 
     function copyTicketText(text) {
-      navigator.clipboard.writeText(`🎯 SynapseBet Quant (17/08)\n${text}\n💰 Stake: 3.0%\n🌐 https://neuralhublab-art.github.io/SynapseBet/`);
-      showToast('📋 Bilhete copiado! Pronto para colar na Betano.');
+      const todayStr = new Date().toLocaleDateString('pt-BR');
+      let fullText = text;
+      if (!text.includes('SynapseBet') && !text.includes('synapse-saas-gateway')) {
+        fullText = `🎯 SynapseBet Quant (${todayStr})\n${text}\n💰 Stake Sugerida: 3.0%\n🌐 https://neuralhublab-art.github.io/SynapseBet/`;
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullText).then(() => {
+          showToast('📋 Bilhete copiado! Pronto para colar.');
+        }).catch(() => {
+          fallbackCopyText(fullText);
+        });
+      } else {
+        fallbackCopyText(fullText);
+      }
+    }
+
+    function fallbackCopyText(textToCopy) {
+      try {
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if (successful) {
+          showToast('📋 Bilhete copiado com sucesso!');
+        } else {
+          prompt("Copie seu bilhete abaixo manualmente (Ctrl+C):", textToCopy);
+        }
+      } catch (err) {
+        prompt("Copie seu bilhete abaixo manualmente (Ctrl+C):", textToCopy);
+      }
     }
 
     async function sendFeedback(palpiteId, rating, btn) {
@@ -650,7 +686,8 @@
     }
 
     function setupPasteAndDropListeners() {
-      document.addEventListener('paste', (e) => {
+      // Listener global de Colar (Ctrl + V)
+      window.addEventListener('paste', (e) => {
         const clipboardItems = (e.clipboardData || window.clipboardData)?.items;
         if (!clipboardItems) return;
         for (let i = 0; i < clipboardItems.length; i++) {
@@ -661,6 +698,7 @@
               const file = new File([blob], `print_ctrl_v_${Date.now()}.png`, { type: blob.type });
               processImageFile(file, 'Print colado via Ctrl+V 📋');
               switchTab('upload');
+              showToast('📸 Print capturado com sucesso!');
               break;
             }
           }
@@ -688,6 +726,7 @@
             const file = files[0];
             if (file.type.startsWith('image/')) {
               processImageFile(file, `Print arrastado: ${file.name}`);
+              showToast('📸 Imagem carregada!');
             }
           }
         }, false);
@@ -696,23 +735,24 @@
 
     async function pasteFromClipboard() {
       try {
-        if (!navigator.clipboard || !navigator.clipboard.read) {
-          alert("💡 Dica: Pressione Ctrl + V no teclado para colar seu print diretamente!");
-          return;
-        }
-        const items = await navigator.clipboard.read();
-        for (const item of items) {
-          const imageType = item.types.find(type => type.startsWith('image/'));
-          if (imageType) {
-            const blob = await item.getType(imageType);
-            const file = new File([blob], `clipboard_${Date.now()}.png`, { type: imageType });
-            processImageFile(file, 'Print colado da Área de Transferência 📋');
-            return;
+        if (navigator.clipboard && navigator.clipboard.read) {
+          const items = await navigator.clipboard.read();
+          for (const item of items) {
+            const imageType = item.types.find(type => type.startsWith('image/'));
+            if (imageType) {
+              const blob = await item.getType(imageType);
+              const file = new File([blob], `clipboard_${Date.now()}.png`, { type: imageType });
+              processImageFile(file, 'Print colado da Área de Transferência 📋');
+              showToast('📸 Print colado com sucesso!');
+              return;
+            }
           }
         }
-        alert("Nenhuma imagem encontrada na Área de Transferência. Tire um print (Win+Shift+S ou PrintScreen) e tente novamente!");
+        // Se não achou imagem no clipboard ou bloqueado por permissão
+        document.getElementById('file-input').click();
       } catch (err) {
-        alert("Dica rápida: Pressione Ctrl + V no teclado para colar seu print!");
+        // Fallback: abre seletor de arquivo
+        document.getElementById('file-input').click();
       }
     }
 
