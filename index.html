@@ -1582,32 +1582,11 @@
       document.getElementById('admin-sec-tools').style.display = subTab === 'tools' ? 'block' : 'none';
     }
 
-    async function loadAdminClientsList() {
+    function renderAdminClients(clientsList) {
       const activeBox = document.getElementById('admin-active-clients-list');
       const trashBox = document.getElementById('admin-trash-clients-list');
       if (!activeBox || !trashBox) return;
 
-      let clientsList = null;
-      try {
-        const data = await safeFetch('/api/admin/clients');
-        if (data && data.success && data.clients && data.clients.length > 0) {
-          clientsList = data.clients;
-          localStorage.setItem('synapse_admin_clients', JSON.stringify(clientsList));
-        }
-      } catch(e) {}
-
-      if (!clientsList) {
-        const cached = localStorage.getItem('synapse_admin_clients');
-        if (cached) {
-          try { clientsList = JSON.parse(cached); } catch(e) {}
-        }
-      }
-
-      if (!clientsList || clientsList.length === 0) {
-        clientsList = DEFAULT_ADMIN_CLIENTS;
-      }
-
-      // Separa clientes Ativos/Suspensos vs Excluídos/Lixeira
       const activeClients = clientsList.filter(c => c.status !== 'DELETED');
       const trashClients = clientsList.filter(c => c.status === 'DELETED');
       const suspendedCount = clientsList.filter(c => c.status === 'SUSPENDED').length;
@@ -1627,7 +1606,7 @@
         activeBox.innerHTML = `<div style="color: #94A3B8; text-align: center; padding: 24px; background: #121824; border-radius: 12px;">Nenhum assinante ativo no momento.</div>`;
       } else {
         activeBox.innerHTML = activeClients.map(c => `
-          <div class="admin-client-card">
+          <div class="admin-client-card" id="card-cli-${c.client_id || c.email.replace(/[^a-zA-Z0-9]/g, '')}">
             <div class="admin-client-header">
               <div class="admin-client-info">
                 <div class="admin-client-name">
@@ -1711,17 +1690,41 @@
       }
     }
 
+    async function loadAdminClientsList() {
+      let clientsList = null;
+      try {
+        const data = await safeFetch('/api/admin/clients');
+        if (data && data.success && data.clients && data.clients.length > 0) {
+          clientsList = data.clients;
+          localStorage.setItem('synapse_admin_clients', JSON.stringify(clientsList));
+        }
+      } catch(e) {}
+
+      if (!clientsList) {
+        const cached = localStorage.getItem('synapse_admin_clients');
+        if (cached) {
+          try { clientsList = JSON.parse(cached); } catch(e) {}
+        }
+      }
+
+      if (!clientsList || clientsList.length === 0) {
+        clientsList = DEFAULT_ADMIN_CLIENTS;
+      }
+
+      renderAdminClients(clientsList);
+    }
+
     async function toggleClientStatusAdmin(email, newStatus) {
       let cached = localStorage.getItem('synapse_admin_clients');
       let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
-      const target = list.find(c => c.email.toLowerCase() === email.toLowerCase());
+      const target = list.find(c => (c.email || '').toLowerCase() === email.toLowerCase() || (c.client_id || '').toLowerCase() === email.toLowerCase());
       if (target) {
         target.status = newStatus;
         localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
       }
 
+      renderAdminClients(list);
       showToast(`Status do cliente alterado para ${newStatus === 'ACTIVE' ? 'ATIVO' : 'SUSPENSO'}!`);
-      loadAdminClientsList();
 
       try {
         await safeFetch('/api/admin/clients/status', {
@@ -1737,15 +1740,15 @@
 
       let cached = localStorage.getItem('synapse_admin_clients');
       let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
-      const target = list.find(c => c.email.toLowerCase() === email.toLowerCase());
+      const target = list.find(c => (c.email || '').toLowerCase() === email.toLowerCase() || (c.client_id || '').toLowerCase() === email.toLowerCase());
       if (target) {
         target.status = 'DELETED';
         target.deleted_at = new Date().toISOString();
         localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
       }
 
+      renderAdminClients(list);
       showToast("🗑️ Cliente movido para a Lixeira e acesso revogado!");
-      loadAdminClientsList();
 
       try {
         await safeFetch('/api/admin/clients/delete', {
@@ -1759,15 +1762,15 @@
     async function restoreClientAdmin(email) {
       let cached = localStorage.getItem('synapse_admin_clients');
       let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
-      const target = list.find(c => c.email.toLowerCase() === email.toLowerCase());
+      const target = list.find(c => (c.email || '').toLowerCase() === email.toLowerCase() || (c.client_id || '').toLowerCase() === email.toLowerCase());
       if (target) {
         target.status = 'ACTIVE';
         delete target.deleted_at;
         localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
       }
 
+      renderAdminClients(list);
       showToast("♻️ Cliente restaurado com sucesso para ATIVO!");
-      loadAdminClientsList();
 
       try {
         await safeFetch('/api/admin/clients/restore', {
@@ -1783,11 +1786,11 @@
 
       let cached = localStorage.getItem('synapse_admin_clients');
       let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
-      list = list.filter(c => c.email.toLowerCase() !== email.toLowerCase());
+      list = list.filter(c => (c.email || '').toLowerCase() !== email.toLowerCase() && (c.client_id || '').toLowerCase() !== email.toLowerCase());
       localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
 
+      renderAdminClients(list);
       showToast("❌ Registro excluído definitivamente da listagem!");
-      loadAdminClientsList();
 
       try {
         await safeFetch('/api/admin/clients/purge', {
