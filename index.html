@@ -1248,12 +1248,7 @@
       }
     ];
 
-    const DEFAULT_ADMIN_CLIENTS = [
-      { client_id: "cli_005", name: "Juninhu", email: "juninho22.mariano@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "ACTIVE", registered_at: "2026-08-18", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1yvDFWE3MMWA41iOAzbhyegULp2ahwexZE01jVfl5Lt0/edit" },
-      { client_id: "cli_003", name: "Mariano Celestino da Rocha Junior", email: "mariano.rocha.cfg@gmail.com", initial_bankroll: 100.0, current_bankroll: 100.0, risk_profile: "2. Moderado", status: "DELETED", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=703810985" },
-      { client_id: "cli_002", name: "Felipe Antunes", email: "felipe.antunes@gmail.com", initial_bankroll: 500.0, current_bankroll: 500.0, risk_profile: "3. Arrojado", status: "DELETED", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=180786359" },
-      { client_id: "cli_001", name: "Carlos Silva", email: "carlos.silva@gmail.com", initial_bankroll: 300.0, current_bankroll: 300.0, risk_profile: "1. Conservador", status: "DELETED", registered_at: "2026-08-14", spreadsheet_url: "https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit#gid=900073536" }
-    ];
+    const DEFAULT_ADMIN_CLIENTS = [];
 
     window.addEventListener('DOMContentLoaded', async () => {
       await validateAndApplySession();
@@ -2032,39 +2027,41 @@
     }
 
     async function loadAdminClientsList() {
-      let clientsList = null;
       try {
         const data = await safeFetch('/api/admin/clients');
-        if (data && data.success && data.clients && data.clients.length > 0) {
-          clientsList = data.clients;
-          localStorage.setItem('synapse_admin_clients', JSON.stringify(clientsList));
+        if (data && data.success && Array.isArray(data.clients)) {
+          localStorage.setItem('synapse_admin_clients', JSON.stringify(data.clients));
+          renderAdminClients(data.clients);
+          return;
         }
       } catch(e) {}
 
-      if (!clientsList) {
-        const cached = localStorage.getItem('synapse_admin_clients');
-        if (cached) {
-          try { clientsList = JSON.parse(cached); } catch(e) {}
-        }
+      const cached = localStorage.getItem('synapse_admin_clients');
+      if (cached) {
+        try {
+          const list = JSON.parse(cached);
+          renderAdminClients(list);
+          return;
+        } catch(e) {}
       }
 
-      if (!clientsList || clientsList.length === 0) {
-        clientsList = DEFAULT_ADMIN_CLIENTS;
-      }
-
-      renderAdminClients(clientsList);
+      renderAdminClients([]);
     }
 
     async function toggleClientStatusAdmin(email, newStatus) {
-      let cached = localStorage.getItem('synapse_admin_clients');
-      let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
+      let list = [];
+      try {
+        const cached = localStorage.getItem('synapse_admin_clients');
+        if (cached) list = JSON.parse(cached);
+      } catch(e) {}
+
       const target = list.find(c => (c.email || '').toLowerCase() === email.toLowerCase() || (c.client_id || '').toLowerCase() === email.toLowerCase());
       if (target) {
         target.status = newStatus;
         localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
+        renderAdminClients(list);
       }
 
-      renderAdminClients(list);
       showToast(`Status do cliente alterado para ${newStatus === 'ACTIVE' ? 'ATIVO' : 'SUSPENSO'}!`);
 
       if (loggedClient && (loggedClient.email || '').toLowerCase() === email.toLowerCase() && newStatus === 'SUSPENDED') {
@@ -2077,22 +2074,27 @@
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ email, status: newStatus })
         });
+        await loadAdminClientsList();
       } catch(e) {}
     }
 
     async function deleteClientAdmin(email) {
       if (!confirm(`Deseja mover a conta ${email} para a Lixeira? (O login será revogado e a planilha continuará salva no seu Google Drive como histórico).`)) return;
 
-      let cached = localStorage.getItem('synapse_admin_clients');
-      let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
+      let list = [];
+      try {
+        const cached = localStorage.getItem('synapse_admin_clients');
+        if (cached) list = JSON.parse(cached);
+      } catch(e) {}
+
       const target = list.find(c => (c.email || '').toLowerCase() === email.toLowerCase() || (c.client_id || '').toLowerCase() === email.toLowerCase());
       if (target) {
         target.status = 'DELETED';
         target.deleted_at = new Date().toISOString();
         localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
+        renderAdminClients(list);
       }
 
-      renderAdminClients(list);
       showToast("🗑️ Cliente movido para a Lixeira e acesso revogado!");
 
       if (loggedClient && (loggedClient.email || '').toLowerCase() === email.toLowerCase()) {
@@ -2105,20 +2107,25 @@
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ email })
         });
+        await loadAdminClientsList();
       } catch(e) {}
     }
 
     async function restoreClientAdmin(email) {
-      let cached = localStorage.getItem('synapse_admin_clients');
-      let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
+      let list = [];
+      try {
+        const cached = localStorage.getItem('synapse_admin_clients');
+        if (cached) list = JSON.parse(cached);
+      } catch(e) {}
+
       const target = list.find(c => (c.email || '').toLowerCase() === email.toLowerCase() || (c.client_id || '').toLowerCase() === email.toLowerCase());
       if (target) {
         target.status = 'ACTIVE';
         delete target.deleted_at;
         localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
+        renderAdminClients(list);
       }
 
-      renderAdminClients(list);
       showToast("♻️ Cliente restaurado com sucesso para ATIVO!");
 
       try {
@@ -2127,17 +2134,21 @@
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ email })
         });
+        await loadAdminClientsList();
       } catch(e) {}
     }
 
     async function purgeClientAdmin(email) {
       if (!confirm(`Atenção: Excluir definitivamente o registro ${email} da plataforma? (A planilha continuará no seu Google Drive).`)) return;
 
-      let cached = localStorage.getItem('synapse_admin_clients');
-      let list = cached ? JSON.parse(cached) : [...DEFAULT_ADMIN_CLIENTS];
+      let list = [];
+      try {
+        const cached = localStorage.getItem('synapse_admin_clients');
+        if (cached) list = JSON.parse(cached);
+      } catch(e) {}
+
       list = list.filter(c => (c.email || '').toLowerCase() !== email.toLowerCase() && (c.client_id || '').toLowerCase() !== email.toLowerCase());
       localStorage.setItem('synapse_admin_clients', JSON.stringify(list));
-
       renderAdminClients(list);
       showToast("❌ Registro excluído definitivamente da listagem!");
 
@@ -2151,6 +2162,7 @@
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ email })
         });
+        await loadAdminClientsList();
       } catch(e) {}
     }
 
