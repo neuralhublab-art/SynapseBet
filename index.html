@@ -2004,6 +2004,8 @@
       window.GLOBAL_PALPITES_MAP = window.GLOBAL_PALPITES_MAP || {};
 
       function renderBetCard(p, catType, badgeAfinidade, isMatch, pctBase) {
+        const uniqueKey = catType + '_' + p.id;
+        window.GLOBAL_PALPITES_MAP[uniqueKey] = p;
         window.GLOBAL_PALPITES_MAP[p.id] = p;
         const oddNum = parseFloat(p.odd || p.odd_betano || 1.85);
         const stakePct = p.stake_pct || pctBase || 2.5;
@@ -2042,7 +2044,7 @@
       }
 
       if (pContainer && personalized) {
-        pContainer.innerHTML = personalized.map(p => renderBetCard(p, p.tipo ? p.tipo.toLowerCase() : 'quant', '✨ Exclusiva', true, 2.5)).join('');
+        pContainer.innerHTML = personalized.map(p => renderBetCard(p, 'personalized', '✨ Exclusiva', true, 2.5)).join('');
       }
       if (sContainer) {
         sContainer.innerHTML = oficiais.map(p => renderBetCard(p, 'simples', '🛡️ Seguro', isConservador, 1.5)).join('');
@@ -2196,7 +2198,10 @@
     }
 
     function openBetDetailModal(betId, category) {
-      let bet = (window.GLOBAL_PALPITES_MAP && window.GLOBAL_PALPITES_MAP[betId]) ? window.GLOBAL_PALPITES_MAP[betId] : null;
+      const uniqueKey = (category ? category + '_' : '') + betId;
+      let bet = (window.GLOBAL_PALPITES_MAP && (window.GLOBAL_PALPITES_MAP[uniqueKey] || window.GLOBAL_PALPITES_MAP[betId])) 
+                ? (window.GLOBAL_PALPITES_MAP[uniqueKey] || window.GLOBAL_PALPITES_MAP[betId]) 
+                : null;
 
       if (!bet) {
         let pool = (category === 'simples') ? DEFAULT_SIMPLES : 
