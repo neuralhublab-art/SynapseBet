@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>SynapseBet SaaS — Powered by Neural Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -695,13 +698,13 @@
       <div class="modal-grab-handle"></div>
       <div style="padding: 18px 20px 14px 20px; border-bottom: 1px solid var(--border-color);">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-          <span id="bm-league-badge" style="font-size: 11px; font-weight: 800; background: rgba(255,96,0,0.15); color: var(--orange-betano); border: 1px solid rgba(255,96,0,0.3); padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">⚽ Liga</span>
+          <span id="bm-league-badge" style="font-size: 11px; font-weight: 800; background: rgba(255,96,0,0.15); color: var(--orange-betano); border: 1px solid rgba(255,96,0,0.3); padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">🏆 LIGA</span>
           <button onclick="closeBetDetailModalDirect()" style="background: transparent; border: none; color: var(--text-muted); font-size: 18px; font-weight: 700; cursor: pointer; padding: 4px 8px;">✕</button>
         </div>
-        <div id="bm-match-title" style="font-size: 18px; font-weight: 800; color: #FFF; margin-top: 8px; line-height: 1.3;">Goiás vs Juventude-RS</div>
+        <div id="bm-match-title" style="font-size: 18px; font-weight: 800; color: #FFF; margin-top: 8px; line-height: 1.3;">Carregando Detalhes...</div>
         <div style="display: flex; gap: 14px; font-size: 12px; color: #94A3B8; margin-top: 6px;">
-          <span id="bm-start-time">🕒 Início: 21:35</span>
-          <span id="bm-end-time">⏱️ Término Previsto: 23:30</span>
+          <span id="bm-start-time">🕒 Início: Hoje</span>
+          <span id="bm-end-time">⏱️ Término: Hoje</span>
         </div>
       </div>
 
@@ -710,20 +713,20 @@
         <div style="background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Mercado Recomendado</div>
-            <div id="bm-market-name" style="font-size: 15px; font-weight: 800; color: #FFF; margin-top: 2px;">Chance Dupla (1X)</div>
+            <div id="bm-market-name" style="font-size: 15px; font-weight: 800; color: #FFF; margin-top: 2px;">---</div>
           </div>
-          <div id="bm-odd-tag" style="background: var(--orange-betano); color: white; font-family: var(--font-mono); font-weight: 800; font-size: 18px; padding: 6px 12px; border-radius: 8px;">@ 1.30</div>
+          <div id="bm-odd-tag" style="background: var(--orange-betano); color: white; font-family: var(--font-mono); font-weight: 800; font-size: 18px; padding: 6px 12px; border-radius: 8px;">@ 1.00</div>
         </div>
 
         <!-- Calculadora de Retorno com a Banca -->
         <div style="background: linear-gradient(135deg, rgba(0, 208, 132, 0.12), rgba(0, 208, 132, 0.03)); border: 1px solid rgba(0, 208, 132, 0.35); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="font-size: 11px; color: #00D084; font-weight: 700;">STAKE RECOMENDADA (SUA BANCA)</div>
-            <div id="bm-stake-val" style="font-size: 16px; font-weight: 800; color: #FFF; font-family: var(--font-mono);">R$ 3,00 (3.0%)</div>
+            <div id="bm-stake-val" style="font-size: 16px; font-weight: 800; color: #FFF; font-family: var(--font-mono);">R$ 1,50 (1.5%)</div>
           </div>
           <div style="text-align: right;">
             <div style="font-size: 11px; color: #94A3B8; font-weight: 700;">RETORNO POTENCIAL</div>
-            <div id="bm-return-val" style="font-size: 18px; font-weight: 800; color: #00D084; font-family: var(--font-mono);">R$ 3,90</div>
+            <div id="bm-return-val" style="font-size: 18px; font-weight: 800; color: #00D084; font-family: var(--font-mono);">R$ 1,95</div>
           </div>
         </div>
 
@@ -735,7 +738,8 @@
           </div>
           <div class="raiox-row"><span>🎲 Simulação Monte Carlo:</span><span id="bm-mc-val" class="raiox-val">10.000 iterações</span></div>
           <div class="raiox-row"><span>⚽ Probabilidade Poisson:</span><span id="bm-prob-val" class="raiox-val">92.8%</span></div>
-          <div id="bm-row-clv" class="raiox-row"><span>🎯 Closing Line Value (CLV):</span><span id="bm-clv-val" class="raiox-val" style="color: #00D084;">+12.4%</span></div>
+          <div id="bm-row-xp" class="raiox-row"><span>🎯 Expected Points (xP):</span><span id="bm-xp-val" class="raiox-val" style="color: #FBBF24;">2.65 xP</span></div>
+          <div id="bm-row-clv" class="raiox-row"><span>📈 Closing Line Value (CLV):</span><span id="bm-clv-val" class="raiox-val" style="color: #00D084;">+12.4%</span></div>
           <div id="bm-row-cg" class="raiox-row"><span>⚡ Custo do Gol (CG):</span><span id="bm-cg-val" class="raiox-val" style="color: #38BDF8;">2.44 CG</span></div>
           <div id="bm-row-def" class="raiox-row"><span>🛡️ Defesa US002 (0-100):</span><span id="bm-def-val" class="raiox-val">88.5/100</span></div>
           <div style="font-size: 11px; color: #94A3B8; margin-top: 6px; line-height: 1.4;">
@@ -1006,19 +1010,40 @@
       <button id="tab-btn-regras" class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
 
-    <!-- ABA 1: PALPITES (FEED EM LIST VIEW COMPACTA COM 5 PERFIS SEGMENTADOS) -->
+    <!-- ABA 1: PALPITES (CARTEIRA PERSONALIZADA PERSONA ENGINE + 5 PERFIS SEGMENTADOS) -->
     <div id="tab-palpites" class="tab-content">
       <div class="category-filter-nav" style="overflow-x: auto; white-space: nowrap; padding-bottom: 6px; display: flex; gap: 6px;">
-        <button class="cat-pill active" onclick="filterCategory('all', this)">🎯 Todas</button>
+        <button class="cat-pill active" id="cat-pill-personalized" onclick="filterCategory('personalized', this)">✨ Minha Carteira (Personalizada)</button>
+        <button class="cat-pill" id="cat-pill-quant" onclick="filterCategory('quant', this)">🧠 5. Ultra-Quant (Kelly)</button>
+        <button class="cat-pill" id="cat-pill-valuebets" onclick="filterCategory('valuebets', this)">🎯 3. ValueBets (+EV)</button>
         <button class="cat-pill" id="cat-pill-simples" onclick="filterCategory('simples', this)">🛡️ 1. Conservador (Simples)</button>
         <button class="cat-pill" id="cat-pill-duplas" onclick="filterCategory('duplas', this)">⚖️ 2. Moderado (Duplas)</button>
-        <button class="cat-pill" id="cat-pill-valuebets" onclick="filterCategory('valuebets', this)">🎯 3. ValueBets (+EV)</button>
         <button class="cat-pill" id="cat-pill-arrojado" onclick="filterCategory('arrojado', this)">⚡ 4. Arrojado (Múltiplas)</button>
-        <button class="cat-pill" id="cat-pill-quant" onclick="filterCategory('quant', this)">🧠 5. Ultra-Quant (Kelly)</button>
+        <button class="cat-pill" id="cat-pill-all" onclick="filterCategory('all', this)">🌐 Todas as Entradas</button>
+      </div>
+
+      <!-- SEÇÃO 0: CARTEIRA PERSONALIZADA DO CLIENTE (PERSONA ENGINE) -->
+      <div id="sec-personalized" style="display: block;">
+        <div id="persona-banner" style="background: linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(56,189,248,0.08) 100%); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="font-size: 13px; font-weight: 800; color: #F59E0B; display: flex; align-items: center; gap: 6px;">
+              ✨ CARTEIRA DO DIA PERSONALIZADA — <span id="persona-client-name" style="color: white;">Assinante</span>
+            </div>
+            <div style="font-size: 11px; color: #94A3B8; margin-top: 2px;">
+              Estratégia: <b id="persona-strategy-name" style="color: #38BDF8;">🏛️ Investidor Quant</b> &bull; Meta Diária: <b id="persona-quota-badge" style="color: #00D084;">4 Entradas Selecionadas</b>
+            </div>
+          </div>
+          <div style="font-size: 11px; background: rgba(0,208,132,0.15); border: 1px solid rgba(0,208,132,0.3); color: #00D084; padding: 4px 10px; border-radius: 20px; font-weight: 700;">
+            🟢 Curadoria Exclusiva da IA
+          </div>
+        </div>
+        <div class="opportunity-list" id="personalized-container">
+          <div style="text-align: center; color: var(--text-muted); padding: 20px;">Gerando carteira personalizada...</div>
+        </div>
       </div>
 
       <!-- SEÇÃO 1: CONSERVADOR -->
-      <div id="sec-simples">
+      <div id="sec-simples" style="margin-top: 15px;">
         <div class="section-title">
           <span>🛡️ 1. Apostas Simples Oficiais (Perfil Conservador — Tier 1 Âncora)</span>
           <span style="font-size: 11px; color: var(--green-win); font-weight: 700;">Monte Carlo 85%+ | Stake 1.5% a 2%</span>
@@ -1326,108 +1351,376 @@
 
     const DEFAULT_SIMPLES = [
       {
-        id: "PAL_001", league: "🇧🇷 Brasileirão Série B", datetime: "18/08 21:35",
-        start_time: "21:35", end_time: "23:30",
-        match: "Goiás vs Juventude-RS", market: "Chance Dupla (1X)", odd: "1.30",
-        monte_carlo: "88.5%", stake: "R$ 3,00 (3.0%)", snsi: "+4.2% Fator Serrinha",
-        raio_x: { xg_home: 1.85, xg_away: 0.65, poisson_prob: "92.8%", monte_carlo_runs: "10.000 iterações (8850 sucessos)", home_advantage: "+18.5% (Serrinha)", clv_projected: "+12.4% vs Fechamento", custo_do_gol: "2.44 CG", xpoints: "2.88 xPoints", defensive_score_inverted: "88.5/100 (US002)", snsi_detail: "Goiás invicto em casa nos últimos 6 jogos; Juventude com 3 titulares suspensos.", betano_copy_text: "Goiás vs Juventude-RS - Chance Dupla 1X (@ 1.30)" }
+        id: "SIM_001", league: "🇧🇷 Brasileirão Série B", datetime: "Hoje 19:30", start_time: "19:30", end_time: "21:30",
+        match: "Avaí vs Sport", market: "Vitória do Avaí ou Empate (1X)", odd: "1.35",
+        monte_carlo: "88.5%", stake: "R$ 1,50 (1.5%)", snsi: "+5.2% Fator Ressacada",
+        raio_x: { xg_home: 1.75, xg_away: 0.70, poisson_prob: "88.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+11.5%", custo_do_gol: "2.35 CG", xpoints: "2.65 xP", defensive_score_inverted: "90.0 pts", snsi_detail: "Avaí embalado e torcida presente na Ressacada.", betano_copy_text: "Avaí vs Sport - Chance Dupla 1X (@ 1.35)" }
       },
       {
-        id: "PAL_002", league: "🇧🇷 Brasileirão Série B", datetime: "18/08 21:30",
-        start_time: "21:30", end_time: "23:25",
-        match: "Náutico vs Ceará", market: "Chance Dupla (X2)", odd: "1.70",
-        monte_carlo: "85.2%", stake: "R$ 2,00 (2.0%)", snsi: "+3.8% Transição Rápida",
-        raio_x: { xg_home: 0.90, xg_away: 1.65, poisson_prob: "86.0%", monte_carlo_runs: "10.000 iterações (8520 sucessos)", clv_projected: "+10.8% vs Fechamento", custo_do_gol: "2.78 CG", xpoints: "2.65 xPoints", defensive_score_inverted: "84.0/100 (US002)", snsi_detail: "Ceará com elenco superior e excelente aproveitamento fora de casa.", betano_copy_text: "Náutico vs Ceará - Chance Dupla X2 (@ 1.70)" }
+        id: "SIM_002", league: "⚾ MLB Major League", datetime: "Hoje 21:40", start_time: "21:40", end_time: "00:15",
+        match: "Colorado Rockies vs LA Dodgers", market: "LA Dodgers Vence (Moneyline)", odd: "1.48",
+        monte_carlo: "89.2%", stake: "R$ 1,50 (1.5%)", snsi: "+6.0% Pitcher de Elite",
+        raio_x: { xg_home: 3.4, xg_away: 6.8, poisson_prob: "89.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+14.2%", custo_do_gol: "1.48 CG", xpoints: "2.85 xP", defensive_score_inverted: "92.0 pts", snsi_detail: "Dodgers com retrospecto de 8 vitórias nos últimos 10 confrontos.", betano_copy_text: "Rockies vs Dodgers - Dodgers Vence Moneyline (@ 1.48)" }
       },
       {
-        id: "PAL_003", league: "⚾ MLB Major League", datetime: "18/08 19:35",
-        start_time: "19:35", end_time: "21:00",
-        match: "Baltimore Orioles vs New York Yankees", market: "5 primeiros innings - NY Yankees", odd: "2.15",
-        monte_carlo: "87.0%", stake: "R$ 2,00 (2.0%)", snsi: "+4.5% Pitcher Titular",
-        raio_x: { poisson_prob: "88.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+14.2% vs Fechamento", custo_do_gol: "7.83 CG", xpoints: "2.75 xPoints", defensive_score_inverted: "86.0/100 (US002)", snsi_detail: "Pitcher titular com ERA favorável contra rebatedores destros de Baltimore.", betano_copy_text: "Orioles vs Yankees - 5 Primeiros Innings (NY Yankees) (@ 2.15)" }
+        id: "SIM_003", league: "🇪🇸 La Liga", datetime: "Hoje 16:00", start_time: "16:00", end_time: "18:00",
+        match: "Atlético Madrid vs Málaga", market: "Atlético Madrid Vence (Moneyline)", odd: "1.38",
+        monte_carlo: "87.8%", stake: "R$ 1,50 (1.5%)", snsi: "+4.8% Mando Metropolitano",
+        raio_x: { xg_home: 2.10, xg_away: 0.50, poisson_prob: "87.8%", monte_carlo_runs: "10.000 iterações", clv_projected: "+12.4%", custo_do_gol: "1.90 CG", xpoints: "2.75 xP", defensive_score_inverted: "93.0 pts", snsi_detail: "Solidez da defesa colchonera no Metropolitano.", betano_copy_text: "Atlético Madrid vs Málaga - Atlético Vence (@ 1.38)" }
+      },
+      {
+        id: "SIM_004", league: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League", datetime: "Hoje 16:00", start_time: "16:00", end_time: "18:00",
+        match: "Manchester City vs Everton", market: "Manchester City Vence (Moneyline)", odd: "1.28",
+        monte_carlo: "91.0%", stake: "R$ 1,50 (1.5%)", snsi: "+7.5% Favoritismo",
+        raio_x: { xg_home: 2.80, xg_away: 0.40, poisson_prob: "91.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+10.5%", custo_do_gol: "1.28 CG", xpoints: "2.90 xP", defensive_score_inverted: "95.0 pts", snsi_detail: "Volume de finalizações dominante.", betano_copy_text: "Man City vs Everton - Vence Moneyline (@ 1.28)" }
+      },
+      {
+        id: "SIM_005", league: "⚾ MLB Major League", datetime: "Hoje 19:40", start_time: "19:40", end_time: "22:15",
+        match: "Pittsburgh Pirates vs Detroit Tigers", market: "Detroit Tigers ou Empate (X2)", odd: "1.36",
+        monte_carlo: "88.0%", stake: "R$ 1,50 (1.5%)", snsi: "+4.5% Bullpen",
+        raio_x: { xg_home: 3.10, xg_away: 5.40, poisson_prob: "88.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+12.0%", custo_do_gol: "1.36 CG", xpoints: "2.70 xP", defensive_score_inverted: "89.0 pts", snsi_detail: "Pitcher abridor com baixo WHIP.", betano_copy_text: "Pirates vs Tigers - Dupla Chance X2 (@ 1.36)" }
+      },
+      {
+        id: "SIM_006", league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 20:00", start_time: "20:00", end_time: "22:00",
+        match: "Flamengo vs Cruzeiro", market: "Vitória do Flamengo ou Empate (1X)", odd: "1.32",
+        monte_carlo: "89.5%", stake: "R$ 1,50 (1.5%)", snsi: "+6.2% Fator Mando",
+        raio_x: { xg_home: 2.20, xg_away: 0.60, poisson_prob: "89.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+11.0%", custo_do_gol: "1.32 CG", xpoints: "2.80 xP", defensive_score_inverted: "91.0 pts", snsi_detail: "Solidez em casa no Maracanã.", betano_copy_text: "Flamengo vs Cruzeiro - Chance Dupla 1X (@ 1.32)" }
+      },
+      {
+        id: "SIM_007", league: "⚾ MLB Major League", datetime: "Hoje 20:10", start_time: "20:10", end_time: "23:00",
+        match: "New York Mets vs San Diego Padres", market: "San Diego Padres Vence (Moneyline)", odd: "1.42",
+        monte_carlo: "87.2%", stake: "R$ 1,50 (1.5%)", snsi: "+5.8% Lineup",
+        raio_x: { xg_home: 3.80, xg_away: 6.20, poisson_prob: "87.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+13.5%", custo_do_gol: "1.42 CG", xpoints: "2.75 xP", defensive_score_inverted: "90.5 pts", snsi_detail: "Lineup potente dos Padres.", betano_copy_text: "Mets vs Padres - Moneyline (@ 1.42)" }
+      },
+      {
+        id: "SIM_008", league: "⚾ MLB Major League", datetime: "Hoje 20:40", start_time: "20:40", end_time: "23:15",
+        match: "Minnesota Twins vs Atlanta Braves", market: "Minnesota Twins ou Empate (1X)", odd: "1.34",
+        monte_carlo: "88.4%", stake: "R$ 1,50 (1.5%)", snsi: "+4.6% Defesa",
+        raio_x: { xg_home: 4.50, xg_away: 3.20, poisson_prob: "88.4%", monte_carlo_runs: "10.000 iterações", clv_projected: "+11.8%", custo_do_gol: "1.34 CG", xpoints: "2.70 xP", defensive_score_inverted: "89.5 pts", snsi_detail: "Twins em momento defensivo sólido.", betano_copy_text: "Twins vs Braves - Dupla Chance 1X (@ 1.34)" }
+      },
+      {
+        id: "SIM_009", league: "🇧🇷 Brasileirão Série A", datetime: "Hoje 21:30", start_time: "21:30", end_time: "23:30",
+        match: "Palmeiras vs Botafogo", market: "Vitória do Palmeiras ou Empate (1X)", odd: "1.30",
+        monte_carlo: "90.2%", stake: "R$ 1,50 (1.5%)", snsi: "+6.8% Solidez",
+        raio_x: { xg_home: 1.95, xg_away: 0.80, poisson_prob: "90.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+10.8%", custo_do_gol: "1.30 CG", xpoints: "2.85 xP", defensive_score_inverted: "93.5 pts", snsi_detail: "Allianz Parque como fortaleza.", betano_copy_text: "Palmeiras vs Botafogo - Chance Dupla 1X (@ 1.30)" }
+      },
+      {
+        id: "SIM_010", league: "🇪🇸 La Liga", datetime: "Hoje 17:00", start_time: "17:00", end_time: "19:00",
+        match: "Real Madrid vs Real Betis", market: "Real Madrid Vence (Moneyline)", odd: "1.33",
+        monte_carlo: "89.8%", stake: "R$ 1,50 (1.5%)", snsi: "+6.0% Bernabéu",
+        raio_x: { xg_home: 2.60, xg_away: 0.70, poisson_prob: "89.8%", monte_carlo_runs: "10.000 iterações", clv_projected: "+11.2%", custo_do_gol: "1.33 CG", xpoints: "2.82 xP", defensive_score_inverted: "92.5 pts", snsi_detail: "Santiago Bernabéu com elenco completo.", betano_copy_text: "Real Madrid vs Betis - Vence Moneyline (@ 1.33)" }
       }
     ];
 
     const DEFAULT_DUPLAS = [
       {
-        id: "DUP_001", tipo: "DUPLA", league: "🇧🇷 Brasileirão Série B (Dupla)", datetime: "18/08 21:30 &bull; 21:35",
-        start_time: "21:30", end_time: "23:30",
-        match: "Náutico vs Ceará + Goiás vs Juventude", market: "Chance Dupla (X2) + Chance Dupla (1X)", odd: "2.21",
-        monte_carlo: "81.2%", stake: "R$ 2,00 (2.0%)", snsi: "+4.2% Dupla Blindada",
-        raio_x: { poisson_prob: "81.5%", monte_carlo_runs: "10.000 iterações combinadas", clv_projected: "+15.0%", custo_do_gol: "2.60 CG", snsi_detail: "Combinação de 2 favoritos com dupla chance de proteção total.", betano_copy_text: "Dupla Série B: Náutico vs Ceará (X2) + Goiás vs Juventude (1X) (@ 2.21)" }
+        id: "DUP_001", tipo: "DUPLA", league: "💎 Libertadores + MLB", datetime: "Hoje 21:30 | 21:10",
+        start_time: "21:30", end_time: "00:15",
+        match: "Flamengo vs Cruzeiro + Houston Astros vs Red Sox", market: "Flamengo (1X @ 1.36) + Astros ML (@ 1.48)", odd: "2.01",
+        monte_carlo: "80.2%", stake: "R$ 2,50 (2.5%)", snsi: "+18.5% Multi-Esporte 2x",
+        raio_x: { poisson_prob: "80.2%", monte_carlo_runs: "10.000 iterações combinadas", clv_projected: "+18.5%", custo_do_gol: "2.01 CG", snsi_detail: "Flamengo no Maracanã com Astros em casa.", betano_copy_text: "Dupla 2x: Flamengo 1X + Astros ML (@ 2.01)" }
       },
       {
-        id: "DUP_002", tipo: "DUPLA", league: "⚾ MLB + 🇧🇷 Futebol", datetime: "18/08 19:35 &bull; 21:30",
-        start_time: "19:35", end_time: "23:25",
-        match: "Baltimore Orioles vs NY Yankees + Náutico vs Ceará", market: "NY Yankees (F5) + Chance Dupla (X2)", odd: "3.65",
-        monte_carlo: "79.0%", stake: "R$ 2,00 (2.0%)", snsi: "+4.0% Multi-Esportes",
-        raio_x: { poisson_prob: "78.0%", monte_carlo_runs: "10.000 iterações combinadas", clv_projected: "+18.5%", custo_do_gol: "4.80 CG", snsi_detail: "Diversificação estatística entre Beisebol e Futebol.", betano_copy_text: "Dupla Multi-Esporte: Yankees F5 + Náutico vs Ceará X2 (@ 3.65)" }
+        id: "DUP_002", tipo: "DUPLA", league: "💎 Libertadores + MLB", datetime: "Hoje 19:00 | 19:40",
+        start_time: "19:00", end_time: "22:15",
+        match: "Cerro Porteño vs Palmeiras + Pirates vs Tigers", market: "Palmeiras (X2 @ 1.35) + Tigers ML (@ 1.46)", odd: "1.97",
+        monte_carlo: "78.9%", stake: "R$ 2,50 (2.5%)", snsi: "+16.8% Acelerador 2x",
+        raio_x: { poisson_prob: "78.9%", monte_carlo_runs: "10.000 iterações", clv_projected: "+16.8%", custo_do_gol: "1.97 CG", snsi_detail: "Palmeiras cascudo fora e Tigers embalado.", betano_copy_text: "Dupla 2x: Palmeiras X2 + Tigers ML (@ 1.97)" }
+      },
+      {
+        id: "DUP_003", tipo: "DUPLA", league: "💎 Premier League + MLB", datetime: "Hoje 16:00 | 21:40",
+        start_time: "16:00", end_time: "00:15",
+        match: "Manchester City vs Everton + Rockies vs Dodgers", market: "Man City ML (@ 1.28) + Dodgers ML (@ 1.48)", odd: "1.92",
+        monte_carlo: "82.5%", stake: "R$ 2,50 (2.5%)", snsi: "+17.2% Acelerador 2x",
+        raio_x: { poisson_prob: "82.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+17.2%", custo_do_gol: "1.92 CG", snsi_detail: "Favoritos mundiais em seus domínios.", betano_copy_text: "Dupla 2x: Man City ML + Dodgers ML (@ 1.92)" }
+      },
+      {
+        id: "DUP_004", tipo: "DUPLA", league: "💎 La Liga + MLB", datetime: "Hoje 17:00 | 20:10",
+        start_time: "17:00", end_time: "23:00",
+        match: "Real Madrid vs Betis + Mets vs Padres", market: "Real Madrid ML (@ 1.33) + Padres ML (@ 1.42)", odd: "1.95",
+        monte_carlo: "81.0%", stake: "R$ 2,50 (2.5%)", snsi: "+16.5% Acelerador 2x",
+        raio_x: { poisson_prob: "81.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+16.5%", custo_do_gol: "1.95 CG", snsi_detail: "Bernabéu + Padres ofensivo.", betano_copy_text: "Dupla 2x: Real Madrid ML + Padres ML (@ 1.95)" }
+      },
+      {
+        id: "DUP_005", tipo: "DUPLA", league: "💎 Série B + MLB", datetime: "Hoje 19:30 | 20:40",
+        start_time: "19:30", end_time: "23:15",
+        match: "Avaí vs Sport + Twins vs Braves", market: "Avaí (1X @ 1.35) + Twins (1X @ 1.34)", odd: "1.88",
+        monte_carlo: "83.2%", stake: "R$ 2,50 (2.5%)", snsi: "+15.8% Dupla Chance 2x",
+        raio_x: { poisson_prob: "83.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+15.8%", custo_do_gol: "1.88 CG", snsi_detail: "Dupla Chance cruzada com alta blindagem.", betano_copy_text: "Dupla 2x: Avaí 1X + Twins 1X (@ 1.88)" }
+      },
+      {
+        id: "DUP_006", tipo: "DUPLA", league: "💎 La Liga + MLB", datetime: "Hoje 16:00 | 21:05",
+        start_time: "16:00", end_time: "23:45",
+        match: "Atlético Madrid vs Málaga + Cubs vs White Sox", market: "Atlético Madrid ML (@ 1.38) + Cubs ML (@ 1.44)", odd: "1.98",
+        monte_carlo: "79.5%", stake: "R$ 2,50 (2.5%)", snsi: "+17.0% Acelerador 2x",
+        raio_x: { poisson_prob: "79.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+17.0%", custo_do_gol: "1.98 CG", snsi_detail: "Solidez mandante e pitcher ace.", betano_copy_text: "Dupla 2x: Atlético Madrid ML + Cubs ML (@ 1.98)" }
+      },
+      {
+        id: "DUP_007", tipo: "DUPLA", league: "💎 Sul-Americana + MLB", datetime: "Hoje 19:00 | 20:00",
+        start_time: "19:00", end_time: "22:30",
+        match: "LDU Quito vs Lanús + Brewers vs Cardinals", market: "LDU Quito (1X @ 1.36) + Brewers ML (@ 1.50)", odd: "2.04",
+        monte_carlo: "77.8%", stake: "R$ 2,50 (2.5%)", snsi: "+19.0% Altitude + MLB",
+        raio_x: { poisson_prob: "77.8%", monte_carlo_runs: "10.000 iterações", clv_projected: "+19.0%", custo_do_gol: "2.04 CG", snsi_detail: "Fator altitude em Quito e pitcher dominante.", betano_copy_text: "Dupla 2x: LDU 1X + Brewers ML (@ 2.04)" }
+      },
+      {
+        id: "DUP_008", tipo: "DUPLA", league: "💎 Libertadores + MLB", datetime: "Hoje 21:30 | 19:05",
+        start_time: "19:05", end_time: "23:30",
+        match: "Corinthians vs Vélez + Phillies vs Marlins", market: "Corinthians (1X @ 1.35) + Phillies ML (@ 1.44)", odd: "1.94",
+        monte_carlo: "80.8%", stake: "R$ 2,50 (2.5%)", snsi: "+16.2% Acelerador 2x",
+        raio_x: { poisson_prob: "80.8%", monte_carlo_runs: "10.000 iterações", clv_projected: "+16.2%", custo_do_gol: "1.94 CG", snsi_detail: "Arena lotada e favoritismo na Filadélfia.", betano_copy_text: "Dupla 2x: Corinthians 1X + Phillies ML (@ 1.94)" }
+      },
+      {
+        id: "DUP_009", tipo: "DUPLA", league: "💎 Série A + MLB", datetime: "Hoje 21:30 | 20:05",
+        start_time: "20:05", end_time: "23:30",
+        match: "Palmeiras vs Botafogo + NY Yankees vs Guardians", market: "Palmeiras (1X @ 1.30) + NY Yankees ML (@ 1.51)", odd: "1.96",
+        monte_carlo: "80.1%", stake: "R$ 2,50 (2.5%)", snsi: "+16.8% Acelerador 2x",
+        raio_x: { poisson_prob: "80.1%", monte_carlo_runs: "10.000 iterações", clv_projected: "+16.8%", custo_do_gol: "1.96 CG", snsi_detail: "Mandos de campo fortes.", betano_copy_text: "Dupla 2x: Palmeiras 1X + Yankees ML (@ 1.96)" }
+      },
+      {
+        id: "DUP_010", tipo: "DUPLA", league: "💎 Série B + MLB", datetime: "Hoje 19:30 | 22:10",
+        start_time: "19:30", end_time: "00:45",
+        match: "Fortaleza vs São Bernardo + Mariners vs Angels", market: "Fortaleza (1X @ 1.34) + Mariners ML (@ 1.51)", odd: "2.02",
+        monte_carlo: "78.4%", stake: "R$ 2,50 (2.5%)", snsi: "+18.0% Acelerador 2x",
+        raio_x: { poisson_prob: "78.4%", monte_carlo_runs: "10.000 iterações", clv_projected: "+18.0%", custo_do_gol: "2.02 CG", snsi_detail: "Castelão + Mariners em casa.", betano_copy_text: "Dupla 2x: Fortaleza 1X + Mariners ML (@ 2.02)" }
       }
     ];
 
     const DEFAULT_VALUEBETS = [
       {
-        id: "VB_01", sport: "Futebol", league: "Amistosos / Clubes Internacionais",
-        start_time: "16:00", end_time: "17:55",
-        match: "Fenerbahce SK vs Lyon", market: "Ambos Marcam (BTTS)", selection: "Ambas as Equipes Marcam - Sim",
-        odd_betano: 1.88, fair_odd: 1.60, ev_percent: 17.5, quant_score: 88.5, sim_win_rate: 62.5,
-        suggested_stake_reais: 1.04, stake_pct_recommended: 1.0, kickoff: "Hoje 16:00",
-        reason: "Fenerbahce com alto volume de ataque contra o Lyon. Probabilidade de ambos marcarem acima de 65%.",
-        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "65.0%", clv_projected: "+12.8%", custo_do_gol: "3.57 CG", xpoints: "2.80 xPoints", snsi_detail: "Descompasso na linha de BTTS na Betano contra média asiática da Pinnacle.", betano_copy_text: "Fenerbahce vs Lyon - Ambos Marcam (@ 1.88)" }
+        id: "VB_001", sport: "Beisebol (MLB)", league: "⚾ MLB Major League",
+        start_time: "19:40", end_time: "22:20",
+        match: "Tampa Bay Rays vs Toronto Blue Jays", market: "Total de Corridas (Over 7.5)", selection: "Mais de 7.5 Corridas",
+        odd_betano: 1.90, fair_odd: 1.62, ev_percent: 16.8, quant_score: 87.5, sim_win_rate: 61.8,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 19:40",
+        reason: "Ambos os arremessadores com ERA superior a 4.60 e histórico de partidas de alta pontuação.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "61.8%", clv_projected: "+16.8%", custo_do_gol: "4.20 CG", xpoints: "2.80 xP", snsi_detail: "Descompasso na linha de Over 7.5 na Betano contra mercado asiático.", betano_copy_text: "Rays vs Blue Jays - Mais de 7.5 Corridas (@ 1.90)" }
       },
       {
-        id: "VB_02", sport: "Futebol", league: "Amistosos / Clubes Internacionais",
-        start_time: "16:00", end_time: "17:55",
-        match: "GNK Dinamo Zagreb vs Viking FK", market: "Total de Gols (Over 2.5)", selection: "Mais de 2.5 Gols",
-        odd_betano: 1.95, fair_odd: 1.68, ev_percent: 16.1, quant_score: 84.0, sim_win_rate: 59.5,
-        suggested_stake_reais: 1.04, stake_pct_recommended: 1.0, kickoff: "Hoje 16:00",
-        reason: "Dinamo Zagreb com média de 2.6 gols/jogo em casa e Viking FK com estilo norueguês aberto.",
-        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "61.2%", clv_projected: "+11.4%", custo_do_gol: "3.80 CG", xpoints: "2.74 xPoints", snsi_detail: "Expectativa de gols xG somada superior a 3.10 gols.", betano_copy_text: "Dinamo Zagreb vs Viking FK - Mais de 2.5 Gols (@ 1.95)" }
+        id: "VB_002", sport: "Beisebol (MLB)", league: "⚾ MLB Major League",
+        start_time: "20:40", end_time: "23:15",
+        match: "Athletics vs Kansas City Royals", market: "Moneyline (Vencedor)", selection: "Kansas City Royals Vence",
+        odd_betano: 1.82, fair_odd: 1.58, ev_percent: 14.5, quant_score: 85.0, sim_win_rate: 63.0,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 20:40",
+        reason: "Pitcher dos Royals com WHIP 1.08 e ataque dos Athletics com alto índice de strikeouts.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "63.0%", clv_projected: "+14.5%", custo_do_gol: "5.10 CG", xpoints: "2.70 xP", snsi_detail: "Valor esperado matemático positivo em cotação de 1.82.", betano_copy_text: "Athletics vs KC Royals - KC Royals Vence (@ 1.82)" }
       },
       {
-        id: "VB_03", sport: "Beisebol (MLB)", league: "MLB Major League",
-        start_time: "20:05", end_time: "22:45",
-        match: "Baltimore Orioles vs New York Yankees", market: "Moneyline (Vencedor)", selection: "New York Yankees",
-        odd_betano: 1.85, fair_odd: 1.58, ev_percent: 17.1, quant_score: 86.0, sim_win_rate: 63.3,
-        suggested_stake_reais: 1.04, stake_pct_recommended: 1.0, kickoff: "Hoje 20:05",
-        reason: "Pitcher de elite confirmado no montinho e média ofensiva de 5.8 corridas/jogo na MLB.",
-        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "64.0%", clv_projected: "+13.2%", custo_do_gol: "7.83 CG", xpoints: "2.68 xPoints", snsi_detail: "Linha de abertura com descompasso de +17.1% EV.", betano_copy_text: "Orioles vs NY Yankees - Yankees Vence (@ 1.85)" }
+        id: "VB_003", sport: "Futebol", league: "🇧🇷 Brasileirão Série B",
+        start_time: "21:30", end_time: "23:30",
+        match: "Botafogo-SP vs Criciúma", market: "Ambas as Equipes Marcam", selection: "Ambas Marcam (Sim)",
+        odd_betano: 1.95, fair_odd: 1.68, ev_percent: 15.9, quant_score: 86.8, sim_win_rate: 59.5,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 21:30",
+        reason: "Ambas equipes com mais de 75% dos jogos recentes com gols de ambos os lados.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "59.5%", clv_projected: "+15.9%", custo_do_gol: "1.95 CG", xpoints: "2.60 xP", snsi_detail: "Linha desajustada pagando 1.95 para BTTS com alto xG das equipes.", betano_copy_text: "Botafogo-SP vs Criciúma - Ambas Marcam Sim (@ 1.95)" }
+      },
+      {
+        id: "VB_004", sport: "Futebol", league: "🇧🇷 Brasileirão Série A",
+        start_time: "21:30", end_time: "23:30",
+        match: "Palmeiras vs Botafogo", market: "Total de Gols", selection: "Mais de 2.5 Gols",
+        odd_betano: 2.15, fair_odd: 1.78, ev_percent: 20.8, quant_score: 88.2, sim_win_rate: 56.2,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 21:30",
+        reason: "Clássico com alto índice de finalizações e transição rápida.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "56.2%", clv_projected: "+20.8%", custo_do_gol: "2.15 CG", xpoints: "2.90 xP", snsi_detail: "Clássico aberto com xG combinado superior a 3.10.", betano_copy_text: "Palmeiras vs Botafogo - Mais de 2.5 Gols (@ 2.15)" }
+      },
+      {
+        id: "VB_005", sport: "Beisebol (MLB)", league: "⚾ MLB Major League",
+        start_time: "20:05", end_time: "23:00",
+        match: "NY Yankees vs Cleveland Guardians", market: "Moneyline", selection: "NY Yankees para Vencer",
+        odd_betano: 1.88, fair_odd: 1.60, ev_percent: 17.5, quant_score: 86.4, sim_win_rate: 62.5,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 20:05",
+        reason: "Yankees no Yankee Stadium com matchup favorável contra arremessador destro.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "62.5%", clv_projected: "+17.5%", custo_do_gol: "1.88 CG", xpoints: "2.75 xP", snsi_detail: "Yankees no Bronx com pitcher ace em grande fase.", betano_copy_text: "NY Yankees vs Guardians - Yankees Vence (@ 1.88)" }
+      },
+      {
+        id: "VB_006", sport: "Futebol", league: "🏆 Champions League",
+        start_time: "16:00", end_time: "18:00",
+        match: "Galatasaray vs Young Boys", market: "Ambas Marcam", selection: "Ambas as Equipes Marcam - Sim",
+        odd_betano: 1.92, fair_odd: 1.65, ev_percent: 16.4, quant_score: 85.8, sim_win_rate: 60.6,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 16:00",
+        reason: "Duelo decisivo na Turquia com postura ultra-ofensiva de ambas equipes.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "60.6%", clv_projected: "+16.4%", custo_do_gol: "1.92 CG", xpoints: "2.68 xP", snsi_detail: "Pressão em Istambul com defesas expostas.", betano_copy_text: "Galatasaray vs Young Boys - Ambas Marcam (@ 1.92)" }
+      },
+      {
+        id: "VB_007", sport: "Beisebol (MLB)", league: "⚾ MLB Major League",
+        start_time: "19:40", end_time: "22:15",
+        match: "Pittsburgh Pirates vs Detroit Tigers", market: "Total de Corridas", selection: "Mais de 8.0 Corridas",
+        odd_betano: 1.96, fair_odd: 1.66, ev_percent: 18.2, quant_score: 87.0, sim_win_rate: 60.2,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 19:40",
+        reason: "Clima quente e arremessadores com histórico de corridas cedidas na 4ª e 5ª entradas.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "60.2%", clv_projected: "+18.2%", custo_do_gol: "1.96 CG", xpoints: "2.72 xP", snsi_detail: "Vento favorável no PNC Park.", betano_copy_text: "Pirates vs Tigers - Mais de 8.0 Corridas (@ 1.96)" }
+      },
+      {
+        id: "VB_008", sport: "Beisebol (MLB)", league: "⚾ MLB Major League",
+        start_time: "20:10", end_time: "23:00",
+        match: "New York Mets vs San Diego Padres", market: "Moneyline", selection: "NY Mets Vence (Moneyline Desajustada)",
+        odd_betano: 2.20, fair_odd: 1.80, ev_percent: 22.1, quant_score: 89.0, sim_win_rate: 55.5,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 20:10",
+        reason: "Underdog com arremessador canhoto matchup favorável gerando +22.1% de EV.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "55.5%", clv_projected: "+22.1%", custo_do_gol: "2.20 CG", xpoints: "2.95 xP", snsi_detail: "Underdog desregulada frente às casas asiáticas.", betano_copy_text: "Mets vs Padres - Mets ML (@ 2.20)" }
+      },
+      {
+        id: "VB_009", sport: "Beisebol (MLB)", league: "⚾ MLB Major League",
+        start_time: "20:40", end_time: "23:15",
+        match: "Minnesota Twins vs Atlanta Braves", market: "Moneyline", selection: "Atlanta Braves Vence (Moneyline)",
+        odd_betano: 1.85, fair_odd: 1.61, ev_percent: 15.0, quant_score: 85.2, sim_win_rate: 62.1,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 20:40",
+        reason: "Braves com taxa de rebatidas potentes liderando em slugging percentage.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "62.1%", clv_projected: "+15.0%", custo_do_gol: "1.85 CG", xpoints: "2.65 xP", snsi_detail: "Braves com taxa de rebatidas potente.", betano_copy_text: "Twins vs Braves - Braves ML (@ 1.85)" }
+      },
+      {
+        id: "VB_010", sport: "Beisebol (MLB)", league: "⚾ MLB Major League",
+        start_time: "21:05", end_time: "23:45",
+        match: "Chicago Cubs vs Chicago White Sox", market: "Total de Corridas", selection: "Menos de 7.5 Corridas",
+        odd_betano: 2.05, fair_odd: 1.72, ev_percent: 19.3, quant_score: 88.0, sim_win_rate: 58.1,
+        suggested_stake_reais: 3.00, stake_pct_recommended: 3.0, kickoff: "Hoje 21:05",
+        reason: "Duelo de arremessadores com ERA inferior a 2.80 em jogo noturno com vento contra.",
+        raio_x: { monte_carlo_runs: "10.000 iterações", poisson_prob: "58.1%", clv_projected: "+19.3%", custo_do_gol: "2.05 CG", xpoints: "2.88 xP", snsi_detail: "Duelo de arremessadores com ERA baixo.", betano_copy_text: "Cubs vs White Sox - Menos de 7.5 Corridas (@ 2.05)" }
       }
     ];
 
     const DEFAULT_ARROJADO = [
       {
-        id: "ARR_001", tipo: "ARROJADO", league: "⚽ Tripla Série A & B + MLB", datetime: "Hoje 20:00 &bull; 21:35",
-        start_time: "20:00", end_time: "23:45",
-        match: "Orioles vs Yankees (MLB) + Náutico vs Ceará + Goiás vs Juventude",
-        market: "Yankees Vence + Náutico (X2) + Goiás (1X)", odd: "4.15",
-        monte_carlo: "72.4%", stake: "R$ 4,00 (4.0%)", snsi: "+8.5% Alavancagem",
-        raio_x: { poisson_prob: "71.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+24.0%", custo_do_gol: "4.15 CG", snsi_detail: "Combinação de 3 favoritos com alta probabilidade agregada para retorno 4x.", betano_copy_text: "Tripla Alavancada: Yankees + Náutico X2 + Goiás 1X (@ 4.15)" }
+        id: "ARR_001", tipo: "ARROJADO", league: "⚽ Tripla Sul-Americana + MLB", datetime: "Hoje 19:00 | 21:40",
+        start_time: "19:00", end_time: "00:15",
+        match: "LDU Quito (ML) + Padres (ML) + Coquimbo (1X)", market: "Tripla Combinada de Favoritos com Proteção", odd: "3.30",
+        monte_carlo: "71.0%", stake: "R$ 4,00 (4.0%)", snsi: "+24.5% Alavancagem",
+        raio_x: { poisson_prob: "71.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+24.5%", custo_do_gol: "3.30 CG", snsi_detail: "Altitude de Quito a favor da LDU combinada com favoritismo dos Padres na MLB.", betano_copy_text: "Tripla: LDU Vence + Padres ML + Coquimbo 1X (@ 3.30)" }
       },
       {
-        id: "ARR_002", tipo: "ARROJADO", league: "🇧🇷 Brasileirão Série B", datetime: "Hoje 21:35",
-        start_time: "21:35", end_time: "23:30",
-        match: "Goiás vs Juventude-RS",
-        market: "Mais de 9.5 Escanteios + Ambos Marcam (Criar Aposta)", odd: "3.40",
-        monte_carlo: "75.8%", stake: "R$ 4,00 (4.0%)", snsi: "+6.8% Cantos & Gols",
-        raio_x: { poisson_prob: "74.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+19.2%", custo_do_gol: "3.40 CG", snsi_detail: "Alta frequência de cruzamentos e média de 11.2 cantos/jogo.", betano_copy_text: "Goiás vs Juventude: +9.5 Cantos & Ambos Marcam (@ 3.40)" }
+        id: "ARR_002", tipo: "ARROJADO", league: "🇧🇷 Brasileirão Série B", datetime: "Hoje 19:30",
+        start_time: "19:30", end_time: "21:30",
+        match: "Fortaleza vs São Bernardo", market: "Fortaleza Vence + Menos de 3.5 Gols (Criar Aposta)", odd: "2.85",
+        monte_carlo: "73.2%", stake: "R$ 4,00 (4.0%)", snsi: "+19.5% Criar Aposta",
+        raio_x: { poisson_prob: "73.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+19.5%", custo_do_gol: "2.85 CG", snsi_detail: "Fortaleza no Castelão com controle tático total e placar enxuto.", betano_copy_text: "Fortaleza vs São Bernardo: Fortaleza Vence + Menos 3.5 Gols (@ 2.85)" }
+      },
+      {
+        id: "ARR_003", tipo: "ARROJADO", league: "🔥 Tripla Multi-Esporte Mundial", datetime: "Hoje 16:00 | 20:00",
+        start_time: "16:00", end_time: "23:00",
+        match: "Flamengo ML + Man City ML + Dodgers ML", market: "Tripla dos Favoritos Globais", odd: "3.10",
+        monte_carlo: "72.5%", stake: "R$ 4,00 (4.0%)", snsi: "+23.0% Tripla Global",
+        raio_x: { poisson_prob: "72.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+23.0%", custo_do_gol: "3.10 CG", snsi_detail: "Combinada dos 3 maiores favoritos do dia.", betano_copy_text: "Tripla: Flamengo ML + Man City ML + Dodgers ML (@ 3.10)" }
+      },
+      {
+        id: "ARR_004", tipo: "ARROJADO", league: "🔥 Tripla Champions + MLB", datetime: "Hoje 17:00 | 21:10",
+        start_time: "17:00", end_time: "00:00",
+        match: "Real Madrid ML + Palmeiras ML + Astros ML", market: "Tripla de Alta Dominância", odd: "3.45",
+        monte_carlo: "69.8%", stake: "R$ 4,00 (4.0%)", snsi: "+25.5% Alavancagem",
+        raio_x: { poisson_prob: "69.8%", monte_carlo_runs: "10.000 iterações", clv_projected: "+25.5%", custo_do_gol: "3.45 CG", snsi_detail: "Casamento de odds médias em bilhete triplo.", betano_copy_text: "Tripla: Real Madrid + Palmeiras + Astros (@ 3.45)" }
+      },
+      {
+        id: "ARR_005", tipo: "ARROJADO", league: "🔥 Tripla Blindada Protegida", datetime: "Hoje 16:00 | 19:40",
+        start_time: "16:00", end_time: "22:15",
+        match: "Avaí 1X + Atlético Madrid ML + Tigers ML", market: "Tripla Blindada com Dupla Chance", odd: "2.95",
+        monte_carlo: "74.0%", stake: "R$ 4,00 (4.0%)", snsi: "+21.0% Alavancagem",
+        raio_x: { poisson_prob: "74.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+21.0%", custo_do_gol: "2.95 CG", snsi_detail: "Equilíbrio entre segurança e cotação 3x.", betano_copy_text: "Tripla: Avaí 1X + Atlético Madrid + Tigers (@ 2.95)" }
+      },
+      {
+        id: "ARR_006", tipo: "ARROJADO", league: "⚾ Tripla MLB Sniper", datetime: "Hoje 20:00 | 22:10",
+        start_time: "20:00", end_time: "00:45",
+        match: "Twins ML + Phillies ML + Mariners ML", market: "Tripla de Pitchers de Elite MLB", odd: "3.60",
+        monte_carlo: "68.5%", stake: "R$ 4,00 (4.0%)", snsi: "+26.8% Pitchers",
+        raio_x: { poisson_prob: "68.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+26.8%", custo_do_gol: "3.60 CG", snsi_detail: "3 arremessadores com ERA < 2.50.", betano_copy_text: "Tripla MLB: Twins + Phillies + Mariners (@ 3.60)" }
+      },
+      {
+        id: "ARR_007", tipo: "ARROJADO", league: "🇧🇷 Criar Aposta Neo Química", datetime: "Hoje 21:30",
+        start_time: "21:30", end_time: "23:30",
+        match: "Corinthians vs Vélez Sarsfield", market: "Corinthians 1X + Mais 1.5 Gols + Menos 10.5 Cantos", odd: "3.25",
+        monte_carlo: "71.8%", stake: "R$ 4,00 (4.0%)", snsi: "+23.5% Criar Aposta",
+        raio_x: { poisson_prob: "71.8%", monte_carlo_runs: "10.000 iterações", clv_projected: "+23.5%", custo_do_gol: "3.25 CG", snsi_detail: "Roteiro de jogo com controle do Timão.", betano_copy_text: "Criar Aposta: Corinthians 1X + Over 1.5 + Under 10.5 Cantos (@ 3.25)" }
+      },
+      {
+        id: "ARR_008", tipo: "ARROJADO", league: "🔥 Tripla Alavancada 3.8x", datetime: "Hoje 20:00 | 21:05",
+        start_time: "20:00", end_time: "23:45",
+        match: "Brewers ML + Cubs ML + White Sox 1X", market: "Tripla de Alta Rotação", odd: "3.80",
+        monte_carlo: "67.0%", stake: "R$ 4,00 (4.0%)", snsi: "+28.0% Alavancagem",
+        raio_x: { poisson_prob: "67.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+28.0%", custo_do_gol: "3.80 CG", snsi_detail: "Alavancagem com teto de stop-loss ativo.", betano_copy_text: "Tripla: Brewers + Cubs + White Sox (@ 3.80)" }
+      },
+      {
+        id: "ARR_009", tipo: "ARROJADO", league: "🏆 Tripla Copas Internacionais", datetime: "Hoje 19:00 | 21:30",
+        start_time: "19:00", end_time: "23:30",
+        match: "Cerro Porteño ML + LDU Quito ML + NY Yankees ML", market: "Tripla Copas + MLB", odd: "3.50",
+        monte_carlo: "69.2%", stake: "R$ 4,00 (4.0%)", snsi: "+25.0% Copas",
+        raio_x: { poisson_prob: "69.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+25.0%", custo_do_gol: "3.50 CG", snsi_detail: "Mandantes fortes em mata-mata.", betano_copy_text: "Tripla: Cerro + LDU + Yankees (@ 3.50)" }
+      },
+      {
+        id: "ARR_010", tipo: "ARROJADO", league: "🔥 Tripla Noturna", datetime: "Hoje 20:40 | 21:30",
+        start_time: "20:40", end_time: "00:15",
+        match: "Botafogo-SP 1X + Criciúma ML + Braves ML", market: "Tripla Noturna Combinada", odd: "3.15",
+        monte_carlo: "72.0%", stake: "R$ 4,00 (4.0%)", snsi: "+22.8% Alavancagem",
+        raio_x: { poisson_prob: "72.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+22.8%", custo_do_gol: "3.15 CG", snsi_detail: "Fechamento da grade com alta probabilidade.", betano_copy_text: "Tripla: Botafogo-SP 1X + Criciúma + Braves (@ 3.15)" }
       }
     ];
 
     const DEFAULT_QUANT = [
       {
-        id: "QUA_001", tipo: "QUANT", league: "⚽ Premier League / La Liga Quant", datetime: "Hoje 16:00",
-        start_time: "16:00", end_time: "17:55",
-        match: "Fenerbahce SK vs Lyon", market: "Poisson xG Modelo Puro (Over 2.25 Asian)", odd: "1.92",
-        monte_carlo: "88.2%", stake: "Kelly Frac 25%", snsi: "+18.4% Alpha",
-        raio_x: { poisson_prob: "88.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+18.4%", custo_do_gol: "2.10 CG", snsi_detail: "Regressão bivariada de Poisson indicando xG esperado de 3.24 contra linha de 2.25.", betano_copy_text: "Fenerbahce vs Lyon: Over 2.25 Asiático (@ 1.92)" }
+        id: "QUA_001", tipo: "QUANT", league: "🇧🇷 Brasileirão Série B Quant", datetime: "Hoje 20:30",
+        start_time: "20:30", end_time: "22:30",
+        match: "Cuiabá vs Operário-PR", market: "Poisson xG Modelo Puro (Under 2.0 Gols Asiático)", odd: "1.95",
+        monte_carlo: "86.4%", stake: "R$ 3,50 (3.5%)", snsi: "+16.5% Alpha",
+        raio_x: { poisson_prob: "86.4%", monte_carlo_runs: "10.000 iterações", clv_projected: "+16.5%", custo_do_gol: "1.95 CG", snsi_detail: "Regressão bivariada com 1.42 xG projetado.", betano_copy_text: "Cuiabá vs Operário: Under 2.0 Gols Asiático (@ 1.95)" }
       },
       {
-        id: "QUA_002", tipo: "QUANT", league: "⚾ MLB Quant Model", datetime: "Hoje 20:05",
-        start_time: "20:05", end_time: "22:45",
-        match: "Baltimore Orioles vs NY Yankees", market: "F5 Runline (-0.5 Yankees) Modelo Preditivo", odd: "2.15",
-        monte_carlo: "83.6%", stake: "Kelly Frac 25%", snsi: "+22.1% Alpha",
-        raio_x: { poisson_prob: "83.6%", monte_carlo_runs: "10.000 iterações", clv_projected: "+22.1%", custo_do_gol: "1.85 CG", snsi_detail: "Descompasso acentuado entre ERA do arremessador titular e linha Betano.", betano_copy_text: "Orioles vs NY Yankees: F5 Runline -0.5 Yankees (@ 2.15)" }
+        id: "QUA_002", tipo: "QUANT", league: "⚾ MLB Quant Model", datetime: "Hoje 21:05",
+        start_time: "21:05", end_time: "23:45",
+        match: "Chicago Cubs vs Chicago White Sox", market: "Cubs Runline (-1.5 Corridas) Modelo Preditivo", odd: "2.10",
+        monte_carlo: "82.8%", stake: "R$ 3,50 (3.5%)", snsi: "+21.0% Alpha",
+        raio_x: { poisson_prob: "82.8%", monte_carlo_runs: "10.000 iterações", clv_projected: "+21.0%", custo_do_gol: "1.80 CG", snsi_detail: "Descompasso entre ERA do abridor e ataque dos Cubs.", betano_copy_text: "Cubs vs White Sox: Cubs Runline -1.5 (@ 2.10)" }
+      },
+      {
+        id: "QUA_003", tipo: "QUANT", league: "🏆 Copa Libertadores Quant", datetime: "Hoje 21:30",
+        start_time: "21:30", end_time: "23:30",
+        match: "Corinthians vs Vélez Sarsfield", market: "Corinthians Handicap Asiático +0.25", odd: "1.85",
+        monte_carlo: "84.2%", stake: "R$ 3,50 (3.5%)", snsi: "+14.0% Alpha",
+        raio_x: { poisson_prob: "84.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+14.0%", custo_do_gol: "1.85 CG", snsi_detail: "Poisson projetando superioridade tática na Neo Química Arena.", betano_copy_text: "Corinthians vs Vélez: Handicap +0.25 (@ 1.85)" }
+      },
+      {
+        id: "QUA_004", tipo: "QUANT", league: "🇧🇷 Brasileirão Série B Quant", datetime: "Hoje 19:30",
+        start_time: "19:30", end_time: "21:30",
+        match: "Avaí vs Sport", market: "Under 2.25 Gols Asiático", odd: "1.88",
+        monte_carlo: "85.5%", stake: "R$ 3,50 (3.5%)", snsi: "+15.2% Alpha",
+        raio_x: { poisson_prob: "85.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+15.2%", custo_do_gol: "1.88 CG", snsi_detail: "Baixa expectativa de finalizações no alvo.", betano_copy_text: "Avaí vs Sport: Under 2.25 Asiático (@ 1.88)" }
+      },
+      {
+        id: "QUA_005", tipo: "QUANT", league: "🇧🇷 Brasileirão Série B Quant", datetime: "Hoje 19:30",
+        start_time: "19:30", end_time: "21:30",
+        match: "Fortaleza vs São Bernardo", market: "Fortaleza Handicap Asiático -0.5", odd: "1.92",
+        monte_carlo: "84.0%", stake: "R$ 3,50 (3.5%)", snsi: "+16.0% Alpha",
+        raio_x: { poisson_prob: "84.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+16.0%", custo_do_gol: "1.92 CG", snsi_detail: "Linha justa de -0.75 com valor no -0.5.", betano_copy_text: "Fortaleza vs São Bernardo: Handicap -0.5 (@ 1.92)" }
+      },
+      {
+        id: "QUA_006", tipo: "QUANT", league: "🇧🇷 Brasileirão Série A Quant", datetime: "Hoje 20:00",
+        start_time: "20:00", end_time: "22:00",
+        match: "Flamengo vs Cruzeiro", market: "Over 2.0 Gols Asiático", odd: "1.82",
+        monte_carlo: "87.1%", stake: "R$ 3,50 (3.5%)", snsi: "+14.5% Alpha",
+        raio_x: { poisson_prob: "87.1%", monte_carlo_runs: "10.000 iterações", clv_projected: "+14.5%", custo_do_gol: "1.82 CG", snsi_detail: "Reembolso total em 2 gols exatos.", betano_copy_text: "Flamengo vs Cruzeiro: Over 2.0 Asiático (@ 1.82)" }
+      },
+      {
+        id: "QUA_007", tipo: "QUANT", league: "⚾ MLB Quant Model", datetime: "Hoje 21:40",
+        start_time: "21:40", end_time: "00:15",
+        match: "Colorado Rockies vs LA Dodgers", market: "LA Dodgers Runline (-1.5)", odd: "2.05",
+        monte_carlo: "83.5%", stake: "R$ 3,50 (3.5%)", snsi: "+19.2% Alpha",
+        raio_x: { poisson_prob: "83.5%", monte_carlo_runs: "10.000 iterações", clv_projected: "+19.2%", custo_do_gol: "2.05 CG", snsi_detail: "Diferencial de corridas de +2.8 pros Dodgers.", betano_copy_text: "Rockies vs Dodgers: Dodgers Runline -1.5 (@ 2.05)" }
+      },
+      {
+        id: "QUA_008", tipo: "QUANT", league: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League Quant", datetime: "Hoje 16:00",
+        start_time: "16:00", end_time: "18:00",
+        match: "Manchester City vs Everton", market: "Manchester City Handicap -1.5", odd: "1.90",
+        monte_carlo: "86.0%", stake: "R$ 3,50 (3.5%)", snsi: "+15.8% Alpha",
+        raio_x: { poisson_prob: "86.0%", monte_carlo_runs: "10.000 iterações", clv_projected: "+15.8%", custo_do_gol: "1.90 CG", snsi_detail: "Dominância de posse no Etihad Stadium.", betano_copy_text: "Man City vs Everton: Handicap -1.5 (@ 1.90)" }
+      },
+      {
+        id: "QUA_009", tipo: "QUANT", league: "🇪🇸 La Liga Quant", datetime: "Hoje 17:00",
+        start_time: "17:00", end_time: "19:00",
+        match: "Real Madrid vs Real Betis", market: "Under 3.0 Gols Asiático", odd: "1.84",
+        monte_carlo: "85.2%", stake: "R$ 3,50 (3.5%)", snsi: "+14.8% Alpha",
+        raio_x: { poisson_prob: "85.2%", monte_carlo_runs: "10.000 iterações", clv_projected: "+14.8%", custo_do_gol: "1.84 CG", snsi_detail: "Betis com bloco baixo retardando ritmo.", betano_copy_text: "Real Madrid vs Betis: Under 3.0 Asiático (@ 1.84)" }
+      },
+      {
+        id: "QUA_010", tipo: "QUANT", league: "⚾ MLB Quant Model", datetime: "Hoje 20:10",
+        start_time: "20:10", end_time: "23:00",
+        match: "New York Mets vs San Diego Padres", market: "San Diego Padres Runline (-1.5)", odd: "2.15",
+        monte_carlo: "81.9%", stake: "R$ 3,50 (3.5%)", snsi: "+20.5% Alpha",
+        raio_x: { poisson_prob: "81.9%", monte_carlo_runs: "10.000 iterações", clv_projected: "+20.5%", custo_do_gol: "2.15 CG", snsi_detail: "Bullpen dos Padres permitindo menos de 0.8 WHIP.", betano_copy_text: "Mets vs Padres: Padres Runline -1.5 (@ 2.15)" }
       }
     ];
 
@@ -1442,9 +1735,6 @@
           const prof = JSON.parse(savedProf);
           if (document.getElementById('profile-badge-display')) {
             document.getElementById('profile-badge-display').innerText = prof.badge || '🏛️ Investidor Quant';
-          }
-          if (prof.default_tab) {
-            filterCategory(prof.default_tab);
           }
         } catch(e) {}
       }
@@ -1631,43 +1921,73 @@
       if (data) {
         document.getElementById('banca-display').innerText = data.saldo_atual || data.saldo_formatado || "R$ 100,00";
         document.getElementById('stake-display').innerText = data.stake_padrao || "R$ 3,00";
-        const wr = data.win_rate || "100%";
-        document.getElementById('winrate-display').innerText = wr.includes("Novo") ? wr : `${wr} (7/8) 🟢`;
+        const wr = data.win_rate || "53.8%";
+        document.getElementById('winrate-display').innerText = wr.includes("Novo") ? wr : `${wr} (7G/6R) 🟢`;
         if (data.historico) renderBancaChart(data.historico);
       }
     }
 
+    function getProfileCategory(profileName) {
+      if (!profileName) return 'quant';
+      const p = String(profileName).toLowerCase();
+      if (p.includes('quant') || p.includes('ultra') || p.includes('investidor') || p.includes('5')) return 'quant';
+      if (p.includes('value') || p.includes('hunter') || p.includes('sniper') || p.includes('+ev') || p.includes('3')) return 'valuebets';
+      if (p.includes('longo') || p.includes('macro') || p.includes('conservador') || p.includes('simples') || p.includes('1')) return 'simples';
+      if (p.includes('alavanc') || p.includes('arrojado') || p.includes('alto risco') || p.includes('multipla') || p.includes('4')) return 'arrojado';
+      if (p.includes('moderado') || p.includes('casual') || p.includes('dupla') || p.includes('2')) return 'duplas';
+      return 'quant';
+    }
+
     async function loadPalpites() {
-      const data = await safeFetch('/api/palpites');
-      const oficiais = (data && data.oficiais && data.oficiais.length > 0) ? data.oficiais : DEFAULT_SIMPLES;
+      const email = (loggedClient && loggedClient.email) ? loggedClient.email : null;
+      const data = await safeFetch('/api/palpites' + (email ? '?client_email=' + encodeURIComponent(email) : ''));
+      
+      const oficiais = (data && data.oficiais && data.oficiais.length > 0) ? data.oficiais : (data && data.simples && data.simples.length > 0 ? data.simples : DEFAULT_SIMPLES);
       const duplas = (data && data.duplas && data.duplas.length > 0) ? data.duplas : DEFAULT_DUPLAS;
       const valuebets = (data && data.valuebets && data.valuebets.length > 0) ? data.valuebets : DEFAULT_VALUEBETS;
       const arrojado = (data && data.arrojado && data.arrojado.length > 0) ? data.arrojado : DEFAULT_ARROJADO;
       const quant = (data && data.quant && data.quant.length > 0) ? data.quant : DEFAULT_QUANT;
-      renderPalpites(oficiais, duplas, valuebets, arrojado, quant);
+      const personalized = (data && data.personalized_bets && data.personalized_bets.length > 0) ? data.personalized_bets : (data && data.quant ? data.quant : oficiais);
+
+      if (data && data.client_name && document.getElementById('persona-client-name')) {
+        document.getElementById('persona-client-name').innerText = data.client_name;
+      }
+      if (data && data.risk_profile && document.getElementById('persona-strategy-name')) {
+        document.getElementById('persona-strategy-name').innerText = data.risk_profile;
+      }
+      if (data && data.daily_bets_count && document.getElementById('persona-quota-badge')) {
+        document.getElementById('persona-quota-badge').innerText = `${data.daily_bets_count} Entradas Selecionadas`;
+      }
+
+      renderPalpites(oficiais, duplas, valuebets, arrojado, quant, personalized);
+      filterCategory('personalized');
     }
 
-    function renderPalpites(oficiais, duplas, valuebets, arrojado, quant) {
+    function renderPalpites(oficiais, duplas, valuebets, arrojado, quant, personalized) {
+      const pContainer = document.getElementById('personalized-container');
       const sContainer = document.getElementById('simples-container');
       const dContainer = document.getElementById('duplas-container');
       const vContainer = document.getElementById('valuebets-container');
       const aContainer = document.getElementById('arrojado-container');
       const qContainer = document.getElementById('quant-container');
 
-      const userProfile = (loggedClient && loggedClient.risk_profile) ? loggedClient.risk_profile : (localStorage.getItem('synapse_profile') ? JSON.parse(localStorage.getItem('synapse_profile')).name : '2. Moderado');
+      const userProfile = (loggedClient && loggedClient.risk_profile) ? loggedClient.risk_profile : (localStorage.getItem('synapse_profile') ? JSON.parse(localStorage.getItem('synapse_profile')).name : '🏛️ Investidor Quant');
       const userBankroll = (loggedClient && (loggedClient.current_bankroll || loggedClient.initial_bankroll)) ? (loggedClient.current_bankroll || loggedClient.initial_bankroll) : 100.0;
 
-      const isConservador = userProfile.includes('Conservador');
+      const isConservador = userProfile.includes('Conservador') || userProfile.includes('Longo');
       const isModerado = userProfile.includes('Moderado');
-      const isValueBet = userProfile.includes('Arrojado') || userProfile.includes('Sniper');
-      const isAlavancador = userProfile.includes('Alavancador');
-      const isUltraQuant = userProfile.includes('Ultra');
+      const isValueBet = userProfile.includes('Value') || userProfile.includes('Sniper') || userProfile.includes('Hunter');
+      const isAlavancador = userProfile.includes('Alavancador') || userProfile.includes('Arrojado');
+      const isUltraQuant = userProfile.includes('Quant') || userProfile.includes('Ultra');
+
+      window.GLOBAL_PALPITES_MAP = window.GLOBAL_PALPITES_MAP || {};
 
       function renderBetCard(p, catType, badgeAfinidade, isMatch, pctBase) {
+        window.GLOBAL_PALPITES_MAP[p.id] = p;
         const oddNum = parseFloat(p.odd || p.odd_betano || 1.85);
-        const stakePct = isMatch ? (isConservador ? 1.5 : isModerado ? 2.5 : isValueBet ? 3.0 : isAlavancador ? 4.0 : 3.5) : pctBase;
-        const stakeReais = (userBankroll * (stakePct / 100)).toFixed(2);
-        const retornoReais = (parseFloat(stakeReais) * oddNum).toFixed(2);
+        const stakePct = p.stake_pct || pctBase || 2.5;
+        const stakeReais = p.stake_reais ? p.stake_reais.toFixed(2) : (userBankroll * (stakePct / 100)).toFixed(2);
+        const retornoReais = p.retorno_reais ? p.retorno_reais.toFixed(2) : (parseFloat(stakeReais) * oddNum).toFixed(2);
 
         return `
           <div class="opportunity-row ${isMatch ? 'profile-matched-card' : ''}" onclick="openBetDetailModal('${p.id}', '${catType}')" style="${isMatch ? 'border: 1.5px solid #F59E0B; box-shadow: 0 0 14px rgba(245, 158, 11, 0.15); background: linear-gradient(135deg, #151D2A 0%, rgba(245,158,11,0.06) 100%);' : ''}">
@@ -1700,6 +2020,9 @@
         `;
       }
 
+      if (pContainer && personalized) {
+        pContainer.innerHTML = personalized.map(p => renderBetCard(p, p.tipo ? p.tipo.toLowerCase() : 'quant', '✨ Exclusiva', true, 2.5)).join('');
+      }
       if (sContainer) {
         sContainer.innerHTML = oficiais.map(p => renderBetCard(p, 'simples', '🛡️ Seguro', isConservador, 1.5)).join('');
       }
@@ -1736,11 +2059,11 @@
         } else {
           allUserTrackerBets = [
             {
-              id: "APO_010", date: "18/08 21:35", match: "Goiás vs Juventude-RS", league: "🇧🇷 Brasileirão Série B",
-              market: "Chance Dupla (1X)", odd: 1.30, stake: 3.00, expected_return: 3.90, ticket_id: "20860426154",
-              start_time: "21:35", end_time: "23:30", home_team: "Goiás", away_team: "Juventude-RS",
-              match_status: "PRE_GAME", match_clock: "Início às 21:35", display_score: "0 x 0 (Pré-Jogo)",
-              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 3,00 @ 1.30)"
+              id: "APO_003", date: "14/08 14:04", match: "Hull City vs Manchester United", league: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League",
+              market: "Chance Dupla (X2)", odd: 1.12, stake: 2.00, expected_return: 2.24, ticket_id: "20833100944",
+              start_time: "22/08 11:00", end_time: "22/08 12:55", home_team: "Hull City", away_team: "Manchester United",
+              match_status: "PRE_GAME", match_clock: "Agendado para 22/08", display_score: "0 x 0 (Aposta Aberta Betano)",
+              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aposta Aberta Betano (Stake R$ 2,00 @ 1.12)"
             }
           ];
         }
@@ -1852,47 +2175,58 @@
     }
 
     function openBetDetailModal(betId, category) {
-      let pool = (category === 'simples') ? DEFAULT_SIMPLES : 
-                 (category === 'duplas') ? DEFAULT_DUPLAS : 
-                 (category === 'valuebets') ? DEFAULT_VALUEBETS : 
-                 (category === 'arrojado') ? DEFAULT_ARROJADO : 
-                 (category === 'quant') ? DEFAULT_QUANT : DEFAULT_SIMPLES;
+      let bet = (window.GLOBAL_PALPITES_MAP && window.GLOBAL_PALPITES_MAP[betId]) ? window.GLOBAL_PALPITES_MAP[betId] : null;
 
-      const bet = pool.find(b => b.id === betId) || 
-                  DEFAULT_SIMPLES.find(b => b.id === betId) ||
-                  DEFAULT_DUPLAS.find(b => b.id === betId) ||
-                  DEFAULT_VALUEBETS.find(b => b.id === betId) ||
-                  DEFAULT_ARROJADO.find(b => b.id === betId) ||
-                  DEFAULT_QUANT.find(b => b.id === betId) || pool[0];
+      if (!bet) {
+        let pool = (category === 'simples') ? DEFAULT_SIMPLES : 
+                   (category === 'duplas') ? DEFAULT_DUPLAS : 
+                   (category === 'valuebets') ? DEFAULT_VALUEBETS : 
+                   (category === 'arrojado') ? DEFAULT_ARROJADO : 
+                   (category === 'quant') ? DEFAULT_QUANT : DEFAULT_SIMPLES;
+
+        bet = pool.find(b => b.id === betId) || 
+              DEFAULT_SIMPLES.find(b => b.id === betId) ||
+              DEFAULT_DUPLAS.find(b => b.id === betId) ||
+              DEFAULT_VALUEBETS.find(b => b.id === betId) ||
+              DEFAULT_ARROJADO.find(b => b.id === betId) ||
+              DEFAULT_QUANT.find(b => b.id === betId);
+      }
       if (!bet) return;
       currentActiveBet = bet;
 
-      document.getElementById('bm-league-badge').innerText = `${bet.league}`;
-      document.getElementById('bm-match-title').innerText = bet.match;
-      document.getElementById('bm-start-time').innerText = `🕒 Início: ${bet.start_time || bet.datetime || 'Hoje 20:00'}`;
-      document.getElementById('bm-end-time').innerText = `⏱️ Término Previsto: ${bet.end_time || 'Hoje 22:00'}`;
-      document.getElementById('bm-market-name').innerText = bet.selection || bet.market;
+      document.getElementById('bm-league-badge').innerText = `${bet.league || '🏆 OFICIAL'}`;
+      document.getElementById('bm-match-title').innerText = bet.match || '---';
+      document.getElementById('bm-start-time').innerText = `🕒 Início: ${bet.start_time || bet.datetime || bet.kickoff || 'Hoje 20:00'}`;
+      document.getElementById('bm-end-time').innerText = `⏱️ Término: ${bet.end_time || 'Hoje 22:00'}`;
+      document.getElementById('bm-market-name').innerText = bet.market || bet.selection || '---';
       
-      const oddVal = bet.odd_betano || bet.odd || 1.30;
+      const oddVal = bet.odd || bet.odd_betano || 1.30;
       document.getElementById('bm-odd-tag').innerText = `@ ${oddVal}`;
 
       // Calcula stake dinâmica baseada na banca do assinante logado
       const bankroll = (loggedClient && (loggedClient.current_bankroll || loggedClient.initial_bankroll)) || 100.0;
-      const stakePct = category === 'simples' ? 0.015 : category === 'duplas' ? 0.025 : category === 'valuebets' ? 0.03 : category === 'arrojado' ? 0.04 : 0.035;
-      const stakeVal = bankroll * stakePct;
-      const returnVal = (stakeVal * parseFloat(oddVal)).toFixed(2);
+      const stakePct = bet.stake_pct || (category === 'simples' ? 1.5 : category === 'duplas' ? 2.5 : category === 'valuebets' ? 3.0 : category === 'arrojado' ? 4.0 : 3.5);
+      const stakeVal = bet.stake_reais ? bet.stake_reais : (bankroll * (stakePct / 100));
+      const returnVal = bet.retorno_reais ? bet.retorno_reais : (stakeVal * parseFloat(oddVal));
       
-      document.getElementById('bm-stake-val').innerText = `R$ ${stakeVal.toFixed(2).replace('.', ',')} (${(stakePct * 100).toFixed(1)}%)`;
-      document.getElementById('bm-return-val').innerText = `R$ ${returnVal.replace('.', ',')}`;
+      document.getElementById('bm-stake-val').innerText = `R$ ${stakeVal.toFixed(2).replace('.', ',')} (${stakePct.toFixed(1)}%)`;
+      document.getElementById('bm-return-val').innerText = `R$ ${returnVal.toFixed(2).replace('.', ',')}`;
 
       const rx = bet.raio_x || {};
-      document.getElementById('bm-snsi-score').innerText = `🧠 SNSI: ${bet.snsi || '+4.2%'}`;
+      document.getElementById('bm-snsi-score').innerText = `🧠 SNSI: ${bet.snsi || '+5.0%'}`;
       document.getElementById('bm-mc-val').innerText = rx.monte_carlo_runs || bet.monte_carlo || '10.000 iterações';
-      document.getElementById('bm-prob-val').innerText = rx.poisson_prob || '88.5%';
+      document.getElementById('bm-prob-val').innerText = rx.poisson_prob || bet.monte_carlo || '88.5%';
       
-      if (rx.clv_projected) {
+      if (rx.xpoints) {
+        document.getElementById('bm-row-xp').style.display = 'flex';
+        document.getElementById('bm-xp-val').innerText = rx.xpoints;
+      } else {
+        document.getElementById('bm-row-xp').style.display = 'none';
+      }
+
+      if (rx.clv_projected || bet.ev_percent) {
         document.getElementById('bm-row-clv').style.display = 'flex';
-        document.getElementById('bm-clv-val').innerText = rx.clv_projected;
+        document.getElementById('bm-clv-val').innerText = rx.clv_projected || `+${bet.ev_percent}% EV`;
       } else {
         document.getElementById('bm-row-clv').style.display = 'none';
       }
@@ -1911,7 +2245,7 @@
         document.getElementById('bm-row-def').style.display = 'none';
       }
 
-      document.getElementById('bm-racional-text').innerText = rx.snsi_detail || bet.reason || bet.racional || 'Entrada fundamentada pelo modelo quantitativo SynapseBet.';
+      document.getElementById('bm-racional-text').innerText = rx.snsi_detail || bet.racional || bet.reason || 'Entrada fundamentada pelo modelo quantitativo SynapseBet.';
       document.getElementById('bet-detail-modal').style.display = 'flex';
     }
 
@@ -1990,19 +2324,29 @@
         if (targetPill) targetPill.classList.add('active');
       }
 
+      const p = document.getElementById('sec-personalized');
       const s = document.getElementById('sec-simples');
       const d = document.getElementById('sec-duplas');
       const v = document.getElementById('sec-valuebets');
       const a = document.getElementById('sec-arrojado');
       const q = document.getElementById('sec-quant');
 
-      if (cat === 'all') {
+      if (cat === 'personalized') {
+        if(p) p.style.display = 'block';
+        if(s) s.style.display = 'none';
+        if(d) d.style.display = 'none';
+        if(v) v.style.display = 'none';
+        if(a) a.style.display = 'none';
+        if(q) q.style.display = 'none';
+      } else if (cat === 'all') {
+        if(p) p.style.display = 'block';
         if(s) s.style.display = 'block';
         if(d) d.style.display = 'block';
         if(v) v.style.display = 'block';
         if(a) a.style.display = 'block';
         if(q) q.style.display = 'block';
       } else {
+        if(p) p.style.display = 'none';
         if(s) s.style.display = (cat === 'simples') ? 'block' : 'none';
         if(d) d.style.display = (cat === 'duplas') ? 'block' : 'none';
         if(v) v.style.display = (cat === 'valuebets') ? 'block' : 'none';
@@ -2101,11 +2445,14 @@
       const savedProf = localStorage.getItem('synapse_profile');
       if (savedProf) {
         const prof = JSON.parse(savedProf);
+        if (loggedClient) {
+          loggedClient.risk_profile = prof.badge || prof.name;
+          localStorage.setItem('synapse_client', JSON.stringify(loggedClient));
+        }
         document.getElementById('profile-badge-display').innerText = prof.badge;
         document.getElementById('stake-display').innerText = `R$ ${(100 * (prof.stake_pct / 100)).toFixed(2)} (${prof.stake_pct}%)`;
-        if (prof.default_tab) {
-          filterCategory(prof.default_tab);
-        }
+        filterCategory('personalized');
+        loadPalpites();
         showToast(`🎉 Perfil ${prof.badge} ativado com sucesso!`);
       }
     }
@@ -2768,38 +3115,46 @@
       const adminTabBtn = document.getElementById('tab-btn-admin');
       badge.classList.remove('logged-in', 'is-master');
 
+      let profName = "🏛️ Investidor Quant";
+      let bankroll = 100.0;
+
       if (client.is_master || client.role === "SUPERADMIN" || client.role === "MASTER") {
         badge.classList.add('is-master');
         document.getElementById('header-user-text').innerText = `👑 SuperAdmin`;
         document.getElementById('banca-card-title').innerText = `Banca Consolidada — SuperAdmin`;
         if (adminTabBtn) adminTabBtn.style.display = 'flex';
         loadAdminClientsList();
+        profName = "🏛️ Investidor Quant";
       } else {
         badge.classList.add('logged-in');
         document.getElementById('header-user-text').innerText = `👤 ${client.name.split(' ')[0]}`;
         document.getElementById('banca-card-title').innerText = `Banca do Assinante — ${client.name}`;
         if (adminTabBtn) adminTabBtn.style.display = 'none';
 
-        // Aplica imediatamente a banca e stake individual configuradas no cadastro do cliente
-        const bankroll = parseFloat(client.current_bankroll || client.initial_bankroll || 100);
-        const profName = client.risk_profile || '2. Moderado';
-        let stakePct = 2.5;
-        let targetCat = 'duplas';
-        if (profName.includes('Conservador')) { stakePct = 1.5; targetCat = 'simples'; }
-        else if (profName.includes('Moderado')) { stakePct = 2.5; targetCat = 'duplas'; }
-        else if (profName.includes('Arrojado') || profName.includes('Sniper')) { stakePct = 3.0; targetCat = 'valuebets'; }
-        else if (profName.includes('Alavancador')) { stakePct = 4.0; targetCat = 'arrojado'; }
-        else if (profName.includes('Ultra')) { stakePct = 3.5; targetCat = 'quant'; }
-
-        const stakeVal = parseFloat(client.stake_padrao || (bankroll * (stakePct / 100)));
+        bankroll = parseFloat(client.current_bankroll || client.initial_bankroll || 100);
+        profName = client.risk_profile || '⚖️ Moderado';
         document.getElementById('banca-display').innerText = `R$ ${bankroll.toFixed(2).replace('.', ',')}`;
-        document.getElementById('stake-display').innerText = `R$ ${stakeVal.toFixed(2).replace('.', ',')} (${stakePct.toFixed(1)}%)`;
-        document.getElementById('profile-badge-display').innerText = profName;
         document.getElementById('winrate-display').innerText = "100% (Novo Assinante) 🟢";
-
-        filterCategory(targetCat);
-        loadPalpites();
       }
+
+      const targetCat = getProfileCategory(profName);
+      let stakePct = 2.5;
+      if (targetCat === 'simples') stakePct = 1.5;
+      else if (targetCat === 'duplas') stakePct = 2.5;
+      else if (targetCat === 'valuebets') stakePct = 3.0;
+      else if (targetCat === 'arrojado') stakePct = 4.0;
+      else if (targetCat === 'quant') stakePct = 3.5;
+
+      const stakeVal = (bankroll * (stakePct / 100)).toFixed(2);
+      if (document.getElementById('stake-display')) {
+        document.getElementById('stake-display').innerText = `R$ ${stakeVal.replace('.', ',')} (${stakePct.toFixed(1)}%)`;
+      }
+      if (document.getElementById('profile-badge-display')) {
+        document.getElementById('profile-badge-display').innerText = profName;
+      }
+
+      filterCategory('personalized');
+      loadPalpites();
 
       if (client.spreadsheet_url) {
         document.getElementById('sheet-link-btn').href = client.spreadsheet_url;
