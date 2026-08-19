@@ -1850,13 +1850,15 @@
     }
 
     async function safeFetch(endpoint, options = {}) {
+      const sep = endpoint.includes('?') ? '&' : '?';
+      const noCacheEndpoint = `${endpoint}${sep}_nocache=${Date.now()}`;
       try {
-        const res = await fetch(`${PRIMARY_API}${endpoint}`, options);
+        const res = await fetch(`${PRIMARY_API}${noCacheEndpoint}`, options);
         const data = await res.json();
         return data;
       } catch (err) {}
       try {
-        const res = await fetch(`${FALLBACK_API}${endpoint}`, options);
+        const res = await fetch(`${FALLBACK_API}${noCacheEndpoint}`, options);
         const data = await res.json();
         return data;
       } catch (err) {}
