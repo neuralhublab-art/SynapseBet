@@ -2199,12 +2199,33 @@
               </div>
             </div>
 
-            <!-- Placar Digital de Alto Contraste -->
-            <div class="live-scoreboard-box">
-              <div class="scoreboard-team">${b.home_team || b.match.split(' vs ')[0]}</div>
-              <div class="scoreboard-score">${b.display_score || '0 x 0'}</div>
-              <div class="scoreboard-team team-away">${b.away_team || b.match.split(' vs ')[1] || ''}</div>
-            </div>
+            <!-- Placar Digital de Alto Contraste (Multi-Leg para Combinadas ou Único para Simples) -->
+            ${b.legs && b.legs.length > 1 ? `
+              <div style="display: flex; flex-direction: column; gap: 6px; margin: 10px 0;">
+                ${b.legs.map((leg, idx) => `
+                  <div style="background: #151C28; border: 1px solid var(--border-color); border-radius: 10px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                      <div style="font-size: 10px; color: var(--orange-betano); font-weight: 700; text-transform: uppercase;">
+                        ⚽ Jogo ${idx + 1} &bull; <span style="color: #38BDF8;">${leg.selection}</span>
+                      </div>
+                      <div style="font-size: 12px; font-weight: 700; color: white;">${leg.match}</div>
+                    </div>
+                    <div style="text-align: right; min-width: 70px;">
+                      <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: ${leg.status === 'LIVE' ? '#EF4444' : leg.status === 'FINISHED' ? '#00D084' : '#FFA366'};">
+                        ${leg.score || '0 x 0'}
+                      </div>
+                      <div style="font-size: 10px; color: #94A3B8;">${leg.clock ? (leg.status === 'LIVE' ? '🔴 ' + leg.clock : leg.clock) : 'Pré-Jogo'}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : `
+              <div class="live-scoreboard-box">
+                <div class="scoreboard-team">${b.home_team || b.match.split(' vs ')[0]}</div>
+                <div class="scoreboard-score">${b.display_score || '0 x 0'}</div>
+                <div class="scoreboard-team team-away">${b.away_team || b.match.split(' vs ')[1] || ''}</div>
+              </div>
+            `}
 
             <!-- Dados da Aposta & Cotação -->
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
