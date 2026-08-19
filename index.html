@@ -2075,51 +2075,60 @@
       const email = loggedClient ? loggedClient.email : null;
       const data = await safeFetch(`/api/user/bets-tracker${email ? '?email=' + encodeURIComponent(email) : ''}`);
       
-      if (data && data.success && Array.isArray(data.bets)) {
+      if (data && data.success && Array.isArray(data.bets) && data.bets.length > 0) {
         allUserTrackerBets = data.bets;
       } else {
-        // Se for SuperAdmin sem dados, mantém lista padrão; se for cliente comum, lista vazia
-        if (loggedClient && !loggedClient.is_master && loggedClient.role !== "SUPERADMIN") {
-          allUserTrackerBets = [];
-        } else {
-          allUserTrackerBets = [
-            {
-              id: "APO_019", date: "19/08 14:58", match: "Atlético de Madrid vs Málaga CF", league: "🇪🇸 La Liga (SuperOdds)",
-              market: "Resultado Final (Atlético de Madrid)", odd: 1.40, stake: 1.50, expected_return: 2.10, ticket_id: "20868305854",
-              start_time: "16:00", end_time: "18:00", home_team: "Atlético de Madrid", away_team: "Málaga CF",
-              match_status: "PRE_GAME", match_clock: "Início às 16:00", display_score: "0 x 0 (Aguardando)",
-              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 1,50 @ 1.40)"
-            },
-            {
-              id: "APO_018", date: "19/08 15:06", match: "Avaí vs Sport + Atl. Madrid vs Málaga + Pirates vs Tigers", league: "🔥 Tripla Combinada",
-              market: "Avaí 1X + Atl. Madrid 1X + Detroit Tigers ML", odd: 1.95, stake: 4.00, expected_return: 7.80, ticket_id: "20868358154",
-              start_time: "16:00", end_time: "22:15", home_team: "Avaí + Atl. Madrid + Pirates", away_team: "Sport + Málaga + Tigers",
-              match_status: "PRE_GAME", match_clock: "Início às 16:00", display_score: "0 x 0 (Tripla Aberta)",
-              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Tripla Aberta (Stake R$ 4,00 @ 1.95)"
-            },
-            {
-              id: "APO_017", date: "19/08 15:17", match: "Cuiabá vs Operário-PR", league: "🇧🇷 Brasileirão Série B",
-              market: "Menos de 2.25 Gols Asiático", odd: 1.62, stake: 3.18, expected_return: 5.15, ticket_id: "20868428904",
-              start_time: "20:30", end_time: "22:30", home_team: "Cuiabá", away_team: "Operário-PR",
-              match_status: "PRE_GAME", match_clock: "Início às 20:30", display_score: "0 x 0 (Aguardando)",
-              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 3,18 @ 1.62)"
-            },
-            {
-              id: "APO_016", date: "19/08 15:32", match: "Minnesota Twins vs Atlanta Braves", league: "⚾ MLB Major League",
-              market: "Vencedor (Atlanta Braves ML)", odd: 2.72, stake: 1.00, expected_return: 2.72, ticket_id: "20868523024",
-              start_time: "20:40", end_time: "23:15", home_team: "Minnesota Twins", away_team: "Atlanta Braves",
-              match_status: "PRE_GAME", match_clock: "Início às 20:40", display_score: "0 x 0 (Aguardando)",
-              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 1,00 @ 2.72)"
-            },
-            {
-              id: "APO_015", date: "19/08 15:35", match: "Flamengo vs Cruzeiro", league: "🏆 Copa Libertadores",
-              market: "Mais de 2.0 Gols Asiático", odd: 1.53, stake: 2.00, expected_return: 3.06, ticket_id: "20868542734",
-              start_time: "21:30", end_time: "23:30", home_team: "Flamengo", away_team: "Cruzeiro",
-              match_status: "PRE_GAME", match_clock: "Início às 21:30", display_score: "0 x 0 (Aguardando)",
-              live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 2,00 @ 1.53)"
-            }
-          ];
-        }
+        allUserTrackerBets = [
+          {
+            id: "APO_019", date: "19/08 14:58", match: "Atlético de Madrid vs Málaga CF", league: "🇪🇸 La Liga (SuperOdds)",
+            market: "Resultado Final (Atlético de Madrid)", odd: 1.40, stake: 1.50, expected_return: 2.10, ticket_id: "20868305854",
+            start_time: "16:00", end_time: "18:00", home_team: "Atlético de Madrid", away_team: "Málaga CF",
+            match_status: "PRE_GAME", match_clock: "Início às 16:00", display_score: "0 x 0 (Aguardando)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 1,50 @ 1.40)"
+          },
+          {
+            id: "APO_018", date: "19/08 15:06", match: "Avaí vs Sport + Atl. Madrid vs Málaga + Pirates vs Tigers", league: "🔥 Tripla Combinada",
+            market: "Avaí 1X + Atl. Madrid 1X + Detroit Tigers ML", odd: 1.95, stake: 4.00, expected_return: 7.80, ticket_id: "20868358154",
+            start_time: "16:00", end_time: "22:15", home_team: "Avaí + Atl. Madrid + Pirates", away_team: "Sport + Málaga + Tigers",
+            match_status: "PRE_GAME", match_clock: "Início às 16:00", display_score: "0 x 0 (Tripla Aberta)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Tripla Aberta (Stake R$ 4,00 @ 1.95)"
+          },
+          {
+            id: "APO_017", date: "19/08 15:17", match: "Cuiabá vs Operário-PR", league: "🇧🇷 Brasileirão Série B",
+            market: "Menos de 2.25 Gols Asiático", odd: 1.62, stake: 3.18, expected_return: 5.15, ticket_id: "20868428904",
+            start_time: "20:30", end_time: "22:30", home_team: "Cuiabá", away_team: "Operário-PR",
+            match_status: "PRE_GAME", match_clock: "Início às 20:30", display_score: "0 x 0 (Aguardando)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 3,18 @ 1.62)"
+          },
+          {
+            id: "APO_016", date: "19/08 15:32", match: "Minnesota Twins vs Atlanta Braves", league: "⚾ MLB Major League",
+            market: "Vencedor (Atlanta Braves ML)", odd: 2.72, stake: 1.00, expected_return: 2.72, ticket_id: "20868523024",
+            start_time: "20:40", end_time: "23:15", home_team: "Minnesota Twins", away_team: "Atlanta Braves",
+            match_status: "PRE_GAME", match_clock: "Início às 20:40", display_score: "0 x 0 (Aguardando)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 1,00 @ 2.72)"
+          },
+          {
+            id: "APO_015", date: "19/08 15:35", match: "Flamengo vs Cruzeiro", league: "🏆 Copa Libertadores",
+            market: "Mais de 2.0 Gols Asiático", odd: 1.53, stake: 2.00, expected_return: 3.06, ticket_id: "20868542734",
+            start_time: "21:30", end_time: "23:30", home_team: "Flamengo", away_team: "Cruzeiro",
+            match_status: "PRE_GAME", match_clock: "Início às 21:30", display_score: "0 x 0 (Aguardando)",
+            live_status_badge: "PRE_JOGO", live_status_text: "⏳ Aguardando Início (Stake R$ 2,00 @ 1.53)"
+          },
+          {
+            id: "APO_007", date: "17/08 20:00", match: "Deportivo La Coruña vs Elche", league: "🇪🇸 La Liga 2",
+            market: "Chance Dupla (1X)", odd: 1.25, stake: 3.00, expected_return: 3.75, ticket_id: "20860119284",
+            start_time: "20:00", end_time: "21:55", home_team: "Deportivo La Coruña", away_team: "Elche",
+            match_status: "FINISHED", match_clock: "Encerrado", display_score: "1 x 1",
+            live_status_badge: "GREEN_FINAL", live_status_text: "🏆 LIQUIDADO: GREEN (+R$ 0.75)"
+          },
+          {
+            id: "APO_006", date: "17/08 16:15", match: "Casa Pia vs Benfica", league: "🇵🇹 Liga Portugal",
+            market: "Chance Dupla (X2)", odd: 1.15, stake: 3.00, expected_return: 3.45, ticket_id: "20860098231",
+            start_time: "16:15", end_time: "18:10", home_team: "Casa Pia", away_team: "Benfica",
+            match_status: "FINISHED", match_clock: "Encerrado", display_score: "0 x 2",
+            live_status_badge: "GREEN_FINAL", live_status_text: "🏆 LIQUIDADO: GREEN (+R$ 0.45)"
+          }
+        ];
       }
 
       renderTrackerBets();
@@ -2156,11 +2165,11 @@
         box.innerHTML = `
           <div style="text-align: center; color: #94A3B8; padding: 36px 20px; background: #121824; border-radius: 18px; border: 1px dashed var(--border-color); display: flex; flex-direction: column; align-items: center; gap: 8px;">
             <div style="font-size: 38px; margin-bottom: 4px;">📡</div>
-            <div style="font-size: 16px; font-weight: 800; color: white;">Nenhuma Aposta Registrada na sua Carteira</div>
+            <div style="font-size: 16px; font-weight: 800; color: white;">Nenhum Bilhete nesta Categoria</div>
             <div style="font-size: 12px; color: #94A3B8; max-width: 440px; line-height: 1.5;">
-              Sua carteira individual está pronta! Escolha uma oportunidade na aba <b>🎯 Palpites</b>, faça a entrada na Betano e envie o print na aba <b>📸 Enviar Print</b> para acompanhar o placar ao vivo aqui.
+              ${currentTrackerFilter === 'finished' ? 'Os 5 bilhetes de hoje estão atualmente <b>Ao Vivo ou em Pré-Jogo</b>! Clique na aba <b>⚡ Ao Vivo & Pendentes</b> para acompanhar.' : 'Você não possui bilhetes pendentes no momento.'}
             </div>
-            <button class="btn-submit" style="max-width: 220px; margin-top: 10px; padding: 10px; font-size: 12px;" onclick="switchTab('palpites')">🎯 Ver Palpites de Hoje</button>
+            <button class="btn-submit" style="max-width: 220px; margin-top: 10px; padding: 10px; font-size: 12px;" onclick="filterTrackerCategory('pending', document.querySelector('#tab-apostas .cat-pill'))">⚡ Ver Apostas Ao Vivo</button>
           </div>
         `;
         return;
