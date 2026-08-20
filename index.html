@@ -1077,8 +1077,9 @@
     <div class="tab-nav">
       <button id="tab-btn-palpites" class="tab-btn active" onclick="switchTab('palpites')">🎯 Palpites</button>
       <button id="tab-btn-apostas" class="tab-btn" onclick="switchTab('apostas')">📋 Minhas Apostas (Live)</button>
+      <button id="tab-btn-ainalist" class="tab-btn" onclick="switchTab('ainalist')">📊 Analista IA</button>
       <button id="tab-btn-upload" class="tab-btn" onclick="switchTab('upload')">📸 Enviar Print</button>
-      <button id="tab-btn-planilha" class="tab-btn" onclick="switchTab('planilha')">📊 Minha Planilha</button>
+      <button id="tab-btn-planilha" class="tab-btn" onclick="switchTab('planilha')">📑 Planilhas</button>
       <button id="tab-btn-admin" class="tab-btn admin-tab-btn" style="display: none;" onclick="switchTab('admin')">👑 SuperAdmin</button>
       <button id="tab-btn-regras" class="tab-btn" onclick="switchTab('regras')">📜 Regras</button>
     </div>
@@ -1248,6 +1249,150 @@
         <input type="text" id="match-input" class="input-field" placeholder="Nome do Jogo (opcional se legível no print)">
         <input type="number" id="stake-input" class="input-field" placeholder="Valor da Stake (R$)" value="3.00">
         <button class="btn-submit" id="btn-upload-submit" onclick="submitBetScreenshot()">🚀 Gravar na Minha Planilha</button>
+      </div>
+    </div>
+
+    <!-- ABA: ANALISTA IA (BETTING AINALIST & ANNUAL BI) -->
+    <div id="tab-ainalist" class="tab-content" style="display: none;">
+      <!-- Hero Header do Analista IA -->
+      <div class="banca-card" style="margin-bottom: 20px; background: linear-gradient(135deg, #131A26 0%, #0E121A 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: #38BDF8; letter-spacing: 1px; text-transform: uppercase;">
+              📊 BI PREDITIVO & INTELIGÊNCIA ARTIFICIAL
+            </div>
+            <h2 style="font-size: 22px; font-weight: 800; color: #FFFFFF; margin: 4px 0 6px;">
+              Betting AInalist
+            </h2>
+            <p style="font-size: 13px; color: var(--text-muted); max-width: 600px; line-height: 1.5; margin: 0;">
+              Auditoria quantitativa profunda de apostas, diagnóstico de vazamentos de banca (leaks), cálculo estrito em Unidades (u) e governança com régua de 350 apostas.
+            </p>
+          </div>
+          <!-- Botões Rápidos de Planilha -->
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 200px;">
+            <a id="ainalist-op-sheet-btn" href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-secondary" style="font-size: 11px; padding: 8px 12px; text-decoration: none; text-align: center; border-color: #38BDF8; color: #38BDF8;">
+              📄 Planilha Operacional (Dia a Dia)
+            </a>
+            <a id="ainalist-annual-sheet-btn" href="https://docs.google.com/spreadsheets/d/1Lj31SmvWaVYS7xpWxvC_ulkHOcfDOw3igEimeiSpRqk/edit" target="_blank" class="btn-secondary" style="font-size: 11px; padding: 8px 12px; text-decoration: none; text-align: center; border-color: #00D084; color: #00D084;">
+              📊 Livro-Razão Anual 2026 (12 Meses)
+            </a>
+            <button class="btn-secondary" style="font-size: 11px; padding: 8px 12px; border-color: #F59E0B; color: #F59E0B;" onclick="downloadAInalistTemplate()">
+              📥 Baixar Template Excel (11 Colunas)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dropzone / Upload de Planilha Pessoal -->
+      <div class="section-title"><span>📂 Enviar Planilha de Apostas para Análise da IA</span></div>
+      <div class="form-card" style="margin-bottom: 20px;">
+        <div id="ainalist-dropzone" style="border: 2px dashed rgba(255, 96, 0, 0.4); border-radius: 16px; padding: 26px; text-align: center; background: rgba(255, 96, 0, 0.03); cursor: pointer; transition: all 0.2s ease;" onclick="document.getElementById('ainalist-file-input').click()">
+          <div style="font-size: 32px; margin-bottom: 8px;">📊</div>
+          <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Arraste sua planilha Excel/CSV aqui ou clique para selecionar</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Suporta .xlsx, .xls e .csv com sanitização automática de moedas (R$), cálculo de Unidades e ligas globais</div>
+          <input type="file" id="ainalist-file-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleAInalistFileSelect(event)">
+        </div>
+        <div id="ainalist-loading" style="display: none; text-align: center; padding: 14px; color: #38BDF8; font-weight: 700; font-size: 13px;">
+          ⏳ Processando matriz estatística e calculando Unidades com a IA...
+        </div>
+      </div>
+
+      <!-- 6 Cards de KPIs Executivos -->
+      <div class="section-title"><span>📈 Indicadores de Performance Quantitativa</span></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px;">
+        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">TOTAL DE ENTRADAS</div>
+          <div id="ainalist-kpi-total" style="font-size: 24px; font-weight: 800; color: #FFFFFF; font-family: var(--font-mono); margin-top: 2px;">0</div>
+          <div id="ainalist-kpi-sample-badge" style="font-size: 10px; color: #F59E0B; font-weight: 700; margin-top: 4px;">Amostra: Inicial</div>
+        </div>
+        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">LUCRO LÍQUIDO</div>
+          <div id="ainalist-kpi-pl" style="font-size: 24px; font-weight: 800; color: #00D084; font-family: var(--font-mono); margin-top: 2px;">R$ 0,00</div>
+          <div id="ainalist-kpi-pl-sub" style="font-size: 10px; color: #94A3B8; margin-top: 4px;">Moeda Base</div>
+        </div>
+        <div style="background: #121824; border: 1px solid rgba(0,208,132,0.3); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: #00D084; font-weight: 700;">LUCRO EM UNIDADES</div>
+          <div id="ainalist-kpi-units" style="font-size: 24px; font-weight: 800; color: #00D084; font-family: var(--font-mono); margin-top: 2px;">0.00u</div>
+          <div style="font-size: 10px; color: #94A3B8; margin-top: 4px;">1u = 3% Stake</div>
+        </div>
+        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">TAXA DE ACERTO</div>
+          <div id="ainalist-kpi-winrate" style="font-size: 24px; font-weight: 800; color: #38BDF8; font-family: var(--font-mono); margin-top: 2px;">0.0%</div>
+          <div id="ainalist-kpi-grv" style="font-size: 10px; color: #94A3B8; margin-top: 4px;">0G • 0V • 0R</div>
+        </div>
+        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">ROI OFICIAL (%)</div>
+          <div id="ainalist-kpi-roi" style="font-size: 24px; font-weight: 800; color: #00D084; font-family: var(--font-mono); margin-top: 2px;">0.0%</div>
+          <div id="ainalist-kpi-roi-badge" style="font-size: 10px; color: #00D084; font-weight: 700; margin-top: 4px;">Neutro</div>
+        </div>
+        <div style="background: #121824; border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">ODD MÉDIA</div>
+          <div id="ainalist-kpi-odd" style="font-size: 24px; font-weight: 800; color: #FFA366; font-family: var(--font-mono); margin-top: 2px;">1.50</div>
+          <div id="ainalist-kpi-stake-avg" style="font-size: 10px; color: #94A3B8; margin-top: 4px;">Stake R$ 3,00</div>
+        </div>
+      </div>
+
+      <!-- Gráficos de Evolução e Balanço 12 Meses -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 20px;">
+        <!-- Gráfico de Balanço dos 12 Meses -->
+        <div class="form-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 13px; font-weight: 800; color: #FFFFFF;">📅 Balanço Mensal Consolidado (12 Meses)</span>
+            <span style="font-size: 11px; color: #38BDF8; font-weight: 700;">Livro-Razão 2026</span>
+          </div>
+          <div id="ainalist-monthly-bars-container" style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando histórico mensal consolidado...</div>
+          </div>
+        </div>
+
+        <!-- Melhores vs Piores Mercados (Leaks) -->
+        <div class="form-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 13px; font-weight: 800; color: #FFFFFF;">🎯 Melhores Mercados vs ⛔ Leaks</span>
+            <span style="font-size: 11px; color: #F59E0B; font-weight: 700;">Auditoria IA</span>
+          </div>
+          <div id="ainalist-markets-breakdown">
+            <div style="text-align: center; color: var(--text-muted); padding: 20px;">Envie uma planilha ou consulte os dados do SynapseBet.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ambiente: Análise da IA & Chat Conversacional -->
+      <div class="section-title"><span>🧠 Ambiente de Diagnóstico & Chat com a IA</span></div>
+      <div class="form-card" style="margin-bottom: 20px;">
+        <!-- Diagnóstico Qualitativo da IA -->
+        <div id="ainalist-insights-box" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
+          <div style="background: rgba(0, 208, 132, 0.08); border-left: 4px solid #00D084; border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.5; color: #E2E8F0;">
+            🟢 <b>Pontos Fortes (Edge Real):</b> O modelo apresenta alta assertividade nas entradas de Dupla Chance (1X) e Linhas Positivas no Futebol e Beisebol MLB.
+          </div>
+          <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #F59E0B; border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.5; color: #E2E8F0;">
+            ⚠️ <b>Governança de Amostragem:</b> Volumes inferiores a 350 apostas são considerados preliminares. Mantenha o gerenciamento estrito de 3% de stake.
+          </div>
+        </div>
+
+        <!-- Pílulas de Perguntas Rápidas -->
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+          <button class="cat-pill" onclick="triggerAInalistPrompt('Quais são os meus melhores e piores mercados?')">🏆 Melhores vs Piores Mercados</button>
+          <button class="cat-pill" onclick="triggerAInalistPrompt('Onde estou tendo vazamento de banca (leaks)?')">⚠️ Onde estou perdendo banca?</button>
+          <button class="cat-pill" onclick="triggerAInalistPrompt('Como está meu ROI e meu resultado em unidades?')">📈 Análise de ROI & Unidades</button>
+          <button class="cat-pill" onclick="triggerAInalistPrompt('Minha amostragem de apostas já é estatisticamente conclusiva?')">🔬 Amostragem (Regra 350)</button>
+        </div>
+
+        <!-- Chat Log -->
+        <div id="ainalist-chat-messages" style="max-height: 250px; overflow-y: auto; background: #0E121A; border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--orange-betano); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">🤖</div>
+            <div style="background: #18202E; border-radius: 12px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #E2E8F0;">
+              Olá! Sou o seu <b>Analista IA (Betting AInalist)</b>. Posso auditar qualquer planilha de apostas, apontar seus pontos fortes, detectar vazamentos de capital e responder perguntas sobre seu histórico. Como posso te ajudar hoje?
+            </div>
+          </div>
+        </div>
+
+        <!-- Input do Chat -->
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="ainalist-chat-input" class="input-field" style="margin-bottom: 0;" placeholder="Pergunte qualquer coisa sobre sua performance ou mercados..." onkeypress="if(event.key === 'Enter') sendAInalistChat()">
+          <button class="btn-submit" style="width: auto; padding: 0 20px; white-space: nowrap;" onclick="sendAInalistChat()">Enviar 🚀</button>
+        </div>
       </div>
     </div>
 
@@ -3463,6 +3608,8 @@
         loadAdminClientsList();
       } else if (tabId === 'apostas') {
         loadUserBetsTracker();
+      } else if (tabId === 'ainalist') {
+        loadAnnualLedgerSummary();
       }
     }
 
@@ -3616,6 +3763,241 @@
             </div>
           `).join('')}
         `;
+      }
+    }
+
+    // =========================================================================
+    // 📊 MÓDULO BETTING AInalist & LIVRO-RAZÃO ANUAL
+    // =========================================================================
+    let currentAInalistContext = {
+      total_bets: 0,
+      profit_loss_reais: 0.0,
+      profit_loss_units: 0.0,
+      roi_pct: 0.0
+    };
+
+    function downloadAInalistTemplate() {
+      const csvHeader = "Data da partida;Jogo;Campeonato;Mercado;Casa de apostas;Campo Extra;Linha da aposta;Valor da aposta (Stake);Odd;Resultado (ganha, nula ou perdida);Lucro ou prejuizo\\n";
+      const sampleRow1 = "20/08/2026;Novorizontino x Botafogo-SP;Brasileirão Série B;1X;Betano;;1X;3.00;1.26;ganha;0.78\\n";
+      const sampleRow2 = "20/08/2026;Atlanta Braves x Minnesota Twins;MLB Baseball;Mais de 7.5 Corridas;Betano;;7.5;3.00;1.52;ganha;1.56\\n";
+      const sampleRow3 = "20/08/2026;Minnesota Lynx x Las Vegas Aces;WNBA Basquete;Mais de 180.5 Pontos;Betano;;180.5;3.00;1.48;ganha;1.44\\n";
+      const blob = new Blob([csvHeader + sampleRow1 + sampleRow2 + sampleRow3], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "template_apostas_betting_ainalist.csv";
+      a.click();
+      showToast("📥 Template baixado com sucesso!");
+    }
+
+    function handleAInalistFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        uploadAInalistExcel(file);
+      }
+    }
+
+    async function uploadAInalistExcel(file) {
+      const loading = document.getElementById('ainalist-loading');
+      if (loading) loading.style.display = 'block';
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/ainalist/upload-excel', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (loading) loading.style.display = 'none';
+
+        if (data && data.success) {
+          showToast(`✅ Planilha '${data.filename}' analisada com sucesso!`);
+          renderAInalistDashboard(data);
+        } else {
+          alert(data?.error || "Falha ao analisar a planilha. Verifique o formato das colunas.");
+        }
+      } catch (err) {
+        if (loading) loading.style.display = 'none';
+        alert("Erro na conexão com o servidor: " + err.message);
+      }
+    }
+
+    function renderAInalistDashboard(data) {
+      const k = data.kpis;
+      currentAInalistContext = k;
+
+      document.getElementById('ainalist-kpi-total').innerText = k.total_bets;
+      document.getElementById('ainalist-kpi-sample-badge').innerText = k.total_bets >= 350 ? '🟢 Amostra Conclusiva' : `⚠️ Preliminar (${k.total_bets}/350)`;
+      document.getElementById('ainalist-kpi-sample-badge').style.color = k.total_bets >= 350 ? '#00D084' : '#F59E0B';
+
+      document.getElementById('ainalist-kpi-pl').innerText = `R$ ${k.profit_loss_reais.toFixed(2).replace('.', ',')}`;
+      document.getElementById('ainalist-kpi-pl').style.color = k.profit_loss_reais >= 0 ? '#00D084' : '#EF4444';
+
+      document.getElementById('ainalist-kpi-units').innerText = `${k.profit_loss_units >= 0 ? '+' : ''}${k.profit_loss_units.toFixed(2)}u`;
+      document.getElementById('ainalist-kpi-units').style.color = k.profit_loss_units >= 0 ? '#00D084' : '#EF4444';
+
+      document.getElementById('ainalist-kpi-winrate').innerText = `${k.win_rate.toFixed(1)}%`;
+      document.getElementById('ainalist-kpi-grv').innerText = `${k.greens}G • ${k.voids}V • ${k.reds}R`;
+
+      document.getElementById('ainalist-kpi-roi').innerText = `${k.roi_pct >= 0 ? '+' : ''}${k.roi_pct.toFixed(1)}%`;
+      const roiBadge = document.getElementById('ainalist-kpi-roi-badge');
+      if (k.roi_pct >= 5.0) {
+        roiBadge.innerText = '🏆 Excelente (>5%)';
+        roiBadge.style.color = '#00D084';
+      } else if (k.roi_pct >= 2.0) {
+        roiBadge.innerText = '🟢 Bom (2% a 5%)';
+        roiBadge.style.color = '#00D084';
+      } else if (k.roi_pct >= 0.0) {
+        roiBadge.innerText = '🟡 Neutro (0% a 2%)';
+        roiBadge.style.color = '#F59E0B';
+      } else {
+        roiBadge.innerText = '🔴 Ruim (<0%)';
+        roiBadge.style.color = '#EF4444';
+      }
+
+      document.getElementById('ainalist-kpi-odd').innerText = k.avg_odd.toFixed(2);
+      document.getElementById('ainalist-kpi-stake-avg').innerText = `Stake Média R$ ${k.avg_stake.toFixed(2).replace('.', ',')}`;
+
+      // Melhores vs Piores Mercados
+      const mktBox = document.getElementById('ainalist-markets-breakdown');
+      if (mktBox) {
+        let mktHtml = '<div style="display: flex; flex-direction: column; gap: 8px;">';
+        if (data.best_markets && data.best_markets.length > 0) {
+          mktHtml += '<div style="font-size: 11px; font-weight: 800; color: #00D084;">TOP MERCADOS LUCRATIVOS:</div>';
+          data.best_markets.forEach(m => {
+            mktHtml += `<div style="display: flex; justify-content: space-between; font-size: 12px; background: #0E121A; padding: 8px 12px; border-radius: 8px;">
+              <span>🎯 ${m.name} (${m.count} bets)</span>
+              <span style="font-weight: 800; color: #00D084;">+R$ ${m.pl.toFixed(2).replace('.', ',')}</span>
+            </div>`;
+          });
+        }
+        if (data.worst_markets && data.worst_markets.length > 0 && data.worst_markets[0].pl < 0) {
+          mktHtml += '<div style="font-size: 11px; font-weight: 800; color: #EF4444; margin-top: 6px;">⛔ VAZAMENTOS DE BANCA (LEAKS):</div>';
+          data.worst_markets.filter(m => m.pl < 0).forEach(m => {
+            mktHtml += `<div style="display: flex; justify-content: space-between; font-size: 12px; background: #0E121A; padding: 8px 12px; border-radius: 8px;">
+              <span>⚠️ ${m.name} (${m.count} bets)</span>
+              <span style="font-weight: 800; color: #EF4444;">-R$ ${Math.abs(m.pl).toFixed(2).replace('.', ',')}</span>
+            </div>`;
+          });
+        }
+        mktHtml += '</div>';
+        mktBox.innerHTML = mktHtml;
+      }
+
+      // Diagnóstico IA
+      const insightsBox = document.getElementById('ainalist-insights-box');
+      if (insightsBox && data.ai_insights) {
+        let insHtml = '';
+        data.ai_insights.positive.forEach(p => {
+          insHtml += `<div style="background: rgba(0, 208, 132, 0.08); border-left: 4px solid #00D084; border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.5; color: #E2E8F0;">${p}</div>`;
+        });
+        data.ai_insights.negative.forEach(n => {
+          insHtml += `<div style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #EF4444; border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.5; color: #E2E8F0;">${n}</div>`;
+        });
+        data.ai_insights.suggestions.forEach(s => {
+          insHtml += `<div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #F59E0B; border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.5; color: #E2E8F0;">${s}</div>`;
+        });
+        insightsBox.innerHTML = insHtml;
+      }
+    }
+
+    async function loadAnnualLedgerSummary() {
+      try {
+        const data = await safeFetch('/api/annual-ledger/summary');
+        if (data && data.success && data.data) {
+          const d = data.data;
+          currentAInalistContext = {
+            total_bets: d.total_bets,
+            profit_loss_reais: d.total_pl_reais,
+            profit_loss_units: d.total_units,
+            roi_pct: d.overall_roi_pct
+          };
+
+          document.getElementById('ainalist-kpi-total').innerText = d.total_bets;
+          document.getElementById('ainalist-kpi-pl').innerText = `R$ ${d.total_pl_reais.toFixed(2).replace('.', ',')}`;
+          document.getElementById('ainalist-kpi-units').innerText = `${d.total_units >= 0 ? '+' : ''}${d.total_units.toFixed(2)}u`;
+          document.getElementById('ainalist-kpi-winrate').innerText = `${d.overall_win_rate.toFixed(1)}%`;
+          document.getElementById('ainalist-kpi-grv').innerText = `${d.greens}G • ${d.voids}V • ${d.reds}R`;
+          document.getElementById('ainalist-kpi-roi').innerText = `${d.overall_roi_pct >= 0 ? '+' : ''}${d.overall_roi_pct.toFixed(1)}%`;
+
+          const container = document.getElementById('ainalist-monthly-bars-container');
+          if (container && d.months) {
+            let html = '';
+            d.months.forEach(m => {
+              const isPos = m.pl_reais >= 0;
+              const barWidth = Math.min(100, Math.max(8, m.bets_count * 10));
+              html += `
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; padding: 4px 0;">
+                  <span style="width: 50px; font-weight: 700; color: #94A3B8;">${m.month}</span>
+                  <div style="flex: 1; margin: 0 10px; background: #0E121A; border-radius: 6px; height: 14px; overflow: hidden; position: relative;">
+                    <div style="width: ${barWidth}%; height: 100%; background: ${m.bets_count > 0 ? (isPos ? '#00D084' : '#EF4444') : '#1E293B'}; border-radius: 6px;"></div>
+                  </div>
+                  <span style="width: 80px; text-align: right; font-family: var(--font-mono); font-weight: 700; color: ${m.bets_count > 0 ? (isPos ? '#00D084' : '#EF4444') : '#64748B'};">
+                    ${m.bets_count > 0 ? `R$ ${m.pl_reais.toFixed(2).replace('.', ',')}` : '-'}
+                  </span>
+                </div>
+              `;
+            });
+            container.innerHTML = html;
+          }
+        }
+      } catch (err) {
+        console.warn("Erro ao carregar summary anual:", err);
+      }
+    }
+
+    function triggerAInalistPrompt(promptText) {
+      document.getElementById('ainalist-chat-input').value = promptText;
+      sendAInalistChat();
+    }
+
+    async function sendAInalistChat() {
+      const input = document.getElementById('ainalist-chat-input');
+      const question = input.value.trim();
+      if (!question) return;
+
+      const chatLog = document.getElementById('ainalist-chat-messages');
+      chatLog.innerHTML += `
+        <div style="display: flex; gap: 10px; align-items: flex-start; justify-content: flex-end;">
+          <div style="background: var(--orange-glow); border: 1px solid var(--orange-betano); border-radius: 12px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #FFA366;">
+            ${question}
+          </div>
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: #1B2434; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">👤</div>
+        </div>
+      `;
+      input.value = '';
+      chatLog.scrollTop = chatLog.scrollHeight;
+
+      try {
+        const res = await fetch('/api/ainalist/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: question, context: currentAInalistContext })
+        });
+        const data = await res.json();
+        const ans = data?.answer || "Desculpe, não consegui processar sua pergunta no momento.";
+
+        chatLog.innerHTML += `
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--orange-betano); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">🤖</div>
+            <div style="background: #18202E; border-radius: 12px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #E2E8F0;">
+              ${ans.replace(/\\n\\n/g, '<br><br>').replace(/\\*\\*(.*?)\\*\\*/g, '<b>$1</b>')}
+            </div>
+          </div>
+        `;
+        chatLog.scrollTop = chatLog.scrollHeight;
+      } catch (err) {
+        chatLog.innerHTML += `
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--orange-betano); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">🤖</div>
+            <div style="background: #18202E; border-radius: 12px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #EF4444;">
+              Erro na comunicação com a IA: ${err.message}
+            </div>
+          </div>
+        `;
+        chatLog.scrollTop = chatLog.scrollHeight;
       }
     }
 
