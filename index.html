@@ -1357,6 +1357,29 @@
         </div>
       </div>
 
+      <!-- SEÇÃO BOT 12: DETECTOR DE CILADAS & AVALIADOR DE APOSTAS -->
+      <div class="section-title">
+        <span>🎯 Detector de Ciladas & Avaliador de Apostas (Bot 12)</span>
+        <span style="font-size: 11px; color: #00D084; font-weight: 700;">Inteligência Quant</span>
+      </div>
+      <div class="form-card" style="margin-bottom: 20px; border-left: 4px solid var(--orange-betano);">
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5;">
+          Viu uma aposta pronta, sugestão de tipster ou propaganda na internet? Cole aqui para a IA calcular a <b>Probabilidade Real, a Odd Justa e o Audit Score (0 a 100)</b>:
+        </p>
+        <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+          <input type="text" id="bot12-bet-input" class="input-field" style="flex: 1; min-width: 240px; margin-bottom: 0;" placeholder="Ex: Flamengo x Vasco Dupla Chance 1X @ 1.55 ou Real Madrid Mais de 2.5 gols">
+          <button class="btn-submit" style="width: auto; padding: 0 20px; white-space: nowrap; background: linear-gradient(135deg, #00D084, #059669);" onclick="auditBetWithBot12()">
+            🔍 Auditar Qualidade
+          </button>
+        </div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+          <button class="cat-pill" style="font-size: 10px;" onclick="testAuditSample('Flamengo x Vasco Dupla Chance 1X @ 1.55')">Exemplo 1: Dupla Chance 1X</button>
+          <button class="cat-pill" style="font-size: 10px;" onclick="testAuditSample('Real Madrid x Barcelona Mais de 2.5 gols @ 1.50')">Exemplo 2: Trap Mais de 2.5</button>
+          <button class="cat-pill" style="font-size: 10px;" onclick="testAuditSample('Manchester City x Arsenal Pedro +0.5 Chutes a Gol @ 1.45')">Exemplo 3: Chutes a Gol</button>
+        </div>
+        <div id="bot12-result-container" style="display: none; margin-top: 14px;"></div>
+      </div>
+
       <!-- Ambiente: Análise da IA & Chat Conversacional -->
       <div class="section-title"><span>🧠 Ambiente de Diagnóstico & Chat com a IA</span></div>
       <div class="form-card" style="margin-bottom: 20px;">
@@ -1520,6 +1543,21 @@
           </p>
           <button class="btn-secondary" style="padding: 14px; width: 100%; font-size: 14px; font-weight: 800; color: white; background: #1B2434; border-color: #38BDF8;" onclick="triggerPipelineMaster()">
             🚀 Executar Pipeline Completo dos 6 Bots
+          </button>
+        </div>
+
+        <!-- CONFIGURAÇÃO DO DISCORD WEBHOOK (BOT 0 SENTINEL) -->
+        <div class="section-title" style="margin-top: 22px;">
+          <span>🛡️ Bot 0 Sentinel • Alertas Discord Webhook</span>
+          <span style="font-size: 11px; color: #5865F2; font-weight: 700;">Ronda 1h</span>
+        </div>
+        <div class="form-card">
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px;">
+            Conecte o canal do Discord (ex: <code>#synapse-alerts</code>) para receber relatórios de integridade dos 12 robôs e notificações imediatas de Green:
+          </p>
+          <input type="text" id="admin-discord-webhook-input" class="input-field" placeholder="Cole aqui: https://discord.com/api/webhooks/..." style="font-family: monospace; font-size: 11px;">
+          <button class="btn-submit" style="background: linear-gradient(135deg, #5865F2, #4752C4); box-shadow: 0 4px 16px rgba(88,101,242,0.3);" onclick="saveDiscordWebhook()">
+            💾 Salvar Webhook & Disparar Teste Imediato
           </button>
         </div>
       </div>
@@ -3998,6 +4036,101 @@
           </div>
         `;
         chatLog.scrollTop = chatLog.scrollHeight;
+      }
+    }
+
+    // =========================================================================
+    // BOT 12: BET QUALITY AUDITOR
+    // =========================================================================
+    function testAuditSample(sampleText) {
+      document.getElementById('bot12-bet-input').value = sampleText;
+      auditBetWithBot12();
+    }
+
+    async function auditBetWithBot12() {
+      const input = document.getElementById('bot12-bet-input');
+      const text = input.value.trim();
+      if (!text) return alert("Digite ou cole a aposta que deseja auditar.");
+
+      const container = document.getElementById('bot12-result-container');
+      container.style.display = 'block';
+      container.innerHTML = '<div style="color: #38BDF8; font-weight: 700; text-align: center; padding: 12px;">⏳ Calculando Poisson e Cópula para auditar o Audit Score...</div>';
+
+      try {
+        const res = await fetch('/api/bet-auditor/audit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bet_text: text })
+        });
+        const d = await res.json();
+
+        if (d && d.success) {
+          container.innerHTML = `
+            <div style="background: #0E121A; border: 1px solid ${d.color}; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <span style="font-size: 14px; font-weight: 800; color: #FFFFFF;">🏟️ ${d.parsed_match} (${d.sport})</span>
+                <span style="font-size: 11px; font-weight: 800; background: ${d.color}22; color: ${d.color}; border: 1px solid ${d.color}; padding: 4px 10px; border-radius: 20px;">
+                  ${d.verdict_badge}
+                </span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 4px;">
+                <div style="background: #18202E; padding: 8px; border-radius: 8px; text-align: center;">
+                  <div style="font-size: 10px; color: #94A3B8;">AUDIT SCORE</div>
+                  <div style="font-size: 18px; font-weight: 800; color: ${d.color}; font-family: var(--font-mono);">${d.audit_score}/100</div>
+                </div>
+                <div style="background: #18202E; padding: 8px; border-radius: 8px; text-align: center;">
+                  <div style="font-size: 10px; color: #94A3B8;">ODD OFERECIDA</div>
+                  <div style="font-size: 18px; font-weight: 800; color: #FFA366; font-family: var(--font-mono);">${d.odd_offered.toFixed(2)}</div>
+                </div>
+                <div style="background: #18202E; padding: 8px; border-radius: 8px; text-align: center;">
+                  <div style="font-size: 10px; color: #94A3B8;">ODD JUSTA IA</div>
+                  <div style="font-size: 18px; font-weight: 800; color: #38BDF8; font-family: var(--font-mono);">${d.fair_odd.toFixed(2)}</div>
+                </div>
+                <div style="background: #18202E; padding: 8px; border-radius: 8px; text-align: center;">
+                  <div style="font-size: 10px; color: #94A3B8;">EDGE MATEMÁTICO</div>
+                  <div style="font-size: 18px; font-weight: 800; color: ${d.edge_pct >= 0 ? '#00D084' : '#EF4444'}; font-family: var(--font-mono);">${d.edge_pct >= 0 ? '+' : ''}${d.edge_pct}%</div>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #E2E8F0; line-height: 1.5; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;">
+                💡 <b>Diagnóstico da IA:</b> ${d.verdict_desc}<br>
+                <span style="font-size: 11px; color: #94A3B8; margin-top: 4px; display: block;">🔬 <i>${d.rationale}</i></span>
+              </div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `<div style="color: #EF4444; padding: 10px;">${d?.error || "Não foi possível auditar a aposta."}</div>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div style="color: #EF4444; padding: 10px;">Erro na conexão: ${err.message}</div>`;
+      }
+    }
+
+    // =========================================================================
+    // BOT 0: SALVAR DISCORD WEBHOOK
+    // =========================================================================
+    async function saveDiscordWebhook() {
+      const input = document.getElementById('admin-discord-webhook-input');
+      const url = input.value.trim();
+      if (!url.startsWith('https://discord.com/api/webhooks/')) {
+        return alert("Por favor, cole uma URL válida de Webhook do Discord (começando com https://discord.com/api/webhooks/)");
+      }
+
+      showToast("⏳ Testando e gravando webhook do Discord...");
+      try {
+        const res = await fetch('/api/sentinel/discord-webhook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ webhook_url: url })
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          showToast("✅ Webhook do Discord configurado e testado com sucesso!");
+          alert("Sucesso! O Bot 0 Sentinel disparou um cartão de teste no seu Discord.");
+        } else {
+          alert(data?.error || "Falha ao salvar webhook.");
+        }
+      } catch (err) {
+        alert("Erro na requisição: " + err.message);
       }
     }
 
